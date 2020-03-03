@@ -21,6 +21,8 @@ namespace WorkManager.Data.ViewModels
 		public string Email { get; set; }
 		//[JsonProperty("email_confirmed")]
 		public bool EmailConfirmed { get; set; }
+		//[JsonProperty("employee_code")]
+		public string EmployeeCode { get; set; }
 		//[JsonProperty("full_name")]
 		public string FullName { get; set; }
 		//[JsonProperty("lockout_enabled")]
@@ -51,6 +53,16 @@ namespace WorkManager.Data.ViewModels
 		//public IEnumerable<AspNetUserRolesViewModel> AspNetUserRolesVM { get; set; }
 		//[JsonProperty("asp_net_user_tokens")]
 		//public IEnumerable<AspNetUserTokensViewModel> AspNetUserTokensVM { get; set; }
+		//[JsonProperty("events")]
+		//public IEnumerable<EventsViewModel> EventsVM { get; set; }
+		//[JsonProperty("group_users")]
+		//public IEnumerable<GroupUsersViewModel> GroupUsersVM { get; set; }
+		//[JsonProperty("groups")]
+		//public IEnumerable<GroupsViewModel> GroupsVM { get; set; }
+		//[JsonProperty("tasks_created_user_navigation")]
+		//public IEnumerable<TasksViewModel> TasksCreatedUserNavigationVM { get; set; }
+		//[JsonProperty("tasks_of_user_navigation")]
+		//public IEnumerable<TasksViewModel> TasksOfUserNavigationVM { get; set; }
 		
 		public AspNetUsersViewModel(AspNetUsers entity) : base(entity)
 		{
@@ -74,6 +86,8 @@ namespace WorkManager.Data.ViewModels
 		public Wrapper<string> Email { get; set; }
 		//[JsonProperty("email_confirmed")]
 		public Wrapper<bool> EmailConfirmed { get; set; }
+		//[JsonProperty("employee_code")]
+		public Wrapper<string> EmployeeCode { get; set; }
 		//[JsonProperty("full_name")]
 		public Wrapper<string> FullName { get; set; }
 		//[JsonProperty("lockout_enabled")]
@@ -104,6 +118,16 @@ namespace WorkManager.Data.ViewModels
 		//public IEnumerable<AspNetUserRolesViewModel> AspNetUserRolesVM { get; set; }
 		//[JsonProperty("asp_net_user_tokens")]
 		//public IEnumerable<AspNetUserTokensViewModel> AspNetUserTokensVM { get; set; }
+		//[JsonProperty("events")]
+		//public IEnumerable<EventsViewModel> EventsVM { get; set; }
+		//[JsonProperty("group_users")]
+		//public IEnumerable<GroupUsersViewModel> GroupUsersVM { get; set; }
+		//[JsonProperty("groups")]
+		//public IEnumerable<GroupsViewModel> GroupsVM { get; set; }
+		//[JsonProperty("tasks_created_user_navigation")]
+		//public IEnumerable<TasksViewModel> TasksCreatedUserNavigationVM { get; set; }
+		//[JsonProperty("tasks_of_user_navigation")]
+		//public IEnumerable<TasksViewModel> TasksOfUserNavigationVM { get; set; }
 		
 	}
 }

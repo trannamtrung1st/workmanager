@@ -11,6 +11,11 @@ namespace WorkManager.Data.Models
             AspNetUserLogins = new HashSet<AspNetUserLogins>();
             AspNetUserRoles = new HashSet<AspNetUserRoles>();
             AspNetUserTokens = new HashSet<AspNetUserTokens>();
+            Events = new HashSet<Events>();
+            GroupUsers = new HashSet<GroupUsers>();
+            Groups = new HashSet<Groups>();
+            TasksCreatedUserNavigation = new HashSet<Tasks>();
+            TasksOfUserNavigation = new HashSet<Tasks>();
         }
 
         public string Id { get; set; }
@@ -29,10 +34,16 @@ namespace WorkManager.Data.Models
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
         public string FullName { get; set; }
+        public string EmployeeCode { get; set; }
 
         public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual ICollection<AspNetUserTokens> AspNetUserTokens { get; set; }
+        public virtual ICollection<Events> Events { get; set; }
+        public virtual ICollection<GroupUsers> GroupUsers { get; set; }
+        public virtual ICollection<Groups> Groups { get; set; }
+        public virtual ICollection<Tasks> TasksCreatedUserNavigation { get; set; }
+        public virtual ICollection<Tasks> TasksOfUserNavigation { get; set; }
     }
 }

@@ -1,0 +1,57 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WorkManager.Data.Global;
+using WorkManager.Data.Models;
+using Newtonsoft.Json;
+
+namespace WorkManager.Data.ViewModels
+{
+	public partial class GroupsViewModel: BaseViewModel<Groups>
+	{
+		//[JsonProperty("id")]
+		public int Id { get; set; }
+		//[JsonProperty("created_time")]
+		public DateTime CreatedTime { get; set; }
+		//[JsonProperty("created_user")]
+		public string CreatedUser { get; set; }
+		//[JsonProperty("description")]
+		public string Description { get; set; }
+		//[JsonProperty("name")]
+		public string Name { get; set; }
+		//[JsonProperty("created_user_navigation")]
+		//public AspNetUsersViewModel CreatedUserNavigationVM { get; set; }
+		//[JsonProperty("group_users")]
+		//public IEnumerable<GroupUsersViewModel> GroupUsersVM { get; set; }
+		
+		public GroupsViewModel(Groups entity) : base(entity)
+		{
+		}
+		
+		public GroupsViewModel()
+		{
+		}
+		
+	}
+	
+	public partial class UpdateGroupsViewModel: BaseUpdateViewModel<UpdateGroupsViewModel, Groups>
+	{
+		//[JsonProperty("id")]
+		public Wrapper<int> Id { get; set; }
+		//[JsonProperty("created_time")]
+		public Wrapper<DateTime> CreatedTime { get; set; }
+		//[JsonProperty("created_user")]
+		public Wrapper<string> CreatedUser { get; set; }
+		//[JsonProperty("description")]
+		public Wrapper<string> Description { get; set; }
+		//[JsonProperty("name")]
+		public Wrapper<string> Name { get; set; }
+		//[JsonProperty("created_user_navigation")]
+		//public AspNetUsersViewModel CreatedUserNavigationVM { get; set; }
+		//[JsonProperty("group_users")]
+		//public IEnumerable<GroupUsersViewModel> GroupUsersVM { get; set; }
+		
+	}
+}

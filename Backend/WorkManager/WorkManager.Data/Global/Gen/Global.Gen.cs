@@ -28,7 +28,12 @@ namespace WorkManager.Data.Global
 			//	cfg.CreateMap<AspNetUserRoles, AspNetUserRolesViewModel>().ReverseMap();
 			//	cfg.CreateMap<AspNetUserTokens, AspNetUserTokensViewModel>().ReverseMap();
 			//	cfg.CreateMap<AspNetUsers, AspNetUsersViewModel>().ReverseMap();
+			//	cfg.CreateMap<Events, EventsViewModel>().ReverseMap();
+			//	cfg.CreateMap<GroupUsers, GroupUsersViewModel>().ReverseMap();
+			//	cfg.CreateMap<Groups, GroupsViewModel>().ReverseMap();
+			//	cfg.CreateMap<Logs, LogsViewModel>().ReverseMap();
 			//	cfg.CreateMap<Products, ProductsViewModel>().ReverseMap();
+			//	cfg.CreateMap<Tasks, TasksViewModel>().ReverseMap();
 		//	}
 		//};
 		private static void ConfigureAutomapper()
@@ -58,7 +63,12 @@ namespace WorkManager.Data.Global
 				.AddScoped<IAspNetUserRolesRepository, AspNetUserRolesRepository>()
 				.AddScoped<IAspNetUserTokensRepository, AspNetUserTokensRepository>()
 				.AddScoped<IAspNetUsersRepository, AspNetUsersRepository>()
-				.AddScoped<IProductsRepository, ProductsRepository>();
+				.AddScoped<IEventsRepository, EventsRepository>()
+				.AddScoped<IGroupUsersRepository, GroupUsersRepository>()
+				.AddScoped<IGroupsRepository, GroupsRepository>()
+				.AddScoped<ILogsRepository, LogsRepository>()
+				.AddScoped<IProductsRepository, ProductsRepository>()
+				.AddScoped<ITasksRepository, TasksRepository>();
 			ServiceInjection.Register(new List<Type>(){ typeof(G) });
 		}
 		

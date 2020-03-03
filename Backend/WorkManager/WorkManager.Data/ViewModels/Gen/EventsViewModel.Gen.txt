@@ -1,0 +1,57 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WorkManager.Data.Global;
+using WorkManager.Data.Models;
+using Newtonsoft.Json;
+
+namespace WorkManager.Data.ViewModels
+{
+	public partial class EventsViewModel: BaseViewModel<Events>
+	{
+		//[JsonProperty("id")]
+		public int Id { get; set; }
+		//[JsonProperty("action")]
+		public string Action { get; set; }
+		//[JsonProperty("data")]
+		public string Data { get; set; }
+		//[JsonProperty("message")]
+		public string Message { get; set; }
+		//[JsonProperty("time")]
+		public DateTime Time { get; set; }
+		//[JsonProperty("user_id")]
+		public string UserId { get; set; }
+		//[JsonProperty("user")]
+		//public AspNetUsersViewModel UserVM { get; set; }
+		
+		public EventsViewModel(Events entity) : base(entity)
+		{
+		}
+		
+		public EventsViewModel()
+		{
+		}
+		
+	}
+	
+	public partial class UpdateEventsViewModel: BaseUpdateViewModel<UpdateEventsViewModel, Events>
+	{
+		//[JsonProperty("id")]
+		public Wrapper<int> Id { get; set; }
+		//[JsonProperty("action")]
+		public Wrapper<string> Action { get; set; }
+		//[JsonProperty("data")]
+		public Wrapper<string> Data { get; set; }
+		//[JsonProperty("message")]
+		public Wrapper<string> Message { get; set; }
+		//[JsonProperty("time")]
+		public Wrapper<DateTime> Time { get; set; }
+		//[JsonProperty("user_id")]
+		public Wrapper<string> UserId { get; set; }
+		//[JsonProperty("user")]
+		//public AspNetUsersViewModel UserVM { get; set; }
+		
+	}
+}

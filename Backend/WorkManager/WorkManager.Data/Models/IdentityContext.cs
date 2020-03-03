@@ -30,7 +30,11 @@ namespace WorkManager.Data.Models
     {
         [StringLength(100)]
         public override string Id { get; set; }
+        [Required]
         public string FullName { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string EmployeeCode { get; set; }
     }
 
     public class AppRoles : IdentityRole

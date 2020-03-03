@@ -1,0 +1,49 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WorkManager.Data.Global;
+using WorkManager.Data.Models;
+using Newtonsoft.Json;
+
+namespace WorkManager.Data.ViewModels
+{
+	public partial class GroupUsersViewModel: BaseViewModel<GroupUsers>
+	{
+		//[JsonProperty("id")]
+		public int Id { get; set; }
+		//[JsonProperty("group_id")]
+		public int GroupId { get; set; }
+		//[JsonProperty("user_id")]
+		public string UserId { get; set; }
+		//[JsonProperty("group")]
+		//public GroupsViewModel GroupVM { get; set; }
+		//[JsonProperty("user")]
+		//public AspNetUsersViewModel UserVM { get; set; }
+		
+		public GroupUsersViewModel(GroupUsers entity) : base(entity)
+		{
+		}
+		
+		public GroupUsersViewModel()
+		{
+		}
+		
+	}
+	
+	public partial class UpdateGroupUsersViewModel: BaseUpdateViewModel<UpdateGroupUsersViewModel, GroupUsers>
+	{
+		//[JsonProperty("id")]
+		public Wrapper<int> Id { get; set; }
+		//[JsonProperty("group_id")]
+		public Wrapper<int> GroupId { get; set; }
+		//[JsonProperty("user_id")]
+		public Wrapper<string> UserId { get; set; }
+		//[JsonProperty("group")]
+		//public GroupsViewModel GroupVM { get; set; }
+		//[JsonProperty("user")]
+		//public AspNetUsersViewModel UserVM { get; set; }
+		
+	}
+}
