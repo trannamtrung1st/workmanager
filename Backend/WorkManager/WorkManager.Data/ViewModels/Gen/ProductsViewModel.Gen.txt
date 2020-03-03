@@ -1,0 +1,37 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WorkManager.Data.Global;
+using WorkManager.Data.Models;
+using Newtonsoft.Json;
+
+namespace WorkManager.Data.ViewModels
+{
+	public partial class ProductsViewModel: BaseViewModel<Products>
+	{
+		//[JsonProperty("id")]
+		public int Id { get; set; }
+		//[JsonProperty("name")]
+		public string Name { get; set; }
+		
+		public ProductsViewModel(Products entity) : base(entity)
+		{
+		}
+		
+		public ProductsViewModel()
+		{
+		}
+		
+	}
+	
+	public partial class UpdateProductsViewModel: BaseUpdateViewModel<UpdateProductsViewModel, Products>
+	{
+		//[JsonProperty("id")]
+		public Wrapper<int> Id { get; set; }
+		//[JsonProperty("name")]
+		public Wrapper<string> Name { get; set; }
+		
+	}
+}

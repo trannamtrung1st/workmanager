@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "$assets": ["./assets"],
+      "$components": ["./src/components"],
+      "$views": ["./src/views"],
+      "$app-helpers": ["./src/helpers"],
+      "$styles": ["./src/styles"],
+      "$app-contexts": ["./src/contexts"],
+      "$navigation": ["./src/navigation"],
+      "$services": ["./src/services"],
+      "$constants": ["./constants"],
+      "$assets/*": ["./assets/*"],
+      "$components/*": ["./src/components/*"],
+      "$views/*": ["./src/views/*"],
+      "$app-helpers/*": ["./src/helpers/*"],
+      "$styles/*": ["./src/styles/*"],
+      "$app-contexts/*": ["./src/contexts/*"],
+      "$navigation/*": ["./src/navigation/*"],
+      "$services/*": ["./src/services/*"],
+      "$constants/*": ["./constants/*"]
+    }
+  }
+}
