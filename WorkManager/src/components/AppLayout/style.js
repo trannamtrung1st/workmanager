@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { DIMENSIONS, COLOR } from "$constants";
 import { commonStyles } from "@trannamtrung1st/t-components";
-import appStyles from "$styles/appStyles";
+import { appStyles } from "$styles";
 
 const styles = StyleSheet.create({
   layout: {},
