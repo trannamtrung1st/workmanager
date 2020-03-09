@@ -2,7 +2,8 @@ import { Dimensions } from "react-native";
 
 const SCREENS = {
   dashboard: "Dashboard",
-  task: "Task"
+  task: "Task",
+  logout: "Logout"
 };
 
 const screen = Dimensions.get("screen");
