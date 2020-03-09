@@ -3,12 +3,12 @@ import { View, Text } from "react-native";
 import { AppLayout } from "$components";
 import { TextInput } from "react-native";
 
-function Dashboard(props) {
+function Task(props) {
   return (
     <AppLayout {...props}>
-      <Text>Dashboard</Text>
+      <Text>Task</Text>
     </AppLayout>
   );
 }
 
-export default Dashboard;
+export default Task;
