@@ -1,10 +1,20 @@
+import { Dimensions } from "react-native";
+
 const SCREENS = {
   login: "Login",
   dashboard: "Dashboard"
 };
 
-const COLOR = {
-  white: "#FFF"
+const screen = Dimensions.get("screen");
+const DIMENSIONS = {
+  width: screen.width,
+  height: screen.height
 };
 
-export { SCREENS, COLOR };
+const COLOR = {
+  white: "#FFF",
+  primaryGreen: "#5cb85c",
+  secondaryGreen: "#d4ffb8"
+};
+
+export { SCREENS, COLOR, DIMENSIONS };

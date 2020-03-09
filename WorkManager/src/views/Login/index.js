@@ -1,12 +1,11 @@
 import React from "react";
-import { Text, View } from "native-base";
+import { StyleSheet } from "react-native";
+import { COLOR, DIMENSIONS } from "$constants";
+import { commonStyles } from "@trannamtrung1st/t-components";
 
+const styles = StyleSheet.create({});
 function Login() {
-  return (
-    <View>
-      <Text>Login OK</Text>
-    </View>
-  );
+  return <View>OK</View>;
 }
 
 export default Login;
