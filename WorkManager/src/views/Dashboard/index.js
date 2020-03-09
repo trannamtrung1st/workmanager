@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "native-base";
+import { View, Text } from "react-native";
 
 function Dashboard() {
   return (

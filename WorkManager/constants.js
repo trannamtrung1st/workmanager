@@ -14,7 +14,8 @@ const DIMENSIONS = {
 const COLOR = {
   white: "#FFF",
   primaryGreen: "#5cb85c",
-  secondaryGreen: "#d4ffb8"
+  secondaryGreen: "#d4ffb8",
+  gray: "#8888",
 };
 
 export { SCREENS, COLOR, DIMENSIONS };
