@@ -21,7 +21,9 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 25
   },
-  content: {}
+  content: {
+    padding: 18
+  }
 });
 const layout = [commonStyles.flex1, styles.layout];
 const header = [commonStyles.flexRow, appStyles.bgPrimaryGreen, styles.header];
