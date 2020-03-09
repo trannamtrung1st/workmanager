@@ -13,9 +13,11 @@ const DIMENSIONS = {
 };
 
 const COLOR = {
-  red: "red",
+  lightRed: "#fc583f",
   darkorange: "darkorange",
   lightBlue: "lightblue",
+  primaryBlue: "#053bf2",
+  dark: "#343a40",
   darkBlue: "darkblue",
   cyan: "cyan",
   white: "#FFF",
