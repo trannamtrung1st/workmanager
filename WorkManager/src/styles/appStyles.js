@@ -11,6 +11,10 @@ const styles = StyleSheet.create({
   bgWhite: {
     backgroundColor: COLOR.white
   },
+  borderLightGray: {
+    borderWidth: 1,
+    borderColor: COLOR.lightgray
+  },
   borderGray: {
     borderWidth: 1,
     borderColor: COLOR.gray
@@ -24,8 +28,9 @@ const appStyles = {
   bgSecGreen: styles.bgSecGreen,
   bgPrimaryGreen: styles.bgPrimaryGreen,
   bgWhite: styles.bgWhite,
-  borderGray: styles.borderGray,
-  borderPrimaryGreen: styles.borderPrimaryGreen
+  borderLightGray: styles.borderLightGray,
+  borderPrimaryGreen: styles.borderPrimaryGreen,
+  borderGray: styles.borderGray
 };
 
 export default appStyles;

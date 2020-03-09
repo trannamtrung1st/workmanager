@@ -6,6 +6,7 @@ import s from "./style";
 
 function AppLayout(props) {
   const { navigation } = props;
+  const { screenHeader } = props;
   function _onBtnMenuClick() {
     navigation.toggleDrawer();
   }
@@ -21,7 +22,12 @@ function AppLayout(props) {
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={s.content}>{props.children}</ScrollView>
+      <ScrollView style={s.content}>
+        <View style={s.screenHeader}>
+          <Text style={s.screenHeaderText}>{screenHeader}</Text>
+        </View>
+        {props.children}
+      </ScrollView>
     </View>
   );
 }

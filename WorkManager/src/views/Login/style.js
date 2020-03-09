@@ -57,7 +57,7 @@ const headerTextApp = [commonStyles.textBlack, commonStyles.fontWeightBold];
 const body = [commonStyles.centerInside, styles.body];
 const inputContainer = [
   commonStyles.flexRow,
-  appStyles.borderGray,
+  appStyles.borderLightGray,
   styles.inputContainer
 ];
 const inputIcon = [
