@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text } from "react-native";
 import { TextButton } from "@trannamtrung1st/t-components";
 import { TextInput } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import s from "./style";
-import { SCREENS } from "$constants";
+import { AuthContext } from "$app-contexts";
 
 function Login(props) {
-  const { navigation } = props;
+  const authContext = useContext(AuthContext);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
 
   function _login() {
     console.log(username + "-" + password);
-    navigation.navigate(SCREENS.dashboard);
+    authContext.setAuthContext({
+      userToken: "token"
+    });
   }
 
   function _onUsernameChanged(v) {

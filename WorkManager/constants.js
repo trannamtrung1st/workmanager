@@ -1,7 +1,6 @@
 import { Dimensions } from "react-native";
 
 const SCREENS = {
-  login: "Login",
   dashboard: "Dashboard"
 };
 
@@ -15,7 +14,7 @@ const COLOR = {
   white: "#FFF",
   primaryGreen: "#5cb85c",
   secondaryGreen: "#d4ffb8",
-  gray: "#8888",
+  gray: "#8888"
 };
 
 export { SCREENS, COLOR, DIMENSIONS };

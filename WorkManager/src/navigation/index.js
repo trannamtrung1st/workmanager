@@ -1,3 +1,3 @@
-import AppStackNavigator from "./AppStackNavigator";
+import AppDrawerNavigator from "./AppDrawerNavigator";
 
-export { AppStackNavigator };
+export { AppDrawerNavigator };

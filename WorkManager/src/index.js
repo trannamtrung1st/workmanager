@@ -1,13 +1,25 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { AppStackNavigator } from "$navigation";
+import { AppDrawerNavigator } from "$navigation";
+import { AuthContext } from "$app-contexts";
+import { Login } from "$views";
 
 export default function App() {
-  
+  const [authContext, setAuthContext] = useState({
+    userToken: null
+  });
+  authContext.setAuthContext = setAuthContext;
+
   return (
-    <NavigationContainer>
-      <AppStackNavigator />
-    </NavigationContainer>
+    <AuthContext.Provider value={authContext}>
+      {authContext.userToken ? (
+        <NavigationContainer>
+          <AppDrawerNavigator />
+        </NavigationContainer>
+      ) : (
+        <Login />
+      )}
+    </AuthContext.Provider>
   );
 }
