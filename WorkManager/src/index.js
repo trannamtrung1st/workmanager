@@ -9,7 +9,8 @@ export default function App() {
   const [authContext, setAuthContext] = useState({
     userToken: null,
     // userToken: "token",
-    username: "tnt123"
+    username: "tnt123",
+    roles: ["User", "Manager", "Admin"]
   });
   authContext.setAuthContext = setAuthContext;
 

@@ -6,6 +6,7 @@ const SCREENS = {
   listTask: "List Task",
   createTask: "Create Task",
   viewTask: "View Task",
+  user: "User",
   logout: "Logout"
 };
 
