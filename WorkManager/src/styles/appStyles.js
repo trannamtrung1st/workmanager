@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { COLOR } from "$constants";
+import { commonStyles } from "@trannamtrung1st/t-components";
 
 const styles = StyleSheet.create({
   bgPrimaryGreen: {
@@ -34,6 +35,15 @@ const styles = StyleSheet.create({
   },
   inactiveInputContainer: {
     backgroundColor: COLOR.lightgray
+  },
+  bottomIcon: {
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+    fontSize: 30,
+    borderWidth: 3,
+    borderRadius: 100,
+    color: COLOR.darkGreen
   }
 });
 
@@ -48,7 +58,14 @@ const appStyles = {
   borderGray: styles.borderGray,
   inputContainer,
   inactiveInputContainer: inputContainer.concat(styles.inactiveInputContainer),
-  formItemContainer: [styles.formItemContainer]
+  formItemContainer: [styles.formItemContainer],
+  bottomIcon: [
+    commonStyles.textCenter,
+    commonStyles.textVerticalCenter,
+    styles.bgSecGreen,
+    styles.borderPrimaryGreen,
+    styles.bottomIcon
+  ]
 };
 
 export default appStyles;

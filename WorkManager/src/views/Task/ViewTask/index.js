@@ -11,11 +11,14 @@ import {
 import { ViewTaskContext, AuthContext } from "$app-contexts";
 import s from "./style";
 import { HookHelper } from "@trannamtrung1st/t-components";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import Modal from "react-native-modal";
 
 function ViewTask(props) {
   const authContext = useContext(AuthContext);
   const forceUpdate = HookHelper.useForceUpdate();
   const { navigation, route } = props;
+  const [modalVisible, setModalVisible] = useState(false);
   const [viewTaskContext] = useState({
     data: route.params.task
   });
@@ -24,6 +27,10 @@ function ViewTask(props) {
   function changeData(name, val) {
     data[name] = val;
     forceUpdate();
+  }
+
+  function _onActionPress() {
+    setModalVisible(true);
   }
 
   return (
@@ -202,6 +209,45 @@ function ViewTask(props) {
           </View>
         </View>
       </AppLayout>
+      <Icon name="th-large" style={s.actionIcon} onPress={_onActionPress} />
+
+      <Modal
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        animationInTiming={250}
+        animationOutTiming={500}
+        backdropTransitionInTiming={-1}
+        backdropTransitionOutTiming={-1}
+        style={s.actionModal}
+        isVisible={modalVisible}
+        onBackdropPress={() => setModalVisible(false)}
+      >
+        <View style={s.formItemContainer}>
+          <AppButton
+            text="START TASK"
+            onPress={() => {
+              alert("OK");
+            }}
+          />
+        </View>
+        <View style={s.formItemContainer}>
+          <AppButton
+            text="UPLOAD IMAGE"
+            onPress={() => {
+              alert("OK");
+            }}
+          />
+        </View>
+        <View style={s.formItemContainer}>
+          <AppButton
+            type="danger"
+            text="DELETE"
+            onPress={() => {
+              alert("OK");
+            }}
+          />
+        </View>
+      </Modal>
     </ViewTaskContext.Provider>
   );
 }

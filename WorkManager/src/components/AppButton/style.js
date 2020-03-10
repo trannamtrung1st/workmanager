@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLOR.primaryGreen
   },
   btnDanger: {
-    marginRight: 10,
     backgroundColor: COLOR.lightRed
   }
 });

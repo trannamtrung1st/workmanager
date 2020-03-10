@@ -18,15 +18,8 @@ const styles = StyleSheet.create({
     color: COLOR.gray
   },
   plusIcon: {
-    position: "absolute",
-    bottom: 10,
-    right: 10,
-    fontSize: 30,
-    borderWidth: 3,
-    borderRadius: 100,
     paddingVertical: 10,
-    paddingHorizontal: 12,
-    color: COLOR.darkGreen
+    paddingHorizontal: 12
   }
 });
 const btnOp = [commonStyles.alignSelfFlexEnd];
@@ -35,13 +28,7 @@ const listItem = [commonStyles.w100, styles.listItem];
 const itemNameContainer = [commonStyles.flexRow];
 const itemName = [commonStyles.fontWeightBold];
 const itemCreatedTime = [commonStyles.textRight, styles.itemCreatedTime];
-const plusIcon = [
-  commonStyles.textCenter,
-  commonStyles.textVerticalCenter,
-  appStyles.bgSecGreen,
-  appStyles.borderPrimaryGreen,
-  styles.plusIcon
-];
+const plusIcon = [appStyles.bottomIcon, styles.plusIcon];
 
 const s = {
   plusIcon,

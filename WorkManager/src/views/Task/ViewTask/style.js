@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
   form: {
     paddingHorizontal: 17,
     paddingVertical: 10,
-    marginVertical: 10
+    marginVertical: 10,
+    marginBottom: 100
   },
   link: {
     color: COLOR.primaryBlue
@@ -16,9 +17,24 @@ const styles = StyleSheet.create({
   italic: {
     fontStyle: "italic"
   },
-  formHeader: {}
+  formHeader: {},
+  actionIcon: {
+    paddingVertical: 10,
+    paddingHorizontal: 10
+  },
+  actionModal: {
+    position: "absolute",
+    bottom: 0,
+    padding: 15,
+    margin: 0
+  }
 });
-
+const actionModal = [
+  commonStyles.w100,
+  appStyles.bgWhite,
+  commonStyles.alignSelfCenter,
+  styles.actionModal
+];
 const form = [appStyles.borderLightGray, styles.form];
 const formItemContainer = [appStyles.formItemContainer];
 const formRowItemContainer = formItemContainer.concat(commonStyles.flexRow);
@@ -38,7 +54,11 @@ const image = [
   commonStyles.resizeContain,
   commonStyles.aspect1
 ];
+const actionIcon = [appStyles.bottomIcon, styles.actionIcon];
+
 const s = {
+  actionModal,
+  actionIcon,
   image,
   formRowItemContainer,
   form,
