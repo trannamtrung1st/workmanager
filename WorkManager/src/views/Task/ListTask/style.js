@@ -5,12 +5,6 @@ import { COLOR } from "$constants";
 import { appStyles } from "$styles";
 
 const styles = StyleSheet.create({
-  btnFilter: {
-    padding: 7,
-    borderRadius: 7,
-    backgroundColor: COLOR.primaryGreen,
-    width: 80
-  },
   listItem: {
     padding: 10,
     marginVertical: 5,
@@ -36,11 +30,7 @@ const styles = StyleSheet.create({
   }
 });
 const filterContainer = [];
-const btnFilter = [
-  commonStyles.centerInside,
-  commonStyles.alignSelfFlexEnd,
-  styles.btnFilter
-];
+const btnFilter = [commonStyles.alignSelfFlexEnd];
 const listContainer = [];
 const listItem = [commonStyles.w100, styles.listItem];
 const itemNameContainer = [commonStyles.flexRow];

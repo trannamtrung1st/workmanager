@@ -22,6 +22,9 @@ const styles = StyleSheet.create({
   borderPrimaryGreen: {
     borderWidth: 1,
     borderColor: COLOR.primaryGreen
+  },
+  inputContainer: {
+    paddingHorizontal: 5
   }
 });
 const appStyles = {
@@ -30,7 +33,8 @@ const appStyles = {
   bgWhite: styles.bgWhite,
   borderLightGray: styles.borderLightGray,
   borderPrimaryGreen: styles.borderPrimaryGreen,
-  borderGray: styles.borderGray
+  borderGray: styles.borderGray,
+  inputContainer: [styles.borderGray, styles.inputContainer]
 };
 
 export default appStyles;

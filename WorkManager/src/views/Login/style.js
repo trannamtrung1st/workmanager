@@ -66,12 +66,7 @@ const inputIcon = [
   styles.inputIcon
 ];
 const input = [styles.input];
-const btnLogin = [
-  commonStyles.centerInside,
-  appStyles.bgPrimaryGreen,
-  styles.btnLogin
-];
-const btnLoginText = [commonStyles.textWhite];
+const btnLogin = [styles.btnLogin];
 const s = {
   inputIcon,
   page,
@@ -82,8 +77,7 @@ const s = {
   headerTextApp,
   input,
   inputContainer,
-  btnLogin,
-  btnLoginText
+  btnLogin
 };
 
 export default s;

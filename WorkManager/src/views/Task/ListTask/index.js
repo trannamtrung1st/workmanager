@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { AppLayout } from "$components";
-import { TextButton } from "@trannamtrung1st/t-components";
+import { AppLayout, AppButton } from "$components";
 import { Database } from "$services";
 import { ListTaskContext } from "$app-contexts";
 import FilterModal from "./FilterModal";
@@ -40,7 +39,7 @@ function ListTask(props) {
     <ListTaskContext.Provider value={listTaskContext}>
       <AppLayout {...props} screenHeader="List of tasks">
         <View style={s.filterContainer}>
-          <TextButton
+          <AppButton
             text="FILTER"
             btnStyle={s.btnFilter}
             onPress={_onFilterPress}

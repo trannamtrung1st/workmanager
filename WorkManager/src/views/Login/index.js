@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import { View, Text } from "react-native";
-import { TextButton } from "@trannamtrung1st/t-components";
 import { TextInput } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import s from "./style";
 import { AuthContext } from "$app-contexts";
+import { AppButton } from "$components";
 
 function Login(props) {
   const authContext = useContext(AuthContext);
@@ -55,12 +55,7 @@ function Login(props) {
               value={password}
             />
           </View>
-          <TextButton
-            onPress={_login}
-            text="LOGIN"
-            btnStyle={s.btnLogin}
-            textStyle={s.btnLoginText}
-          />
+          <AppButton onPress={_login} text="LOGIN" btnStyle={s.btnLogin} />
         </View>
       </View>
     </View>

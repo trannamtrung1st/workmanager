@@ -5,21 +5,11 @@ import { COLOR } from "$constants";
 import { appStyles } from "$styles";
 
 const styles = StyleSheet.create({
-  btnFilter: {
-    padding: 7,
-    borderRadius: 7,
-    backgroundColor: COLOR.primaryGreen,
-    width: 80
-  },
   btnCancel: {
-    marginRight: 10,
-    backgroundColor: COLOR.lightRed
+    marginRight: 10
   },
   filterInputContainer: {
     marginVertical: 5
-  },
-  pickerContainer: {
-    paddingHorizontal: 5
   },
   filterModal: {
     marginVertical: 250,
@@ -27,28 +17,26 @@ const styles = StyleSheet.create({
   }
 });
 
-const btnFilter = [commonStyles.centerInside, styles.btnFilter];
-const btnCancel = btnFilter.concat(styles.btnCancel);
+const btnCancel = [styles.btnCancel];
 const filterModal = [
   commonStyles.w80,
   appStyles.bgWhite,
   commonStyles.alignSelfCenter,
   styles.filterModal
 ];
-const pickerContainer = [appStyles.borderGray, styles.pickerContainer];
 const filterInputContainer = [styles.filterInputContainer];
 const btnInputContainer = filterInputContainer.concat([
   commonStyles.flexRow,
   commonStyles.justifyFlexEnd
 ]);
+const inputContainer = [appStyles.inputContainer];
 
 const s = {
-  pickerContainer,
-  btnFilter,
   btnCancel,
   filterModal,
   filterInputContainer,
-  btnInputContainer
+  btnInputContainer,
+  inputContainer
 };
 
 export default s;

@@ -2,10 +2,10 @@ import React, { useState, useContext } from "react";
 import { View, Text, Picker, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import { TextInput } from "react-native";
-import { TextButton } from "@trannamtrung1st/t-components";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { ListTaskContext } from "$app-contexts";
 import s from "./style";
+import { AppButton } from "$components";
 
 function FilterModal(props) {
   const listTaskContext = useContext(ListTaskContext);
@@ -54,11 +54,11 @@ function FilterModal(props) {
     >
       <View style={s.filterInputContainer}>
         <Text>Status</Text>
-        <View style={s.pickerContainer}>
+        <View style={s.inputContainer}>
           <Picker
             mode="dropdown"
             selectedValue={statusFilter}
-            style={s.pickerContainer}
+            style={s.inputContainer}
             onValueChange={_onStatusFilterChanged}
           >
             <Picker.Item label="-- All --" value={null} />
@@ -71,7 +71,7 @@ function FilterModal(props) {
       <View style={s.filterInputContainer}>
         <Text>From date</Text>
         <TouchableOpacity
-          style={s.pickerContainer}
+          style={s.inputContainer}
           onPress={() =>
             setFromDate({
               value: fromDate.value,
@@ -94,7 +94,7 @@ function FilterModal(props) {
       <View style={s.filterInputContainer}>
         <Text>To date</Text>
         <TouchableOpacity
-          style={s.pickerContainer}
+          style={s.inputContainer}
           onPress={() =>
             setToDate({
               value: toDate.value,
@@ -115,13 +115,13 @@ function FilterModal(props) {
         </TouchableOpacity>
       </View>
       <View style={s.btnInputContainer}>
-        <TextButton
+        <AppButton
+          type="danger"
           btnStyle={s.btnCancel}
           text="CANCEL"
           onPress={() => setFilterOpen(false)}
         />
-        <TextButton
-          btnStyle={s.btnFilter}
+        <AppButton
           text="FILTER"
           onPress={() => {
             setFilterOpen(false);
