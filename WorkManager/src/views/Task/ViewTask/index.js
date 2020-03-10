@@ -20,7 +20,11 @@ function ViewTask(props) {
   const { navigation, route } = props;
   const [viewTaskContext] = useState({
     data: route.params.task,
-    setModalVisible: null
+    setModalVisible: null,
+    reload: () => {
+      forceUpdate();
+    },
+    goBack: navigation.goBack
   });
   const data = viewTaskContext.data;
 
