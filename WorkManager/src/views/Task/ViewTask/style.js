@@ -21,20 +21,8 @@ const styles = StyleSheet.create({
   actionIcon: {
     paddingVertical: 10,
     paddingHorizontal: 10
-  },
-  actionModal: {
-    position: "absolute",
-    bottom: 0,
-    padding: 15,
-    margin: 0
   }
 });
-const actionModal = [
-  commonStyles.w100,
-  appStyles.bgWhite,
-  commonStyles.alignSelfCenter,
-  styles.actionModal
-];
 const form = [appStyles.borderLightGray, styles.form];
 const formItemContainer = [appStyles.formItemContainer];
 const formRowItemContainer = formItemContainer.concat(commonStyles.flexRow);
@@ -57,7 +45,6 @@ const image = [
 const actionIcon = [appStyles.bottomIcon, styles.actionIcon];
 
 const s = {
-  actionModal,
   actionIcon,
   image,
   formRowItemContainer,

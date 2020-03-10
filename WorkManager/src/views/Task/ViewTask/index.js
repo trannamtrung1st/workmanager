@@ -12,15 +12,15 @@ import { ViewTaskContext, AuthContext } from "$app-contexts";
 import s from "./style";
 import { HookHelper } from "@trannamtrung1st/t-components";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import Modal from "react-native-modal";
+import ActionModal from "./ActionModal";
 
 function ViewTask(props) {
   const authContext = useContext(AuthContext);
   const forceUpdate = HookHelper.useForceUpdate();
   const { navigation, route } = props;
-  const [modalVisible, setModalVisible] = useState(false);
   const [viewTaskContext] = useState({
-    data: route.params.task
+    data: route.params.task,
+    setModalVisible: null
   });
   const data = viewTaskContext.data;
 
@@ -30,7 +30,21 @@ function ViewTask(props) {
   }
 
   function _onActionPress() {
-    setModalVisible(true);
+    viewTaskContext.setModalVisible(true);
+  }
+
+  function onImagePickerResult(response) {
+    if (response.didCancel) {
+    } else if (response.error) {
+      alert("Something's wrong");
+    } else {
+      const source = { uri: response.uri };
+
+      // You can also display the image using data:
+      // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+      data.confirm_image = source;
+      forceUpdate();
+    }
   }
 
   return (
@@ -148,7 +162,11 @@ function ViewTask(props) {
             <Text>Confirm image</Text>
             {data.confirm_image ? (
               <Image
-                source={{ uri: data.confirm_image }}
+                source={
+                  typeof data.confirm_image == "string"
+                    ? { uri: data.confirm_image }
+                    : data.confirm_image
+                }
                 style={s.image}
                 resizeMethod={"scale"}
                 resizeMode={"contain"}
@@ -211,43 +229,7 @@ function ViewTask(props) {
       </AppLayout>
       <Icon name="th-large" style={s.actionIcon} onPress={_onActionPress} />
 
-      <Modal
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
-        animationInTiming={250}
-        animationOutTiming={500}
-        backdropTransitionInTiming={-1}
-        backdropTransitionOutTiming={-1}
-        style={s.actionModal}
-        isVisible={modalVisible}
-        onBackdropPress={() => setModalVisible(false)}
-      >
-        <View style={s.formItemContainer}>
-          <AppButton
-            text="START TASK"
-            onPress={() => {
-              alert("OK");
-            }}
-          />
-        </View>
-        <View style={s.formItemContainer}>
-          <AppButton
-            text="UPLOAD IMAGE"
-            onPress={() => {
-              alert("OK");
-            }}
-          />
-        </View>
-        <View style={s.formItemContainer}>
-          <AppButton
-            type="danger"
-            text="DELETE"
-            onPress={() => {
-              alert("OK");
-            }}
-          />
-        </View>
-      </Modal>
+      <ActionModal onImagePickerResult={onImagePickerResult} />
     </ViewTaskContext.Provider>
   );
 }
