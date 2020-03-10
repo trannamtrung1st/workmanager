@@ -3,6 +3,8 @@ import { Dimensions } from "react-native";
 const SCREENS = {
   dashboard: "Dashboard",
   task: "Task",
+  listTask: "List Task",
+  createTask: "Create Task",
   logout: "Logout"
 };
 
@@ -24,6 +26,7 @@ const COLOR = {
   black: "#000",
   lightgray: "#EEE",
   gray: "#AAA",
+  darkGreen: "#135c06",
   primaryGreen: "#5cb85c",
   secondaryGreen: "#d4ffb8"
 };

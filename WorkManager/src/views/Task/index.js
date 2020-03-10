@@ -1,3 +1,3 @@
 import ListTask from "./ListTask";
-
-export { ListTask };
+import CreateTask from "./CreateTask";
+export { CreateTask, ListTask };

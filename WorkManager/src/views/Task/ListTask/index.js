@@ -7,8 +7,11 @@ import { ListTaskContext } from "$app-contexts";
 import FilterModal from "./FilterModal";
 import TaskItem from "./TaskItem";
 import s from "./style";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { SCREENS } from "$constants";
 
 function ListTask(props) {
+  const { navigation } = props;
   const { tasks } = Database;
   const [filter, setFilter] = useState({
     status: null,
@@ -27,6 +30,10 @@ function ListTask(props) {
 
   function onItemPress(item) {
     alert(item.name);
+  }
+
+  function _onPlusPress() {
+    navigation.navigate(SCREENS.createTask);
   }
 
   return (
@@ -48,6 +55,7 @@ function ListTask(props) {
 
         <FilterModal />
       </AppLayout>
+      <Icon name="plus" style={s.plusIcon} onPress={_onPlusPress} />
     </ListTaskContext.Provider>
   );
 }

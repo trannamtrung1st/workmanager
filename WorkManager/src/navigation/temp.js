@@ -3,7 +3,6 @@
 // import { SCREENS, COLOR } from "$constants";
 // import { Login } from "$views";
 // import { fadeIn } from "react-navigation-transitions";
-// import AppDrawerNavigator from "./AppDrawerNavigator";
 
 // //Transition
 // const transition = fadeIn(500); // Or whichever you prefer
