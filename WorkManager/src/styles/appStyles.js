@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
   bgWhite: {
     backgroundColor: COLOR.white
   },
+  bgLightGray: {
+    backgroundColor: COLOR.lightgray
+  },
   borderLightGray: {
     borderWidth: 1,
     borderColor: COLOR.lightgray
@@ -28,16 +31,23 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     paddingHorizontal: 5
+  },
+  inactiveInputContainer: {
+    backgroundColor: COLOR.lightgray
   }
 });
+
+const inputContainer = [styles.borderGray, styles.inputContainer];
 const appStyles = {
   bgSecGreen: styles.bgSecGreen,
   bgPrimaryGreen: styles.bgPrimaryGreen,
+  bgLightGray: styles.bgLightGray,
   bgWhite: styles.bgWhite,
   borderLightGray: styles.borderLightGray,
   borderPrimaryGreen: styles.borderPrimaryGreen,
   borderGray: styles.borderGray,
-  inputContainer: [styles.borderGray, styles.inputContainer],
+  inputContainer,
+  inactiveInputContainer: inputContainer.concat(styles.inactiveInputContainer),
   formItemContainer: [styles.formItemContainer]
 };
 

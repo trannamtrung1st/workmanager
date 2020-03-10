@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import ItemStatusBadge from "../ItemStatusBadge";
 import s from "./style";
+import { ItemStatusBadge } from "$components";
 
 function TaskItem(props) {
   const { task, onPress } = props;

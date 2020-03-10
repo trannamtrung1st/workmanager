@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput } from "react-native";
-import { AppLayout, AppDateTimePicker, AppButton } from "$components";
+import { AppLayout, AppDateTimePicker, AppButton, AppInput } from "$components";
 import { CreateTaskContext } from "$app-contexts";
 import s from "./style";
 
@@ -31,7 +31,7 @@ function CreateTask(props) {
           <View style={s.formItemContainer}>
             <Text>Task name</Text>
             <View style={s.inputContainer}>
-              <TextInput
+              <AppInput
                 placeholder="Input"
                 onChangeText={t => (data.name = t)}
               />
@@ -41,7 +41,7 @@ function CreateTask(props) {
           <View style={s.formItemContainer}>
             <Text>Task content</Text>
             <View style={s.inputContainer}>
-              <TextInput
+              <AppInput
                 textAlignVertical={"top"}
                 multiline={true}
                 placeholder="Content"
@@ -63,7 +63,6 @@ function CreateTask(props) {
             <AppButton
               text="SUBMIT"
               onPress={() => {
-                console.log(JSON.stringify(data));
                 navigation.goBack();
               }}
             />

@@ -7,8 +7,9 @@ import { Login } from "$views";
 
 export default function App() {
   const [authContext, setAuthContext] = useState({
-    userToken: null
-    // userToken: "token"
+    userToken: null,
+    // userToken: "token",
+    username: "tnt123"
   });
   authContext.setAuthContext = setAuthContext;
 

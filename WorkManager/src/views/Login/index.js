@@ -3,7 +3,7 @@ import { View, Text, TextInput } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import s from "./style";
 import { AuthContext } from "$app-contexts";
-import { AppButton } from "$components";
+import { AppButton, AppInput } from "$components";
 
 function Login(props) {
   const authContext = useContext(AuthContext);
@@ -11,7 +11,6 @@ function Login(props) {
   const [password, setPassword] = useState(null);
 
   function _login() {
-    console.log(username + "-" + password);
     authContext.setAuthContext({
       userToken: "token"
     });
@@ -36,7 +35,7 @@ function Login(props) {
         <View style={s.body}>
           <View style={s.inputContainer}>
             <Icon name="user" style={s.inputIcon} />
-            <TextInput
+            <AppInput
               onChangeText={_onUsernameChanged}
               style={s.input}
               placeholder="Username"
@@ -45,7 +44,7 @@ function Login(props) {
           </View>
           <View style={s.inputContainer}>
             <Icon name="key" style={s.inputIcon} />
-            <TextInput
+            <AppInput
               secureTextEntry={true}
               onChangeText={_onPassChanged}
               textContentType={"password"}
