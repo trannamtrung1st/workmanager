@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, Text } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import { View, Text, TextInput } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import s from "./style";
 import { AuthContext } from "$app-contexts";

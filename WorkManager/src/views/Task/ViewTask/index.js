@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import { View, Text, TextInput } from "react-native";
 import { AppLayout, AppDateTimePicker, AppButton } from "$components";
-import { CreateTaskContext } from "$app-contexts";
+import { ViewTaskContext } from "$app-contexts";
 import s from "./style";
 
-function CreateTask(props) {
+function ViewTask(props) {
   const { navigation } = props;
-  const [createTaskContext] = useState({
+  const [viewTaskContext] = useState({
     data: {
       name: null,
       task_content: null,
       deadline: new Date()
     }
   });
-  const data = createTaskContext.data;
+  const data = viewTaskContext.data;
 
   return (
-    <CreateTaskContext.Provider value={createTaskContext}>
-      <AppLayout {...props} screenHeader="Create new tasks">
+    <ViewTaskContext.Provider value={viewTaskContext}>
+      <AppLayout {...props} screenHeader="Task detail">
         <View>
           <AppButton
             type="danger"
@@ -61,7 +61,7 @@ function CreateTask(props) {
 
           <View style={s.btnInputContainer}>
             <AppButton
-              text="SUBMIT"
+              text="UPDATE"
               onPress={() => {
                 console.log(JSON.stringify(data));
                 navigation.goBack();
@@ -70,8 +70,8 @@ function CreateTask(props) {
           </View>
         </View>
       </AppLayout>
-    </CreateTaskContext.Provider>
+    </ViewTaskContext.Provider>
   );
 }
 
-export default CreateTask;
+export default ViewTask;

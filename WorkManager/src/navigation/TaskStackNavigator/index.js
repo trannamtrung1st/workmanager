@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SCREENS, COLOR } from "$constants";
-import { ListTask, CreateTask } from "$views";
+import { ListTask, CreateTask, ViewTask } from "$views";
 import { fadeIn } from "react-navigation-transitions";
 
 //Transition
@@ -43,6 +43,7 @@ function TaskStackNavigator() {
     >
       <Stack.Screen name={SCREENS.listTask} component={ListTask} />
       <Stack.Screen name={SCREENS.createTask} component={CreateTask} />
+      <Stack.Screen name={SCREENS.viewTask} component={ViewTask} />
     </Stack.Navigator>
   );
 }

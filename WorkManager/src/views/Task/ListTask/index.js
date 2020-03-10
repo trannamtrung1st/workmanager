@@ -30,7 +30,7 @@ function ListTask(props) {
   }
 
   function onItemPress(item) {
-    alert(item.name);
+    navigation.navigate(SCREENS.viewTask);
   }
 
   function _onPlusPress() {
