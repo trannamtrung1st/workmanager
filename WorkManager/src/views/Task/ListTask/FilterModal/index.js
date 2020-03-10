@@ -1,44 +1,28 @@
 import React, { useState, useContext } from "react";
 import { View, Text, Picker, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
-import { TextInput } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { ListTaskContext } from "$app-contexts";
 import s from "./style";
-import { AppButton } from "$components";
+import { AppButton, AppDateTimePicker } from "$components";
 
 function FilterModal(props) {
   const listTaskContext = useContext(ListTaskContext);
   const [filterOpen, setFilterOpen] = useState(false);
   listTaskContext.setFilterOpen = setFilterOpen;
   const [statusFilter, setStatusFilter] = useState(null);
-  const [fromDate, setFromDate] = useState({
-    value: new Date(),
-    showPicker: false
-  });
-  const [toDate, setToDate] = useState({
-    value: new Date(),
-    showPicker: false
-  });
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
 
   function _onStatusFilterChanged(itemValue) {
     setStatusFilter(itemValue);
   }
 
   function _onFromDateChanged(ev, itemValue) {
-    if (itemValue)
-      setFromDate({
-        value: itemValue,
-        showPicker: false
-      });
+    if (itemValue) setFromDate(itemValue);
   }
 
   function _onToDateChanged(ev, itemValue) {
-    if (itemValue)
-      setToDate({
-        value: itemValue,
-        showPicker: false
-      });
+    if (itemValue) setToDate(itemValue);
   }
 
   return (
@@ -52,7 +36,7 @@ function FilterModal(props) {
       style={s.filterModal}
       isVisible={filterOpen}
     >
-      <View style={s.filterInputContainer}>
+      <View style={s.formItemContainer}>
         <Text>Status</Text>
         <View style={s.inputContainer}>
           <Picker
@@ -68,51 +52,16 @@ function FilterModal(props) {
           </Picker>
         </View>
       </View>
-      <View style={s.filterInputContainer}>
+      <View style={s.formItemContainer}>
         <Text>From date</Text>
-        <TouchableOpacity
-          style={s.inputContainer}
-          onPress={() =>
-            setFromDate({
-              value: fromDate.value,
-              showPicker: true
-            })
-          }
-        >
-          <TextInput editable={false} value={fromDate.value?.toDateString()} />
-          {fromDate.showPicker && (
-            <DateTimePicker
-              timeZoneOffsetInMinutes={0}
-              value={fromDate.value}
-              mode="date"
-              display="default"
-              onChange={_onFromDateChanged}
-            />
-          )}
-        </TouchableOpacity>
+        <AppDateTimePicker
+          initDate={fromDate}
+          onDateChanged={_onFromDateChanged}
+        />
       </View>
-      <View style={s.filterInputContainer}>
+      <View style={s.formItemContainer}>
         <Text>To date</Text>
-        <TouchableOpacity
-          style={s.inputContainer}
-          onPress={() =>
-            setToDate({
-              value: toDate.value,
-              showPicker: true
-            })
-          }
-        >
-          <TextInput editable={false} value={toDate.value?.toDateString()} />
-          {toDate.showPicker && (
-            <DateTimePicker
-              timeZoneOffsetInMinutes={0}
-              value={toDate.value}
-              mode="date"
-              display="default"
-              onChange={_onToDateChanged}
-            />
-          )}
-        </TouchableOpacity>
+        <AppDateTimePicker initDate={toDate} onDateChanged={_onToDateChanged} />
       </View>
       <View style={s.btnInputContainer}>
         <AppButton

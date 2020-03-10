@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLOR.primaryGreen
   },
+  formItemContainer: {
+    marginVertical: 5
+  },
   inputContainer: {
     paddingHorizontal: 5
   }
@@ -34,7 +37,8 @@ const appStyles = {
   borderLightGray: styles.borderLightGray,
   borderPrimaryGreen: styles.borderPrimaryGreen,
   borderGray: styles.borderGray,
-  inputContainer: [styles.borderGray, styles.inputContainer]
+  inputContainer: [styles.borderGray, styles.inputContainer],
+  formItemContainer: [styles.formItemContainer]
 };
 
 export default appStyles;

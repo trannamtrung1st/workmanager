@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLOR.gray
   },
-  itemCreatedTime: {
+  itemTime: {
     fontStyle: "italic",
     color: COLOR.gray
   }
@@ -20,13 +20,13 @@ const styles = StyleSheet.create({
 const listItem = [commonStyles.w100, styles.listItem];
 const itemNameContainer = [commonStyles.flexRow];
 const itemName = [commonStyles.fontWeightBold];
-const itemCreatedTime = [commonStyles.textRight, styles.itemCreatedTime];
+const itemTime = [commonStyles.textRight, styles.itemTime];
 
 const s = {
   listItem,
   itemNameContainer,
   itemName,
-  itemCreatedTime
+  itemTime
 };
 
 export default s;

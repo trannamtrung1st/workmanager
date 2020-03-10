@@ -1,15 +1,11 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { commonStyles } from "@trannamtrung1st/t-components";
-import { COLOR } from "$constants";
 import { appStyles } from "$styles";
 
 const styles = StyleSheet.create({
   btnCancel: {
     marginRight: 10
-  },
-  filterInputContainer: {
-    marginVertical: 5
   },
   filterModal: {
     marginVertical: 250,
@@ -24,8 +20,8 @@ const filterModal = [
   commonStyles.alignSelfCenter,
   styles.filterModal
 ];
-const filterInputContainer = [styles.filterInputContainer];
-const btnInputContainer = filterInputContainer.concat([
+const formItemContainer = [appStyles.formItemContainer];
+const btnInputContainer = formItemContainer.concat([
   commonStyles.flexRow,
   commonStyles.justifyFlexEnd
 ]);
@@ -34,7 +30,7 @@ const inputContainer = [appStyles.inputContainer];
 const s = {
   btnCancel,
   filterModal,
-  filterInputContainer,
+  formItemContainer,
   btnInputContainer,
   inputContainer
 };

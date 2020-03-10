@@ -19,7 +19,7 @@ function TaskItem(props) {
       </View>
 
       <Text>{task.task_content}</Text>
-      <Text style={s.itemCreatedTime}>Created: {task.created_time}</Text>
+      <Text style={s.itemTime}>Deadline: {task.deadline}</Text>
     </TouchableOpacity>
   );
 }
