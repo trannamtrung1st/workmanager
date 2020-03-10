@@ -20,7 +20,8 @@ const Database = {
       created_time: "2011-10-10T14:48:00",
       created_user: "tnt123",
       of_user: "tnt123",
-      confirm_image: "https://www.instamobile.io/wp-content/uploads/2018/10/Screen-Shot-2018-10-25-at-10.09.07-PM.png"
+      confirm_image:
+        "https://www.instamobile.io/wp-content/uploads/2018/10/Screen-Shot-2018-10-25-at-10.09.07-PM.png"
     },
     {
       id: 2,
@@ -42,7 +43,24 @@ const Database = {
       created_time: "2011-10-10T14:48:00",
       created_user: "admin",
       of_user: "admin",
-      confirm_image: "https://www.instamobile.io/wp-content/uploads/2018/10/Screen-Shot-2018-10-25-at-10.09.07-PM.png"
+      confirm_image:
+        "https://www.instamobile.io/wp-content/uploads/2018/10/Screen-Shot-2018-10-25-at-10.09.07-PM.png"
+    }
+  ],
+  users: [
+    {
+      username: "trannamtrung1st",
+      email: "trannamtrung1st@gmail.com",
+      phone_number: "0152925215",
+      full_name: "Trần Nam Trung",
+      employee_code: "EMP0012425"
+    },
+    {
+      username: "trannamtrung2nd",
+      email: "trannamtrung2nd@gmail.com",
+      phone_number: "0152925215",
+      full_name: "Trần Nam Trung",
+      employee_code: "EMP0012524"
     }
   ]
 };

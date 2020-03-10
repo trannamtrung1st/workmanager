@@ -9,16 +9,40 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12
   },
   scanner: {
-    marginTop: 100
+    marginTop: 80
+  },
+  scannerContainer: {
+    marginTop: 50
+  },
+  form: {
+    paddingHorizontal: 17,
+    paddingVertical: 10,
+    marginVertical: 10
   }
 });
-const btnOp = [commonStyles.alignSelfFlexEnd];
+
 const searchIcon = [appStyles.bottomIcon, styles.searchIcon];
 const scanner = [styles.scanner];
+const form = [appStyles.borderLightGray, styles.form];
+const formItemContainer = [appStyles.formItemContainer];
+const inputContainer = [appStyles.inputContainer];
+const inactiveInputContainer = [appStyles.inactiveInputContainer];
+const scannerContainer = [styles.scannerContainer];
+const btnInputContainer = formItemContainer.concat([
+  commonStyles.flexRow,
+  commonStyles.justifyFlexEnd
+]);
+const btnOp = [commonStyles.alignSelfFlexEnd];
 const s = {
+  form,
+  inputContainer,
+  formItemContainer,
+  btnInputContainer,
+  inactiveInputContainer,
+  btnOp,
   scanner,
-  searchIcon,
-  btnOp
+  scannerContainer,
+  searchIcon
 };
 
 export default s;
