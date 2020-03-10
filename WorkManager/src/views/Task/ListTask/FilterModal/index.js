@@ -4,25 +4,40 @@ import Modal from "react-native-modal";
 import { ListTaskContext } from "$app-contexts";
 import s from "./style";
 import { AppButton, AppDateTimePicker } from "$components";
+import { HookHelper } from "@trannamtrung1st/t-components";
 
 function FilterModal(props) {
   const listTaskContext = useContext(ListTaskContext);
+  const forceUpdate = HookHelper.useForceUpdate();
   const [filterOpen, setFilterOpen] = useState(false);
   listTaskContext.setFilterOpen = setFilterOpen;
-  const [statusFilter, setStatusFilter] = useState(null);
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
+
+  const [filter, setFilter] = useState({
+    renew: true,
+    status: null,
+    fromDate: null,
+    toDate: null
+  });
+
+  if (filter.renew) {
+    filter.renew = false;
+    filter.status = listTaskContext.filter.status;
+    filter.fromDate = listTaskContext.filter.fromDate;
+    filter.toDate = listTaskContext.filter.toDate;
+  }
+  if (!filterOpen) filter.renew = true;
 
   function _onStatusFilterChanged(itemValue) {
-    setStatusFilter(itemValue);
+    filter.status = itemValue;
+    forceUpdate();
   }
 
   function _onFromDateChanged(ev, itemValue) {
-    if (itemValue) setFromDate(itemValue);
+    if (itemValue) filter.fromDate = itemValue;
   }
 
   function _onToDateChanged(ev, itemValue) {
-    if (itemValue) setToDate(itemValue);
+    if (itemValue) filter.toDate = itemValue;
   }
 
   return (
@@ -41,7 +56,7 @@ function FilterModal(props) {
         <View style={s.inputContainer}>
           <Picker
             mode="dropdown"
-            selectedValue={statusFilter}
+            selectedValue={filter.status}
             style={s.inputContainer}
             onValueChange={_onStatusFilterChanged}
           >
@@ -55,13 +70,16 @@ function FilterModal(props) {
       <View style={s.formItemContainer}>
         <Text>From date</Text>
         <AppDateTimePicker
-          initDate={fromDate}
+          initDate={filter.fromDate}
           onDateChanged={_onFromDateChanged}
         />
       </View>
       <View style={s.formItemContainer}>
         <Text>To date</Text>
-        <AppDateTimePicker initDate={toDate} onDateChanged={_onToDateChanged} />
+        <AppDateTimePicker
+          initDate={filter.toDate}
+          onDateChanged={_onToDateChanged}
+        />
       </View>
       <View style={s.btnInputContainer}>
         <AppButton
@@ -73,12 +91,12 @@ function FilterModal(props) {
         <AppButton
           text="FILTER"
           onPress={() => {
-            setFilterOpen(false);
             listTaskContext.setFilter({
-              status: statusFilter,
-              fromDate: fromDate.value,
-              toDate: toDate.value
+              status: filter.status,
+              fromDate: filter.fromDate,
+              toDate: filter.toDate
             });
+            setFilterOpen(false);
           }}
         />
       </View>

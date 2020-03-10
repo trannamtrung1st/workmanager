@@ -14,14 +14,16 @@ function ListTask(props) {
   const { tasks } = Database;
   const [filter, setFilter] = useState({
     status: null,
-    fromDate: null,
-    toDate: null
+    //from 7 day ago to now
+    fromDate: new Date(new Date().getTime() - 518400000),
+    toDate: new Date()
   });
   const [listTaskContext] = useState({
     setFilterOpen: null,
-    onItemPress,
-    setFilter
+    setFilter,
+    filter: null
   });
+  listTaskContext.filter = filter;
 
   function _onFilterPress() {
     listTaskContext.setFilterOpen(true);
@@ -38,17 +40,17 @@ function ListTask(props) {
   return (
     <ListTaskContext.Provider value={listTaskContext}>
       <AppLayout {...props} screenHeader="List of tasks">
-        <View style={s.filterContainer}>
+        <View>
           <AppButton
             text="FILTER"
-            btnStyle={s.btnFilter}
+            btnStyle={s.btnOp}
             onPress={_onFilterPress}
           />
         </View>
 
         <View style={s.listContainer}>
           {tasks.map(t => (
-            <TaskItem key={t.id} task={t} />
+            <TaskItem key={t.id} task={t} onPress={onItemPress} />
           ))}
         </View>
 

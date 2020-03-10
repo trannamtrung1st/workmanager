@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase"
   }
 });
-const layout = [commonStyles.flex1, styles.layout];
+const layout = [commonStyles.flex1, appStyles.bgWhite, styles.layout];
 const header = [commonStyles.flexRow, appStyles.bgPrimaryGreen, styles.header];
 const btnMenuContainer = [
   commonStyles.h100,

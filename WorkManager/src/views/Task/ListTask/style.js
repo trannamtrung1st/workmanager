@@ -29,8 +29,7 @@ const styles = StyleSheet.create({
     color: COLOR.darkGreen
   }
 });
-const filterContainer = [];
-const btnFilter = [commonStyles.alignSelfFlexEnd];
+const btnOp = [commonStyles.alignSelfFlexEnd];
 const listContainer = [];
 const listItem = [commonStyles.w100, styles.listItem];
 const itemNameContainer = [commonStyles.flexRow];
@@ -51,8 +50,7 @@ const s = {
   itemNameContainer,
   itemName,
   itemCreatedTime,
-  filterContainer,
-  btnFilter
+  btnOp
 };
 
 export default s;
