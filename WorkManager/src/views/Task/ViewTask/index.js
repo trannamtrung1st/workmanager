@@ -5,13 +5,9 @@ import { ViewTaskContext } from "$app-contexts";
 import s from "./style";
 
 function ViewTask(props) {
-  const { navigation } = props;
+  const { navigation, route } = props;
   const [viewTaskContext] = useState({
-    data: {
-      name: null,
-      task_content: null,
-      deadline: new Date()
-    }
+    data: route.params.task
   });
   const data = viewTaskContext.data;
 
@@ -34,6 +30,7 @@ function ViewTask(props) {
               <TextInput
                 placeholder="Input"
                 onChangeText={t => (data.name = t)}
+                value={data.name}
               />
             </View>
           </View>
@@ -47,6 +44,7 @@ function ViewTask(props) {
                 placeholder="Content"
                 numberOfLines={5}
                 onChangeText={t => (data.task_content = t)}
+                value={data.task_content}
               />
             </View>
           </View>
@@ -54,7 +52,7 @@ function ViewTask(props) {
           <View style={s.formItemContainer}>
             <Text>Deadline</Text>
             <AppDateTimePicker
-              initDate={data.deadline}
+              initDate={new Date(data.deadline)}
               onDateChanged={(ev, v) => (data.deadline = v)}
             />
           </View>
