@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     padding: 18
   },
   scanner: {
-    marginTop: 80
+    marginTop: 56
   },
   camera: {},
   scannerContainer: {

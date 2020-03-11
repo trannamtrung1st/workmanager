@@ -39,6 +39,10 @@ function CreateTask(props) {
     forceUpdate();
   }
 
+  function onSuccess(user) {
+    _changeData("employee_code", user.employee_code);
+  }
+
   return (
     <CreateTaskContext.Provider value={createTaskContext}>
       <AppLayout {...props} screenHeader="Create new tasks">
@@ -122,7 +126,7 @@ function CreateTask(props) {
           </View>
         </View>
       </AppLayout>
-      <ScannerModal />
+      <ScannerModal onSuccess={onSuccess} />
     </CreateTaskContext.Provider>
   );
 }
