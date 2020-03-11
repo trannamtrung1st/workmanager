@@ -53,7 +53,6 @@ function ActionModal(props) {
   function _onCreatePress() {
     setModalVisible(false);
     const { item } = modalVisible;
-    console.log(item);
     listTaskContext.navigate(SCREENS.createTask, {
       source: item
     });

@@ -39,7 +39,6 @@ function User(props) {
     }
     setCurrentUser(user);
   }
-  console.log(currentUser);
 
   return (
     <UserContext.Provider value={userContext}>
