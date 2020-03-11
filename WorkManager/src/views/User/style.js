@@ -8,12 +8,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12
   },
-  scanner: {
-    marginTop: 80
-  },
-  scannerContainer: {
-    marginTop: 50
-  },
   form: {
     paddingHorizontal: 17,
     paddingVertical: 10,
@@ -22,12 +16,10 @@ const styles = StyleSheet.create({
 });
 
 const searchIcon = [appStyles.bottomIcon, styles.searchIcon];
-const scanner = [styles.scanner];
 const form = [appStyles.borderLightGray, styles.form];
 const formItemContainer = [appStyles.formItemContainer];
 const inputContainer = [appStyles.inputContainer];
 const inactiveInputContainer = [appStyles.inactiveInputContainer];
-const scannerContainer = [styles.scannerContainer];
 const btnInputContainer = formItemContainer.concat([
   commonStyles.flexRow,
   commonStyles.justifyFlexEnd
@@ -40,8 +32,6 @@ const s = {
   btnInputContainer,
   inactiveInputContainer,
   btnOp,
-  scanner,
-  scannerContainer,
   searchIcon
 };
 

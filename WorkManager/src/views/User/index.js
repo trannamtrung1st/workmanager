@@ -1,42 +1,25 @@
 import React, { useState, useRef } from "react";
 import { View, Text, Alert } from "react-native";
-import { AppLayout, AppButton, AppInput } from "$components";
+import { AppLayout, AppButton, AppInput, ScannerModal } from "$components";
 import { Database } from "$services";
 import { UserContext } from "$app-contexts";
 import s from "./style";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import QRCodeScanner from "react-native-qrcode-scanner";
-import { RNCamera as Camera } from "react-native-camera";
 
 function User(props) {
   const { navigation } = props;
   const { users } = Database;
   const [currentUser, setCurrentUser] = useState(null);
-  const [userContext] = useState({});
+  const [userContext] = useState({
+    setScannerOpen: null
+  });
   const scannerRef = useRef(null);
 
   function _onSearchPress() {
-    setCurrentUser(null);
+    userContext.setScannerOpen(true);
   }
 
-  function _onSuccess(e) {
-    const user = users.filter(u => u.employee_code == e.data)[0];
-    if (!user) {
-      Alert.alert(
-        "Message",
-        "Not found",
-        [
-          {
-            text: "Ok",
-            onPress: () => {
-              scannerRef.current.reactivate();
-            }
-          }
-        ],
-        { cancelable: false }
-      );
-      return;
-    }
+  function onSuccess(user) {
     setCurrentUser(user);
   }
 
@@ -99,17 +82,13 @@ function User(props) {
               </View>
             </>
           ) : (
-            <View style={s.scannerContainer}>
-              <Text>Search user information by scanning the QR code.</Text>
-              <QRCodeScanner
-                containerStyle={s.scanner}
-                ref={scannerRef}
-                onRead={_onSuccess}
-                // flashMode={Camera.Constants.FlashMode.torch}
-              />
+            <View style={s.form}>
+              <Text>Click "Search" icon to open QR Scanner</Text>
             </View>
           )}
         </View>
+
+        <ScannerModal context={userContext} onSuccess={onSuccess} />
       </AppLayout>
       <Icon name="search" style={s.searchIcon} onPress={_onSearchPress} />
     </UserContext.Provider>
