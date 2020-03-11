@@ -1,3 +1,4 @@
 import ListUser from "./ListUser";
 import ViewUser from "./ViewUser";
-export { ViewUser, ListUser };
+import CreateUser from "./CreateUser";
+export { CreateUser, ViewUser, ListUser };

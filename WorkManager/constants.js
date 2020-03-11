@@ -9,6 +9,7 @@ const SCREENS = {
   user: "User",
   listUser: "List User",
   viewUser: "View User",
+  createUser: "Create User",
   logout: "Logout"
 };
 

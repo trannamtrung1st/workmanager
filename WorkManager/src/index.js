@@ -10,7 +10,7 @@ export default function App() {
     userToken: null,
     // userToken: "token",
     username: "tnt123",
-    roles: ["User", "Manager", "Admin"]
+    roles: ["Admin"]
   });
   authContext.setAuthContext = setAuthContext;
 

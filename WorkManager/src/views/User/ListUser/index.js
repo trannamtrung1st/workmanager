@@ -20,6 +20,10 @@ function ListUser(props) {
     listUserContext.setScannerOpen(true);
   }
 
+  function _onCreatePress() {
+    navigation.navigate(SCREENS.createUser);
+  }
+
   function onSuccess(user) {
     navigation.navigate(SCREENS.viewUser, {
       user
@@ -58,6 +62,7 @@ function ListUser(props) {
         <ScannerModal context={listUserContext} onSuccess={onSuccess} />
       </AppLayout>
       <Icon name="search" style={s.searchIcon} onPress={_onSearchPress} />
+      <Icon name="plus" style={s.plusIcon} onPress={_onCreatePress} />
     </ListUserContext.Provider>
   );
 }

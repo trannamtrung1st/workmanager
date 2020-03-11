@@ -47,7 +47,7 @@ function CreateTask(props) {
 
   return (
     <CreateTaskContext.Provider value={createTaskContext}>
-      <AppLayout {...props} screenHeader="Create new tasks">
+      <AppLayout {...props} screenHeader="Create new task">
         <View>
           <AppButton
             type="danger"

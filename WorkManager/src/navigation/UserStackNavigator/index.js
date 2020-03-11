@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SCREENS, COLOR } from "$constants";
-import { ViewUser, ListUser } from "$views";
+import { ViewUser, ListUser, CreateUser } from "$views";
 import { fadeIn } from "react-navigation-transitions";
 
 //Transition
@@ -43,6 +43,7 @@ function UserStackNavigator() {
     >
       <Stack.Screen name={SCREENS.listUser} component={ListUser} />
       <Stack.Screen name={SCREENS.viewUser} component={ViewUser} />
+      <Stack.Screen name={SCREENS.createUser} component={CreateUser} />
     </Stack.Navigator>
   );
 }
