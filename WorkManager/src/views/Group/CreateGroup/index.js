@@ -8,15 +8,12 @@ import { Database } from "$services";
 
 function CreateGroup(props) {
   const { navigation } = props;
-  const { users } = Database;
+  const { groups } = Database;
   const forceUpdate = HookHelper.useForceUpdate();
   const [createUserContext] = useState({
     data: {
-      username: null,
-      email: null,
-      phone: null,
-      full_name: null,
-      employee_code: null
+      name: null,
+      description: null
     }
   });
   const data = createUserContext.data;
@@ -28,7 +25,7 @@ function CreateGroup(props) {
 
   return (
     <CreateGroupContext.Provider value={createUserContext}>
-      <AppLayout {...props} screenHeader="Create new user">
+      <AppLayout {...props} screenHeader="Create new group">
         <View>
           <AppButton
             type="danger"
@@ -40,62 +37,26 @@ function CreateGroup(props) {
 
         <View style={s.form}>
           <View style={s.formItemContainer}>
-            <Text>Username</Text>
+            <Text>Name</Text>
             <View style={s.inputContainer}>
               <AppInput
-                textContentType="username"
-                placeholder="Username"
-                onChangeText={t => _changeData("username", t)}
-                value={data.username}
+                placeholder="Name"
+                onChangeText={t => _changeData("name", t)}
+                value={data.name}
               />
             </View>
           </View>
 
           <View style={s.formItemContainer}>
-            <Text>Email</Text>
+            <Text>Description</Text>
             <View style={s.inputContainer}>
               <AppInput
-                keyboardType="email-address"
-                textContentType="emailAddress"
-                placeholder="Email"
-                onChangeText={t => _changeData("email", t)}
-                value={data.email}
-              />
-            </View>
-          </View>
-
-          <View style={s.formItemContainer}>
-            <Text>Phone</Text>
-            <View style={s.inputContainer}>
-              <AppInput
-                keyboardType="phone-pad"
-                textContentType="telephoneNumber"
-                placeholder="Phone"
-                onChangeText={t => _changeData("phone", t)}
-                value={data.phone}
-              />
-            </View>
-          </View>
-
-          <View style={s.formItemContainer}>
-            <Text>Full name</Text>
-            <View style={s.inputContainer}>
-              <AppInput
-                textContentType="name"
-                placeholder="Full name"
-                onChangeText={t => _changeData("full_name", t)}
-                value={data.full_name}
-              />
-            </View>
-          </View>
-
-          <View style={s.formItemContainer}>
-            <Text>Code</Text>
-            <View style={s.inputContainer}>
-              <AppInput
-                placeholder="Code"
-                onChangeText={t => _changeData("employee_code", t)}
-                value={data.employee_code}
+                textAlignVertical={"top"}
+                multiline={true}
+                placeholder="Description"
+                numberOfLines={5}
+                onChangeText={t => _changeData("description", t)}
+                value={data.description}
               />
             </View>
           </View>

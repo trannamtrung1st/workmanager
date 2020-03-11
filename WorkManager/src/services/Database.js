@@ -65,6 +65,87 @@ const Database = {
       full_name: "Trần Nam Trung",
       employee_code: "EMP0012524",
       roles: ["Manager"]
+    },
+    {
+      id: "J",
+      username: "trannamtrung2nd",
+      email: "trannamtrung2nd@gmail.com",
+      phone_number: "0152925215",
+      full_name: "Trần Nam Trung",
+      employee_code: "EMP0012524",
+      roles: ["Manager"]
+    },
+    {
+      id: "H",
+      username: "trannamtrung2nd",
+      email: "trannamtrung2nd@gmail.com",
+      phone_number: "0152925215",
+      full_name: "Trần Nam Trung",
+      employee_code: "EMP0012524",
+      roles: ["Manager"]
+    },
+    {
+      id: "G",
+      username: "trannamtrung2nd",
+      email: "trannamtrung2nd@gmail.com",
+      phone_number: "0152925215",
+      full_name: "Trần Nam Trung",
+      employee_code: "EMP0012524",
+      roles: ["Manager"]
+    },
+    {
+      id: "F",
+      username: "trannamtrung2nd",
+      email: "trannamtrung2nd@gmail.com",
+      phone_number: "0152925215",
+      full_name: "Trần Nam Trung",
+      employee_code: "EMP0012524",
+      roles: ["Manager"]
+    },
+    {
+      id: "E",
+      username: "trannamtrung2nd",
+      email: "trannamtrung2nd@gmail.com",
+      phone_number: "0152925215",
+      full_name: "Trần Nam Trung",
+      employee_code: "EMP0012524",
+      roles: ["Manager"]
+    },
+    {
+      id: "D",
+      username: "trannamtrung2nd",
+      email: "trannamtrung2nd@gmail.com",
+      phone_number: "0152925215",
+      full_name: "Trần Nam Trung",
+      employee_code: "EMP0012524",
+      roles: ["Manager"]
+    },
+    {
+      id: "C",
+      username: "trannamtrung2nd",
+      email: "trannamtrung2nd@gmail.com",
+      phone_number: "0152925215",
+      full_name: "Trần Nam Trung",
+      employee_code: "EMP0012524",
+      roles: ["Manager"]
+    },
+    {
+      id: "B",
+      username: "trannamtrung2nd",
+      email: "trannamtrung2nd@gmail.com",
+      phone_number: "0152925215",
+      full_name: "Trần Nam Trung",
+      employee_code: "EMP0012524",
+      roles: ["Manager"]
+    },
+    {
+      id: "A",
+      username: "trannamtrung2nd",
+      email: "trannamtrung2nd@gmail.com",
+      phone_number: "0152925215",
+      full_name: "Trần Nam Trung",
+      employee_code: "EMP0012524",
+      roles: ["Manager"]
     }
   ],
   groups: [
