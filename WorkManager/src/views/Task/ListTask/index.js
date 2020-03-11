@@ -8,10 +8,13 @@ import TaskItem from "./TaskItem";
 import s from "./style";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { SCREENS } from "$constants";
+import ActionModal from "./ActionModal";
+import { HookHelper } from "@trannamtrung1st/t-components";
 
 function ListTask(props) {
   const { navigation } = props;
   const { tasks } = Database;
+  const forceUpdate = HookHelper.useForceUpdate();
   const [filter, setFilter] = useState({
     status: null,
     //from 7 day ago to now
@@ -21,7 +24,9 @@ function ListTask(props) {
   const [listTaskContext] = useState({
     setFilterOpen: null,
     setFilter,
-    filter: null
+    filter: null,
+    reload: forceUpdate,
+    navigate: navigation.navigate
   });
   listTaskContext.filter = filter;
 
@@ -32,6 +37,13 @@ function ListTask(props) {
   function onItemPress(item) {
     navigation.navigate(SCREENS.viewTask, {
       task: item
+    });
+  }
+
+  function onItemLongPress(item) {
+    listTaskContext.setModalVisible({
+      item: item,
+      show: true
     });
   }
 
@@ -52,10 +64,16 @@ function ListTask(props) {
 
         <View style={s.listContainer}>
           {tasks.map(t => (
-            <TaskItem key={t.id} task={t} onPress={onItemPress} />
+            <TaskItem
+              key={t.id}
+              task={t}
+              onPress={onItemPress}
+              onLongPress={onItemLongPress}
+            />
           ))}
         </View>
 
+        <ActionModal />
         <FilterModal />
       </AppLayout>
       <Icon name="plus" style={s.plusIcon} onPress={_onPlusPress} />

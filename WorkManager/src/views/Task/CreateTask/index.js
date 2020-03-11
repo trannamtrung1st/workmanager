@@ -3,17 +3,30 @@ import { View, Text, TextInput } from "react-native";
 import { AppLayout, AppDateTimePicker, AppButton, AppInput } from "$components";
 import { CreateTaskContext } from "$app-contexts";
 import s from "./style";
+import { HookHelper } from "@trannamtrung1st/t-components";
 
 function CreateTask(props) {
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const source = route?.params?.source;
+  const forceUpdate = HookHelper.useForceUpdate();
+  const currentDate = new Date();
+  let deadline = source ? new Date(source.deadline) : currentDate;
+  if (deadline < currentDate) deadline = currentDate;
+
   const [createTaskContext] = useState({
     data: {
-      name: null,
-      task_content: null,
-      deadline: new Date()
+      name: source?.name,
+      task_content: source?.task_content,
+      deadline: deadline,
+      source
     }
   });
   const data = createTaskContext.data;
+
+  function changeData(name, val) {
+    data[name] = val;
+    forceUpdate();
+  }
 
   return (
     <CreateTaskContext.Provider value={createTaskContext}>
@@ -28,12 +41,22 @@ function CreateTask(props) {
         </View>
 
         <View style={s.form}>
+          {source ? (
+            <View style={s.formItemContainer}>
+              <Text>
+                Source:
+                <Text style={s.link}> {source.name}</Text>
+              </Text>
+            </View>
+          ) : null}
+
           <View style={s.formItemContainer}>
             <Text>Task name</Text>
             <View style={s.inputContainer}>
               <AppInput
                 placeholder="Input"
-                onChangeText={t => (data.name = t)}
+                onChangeText={t => changeData("name", t)}
+                value={data.name}
               />
             </View>
           </View>
@@ -46,7 +69,8 @@ function CreateTask(props) {
                 multiline={true}
                 placeholder="Content"
                 numberOfLines={5}
-                onChangeText={t => (data.task_content = t)}
+                onChangeText={t => changeData("task_content", t)}
+                value={data.task_content}
               />
             </View>
           </View>
