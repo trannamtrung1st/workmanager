@@ -28,7 +28,7 @@ function ViewTask(props) {
   });
   const data = viewTaskContext.data;
 
-  function changeData(name, val) {
+  function _changeData(name, val) {
     data[name] = val;
     forceUpdate();
   }
@@ -70,7 +70,7 @@ function ViewTask(props) {
             <View style={s.inputContainer}>
               <AppInput
                 placeholder="Input"
-                onChangeText={t => changeData("name", t)}
+                onChangeText={t => _changeData("name", t)}
                 value={data.name}
               />
             </View>
@@ -134,7 +134,7 @@ function ViewTask(props) {
                 multiline={true}
                 placeholder="Content"
                 numberOfLines={5}
-                onChangeText={t => changeData("task_content", t)}
+                onChangeText={t => _changeData("task_content", t)}
                 value={data.task_content}
               />
             </View>
@@ -148,7 +148,7 @@ function ViewTask(props) {
                 multiline={true}
                 placeholder="Report content"
                 numberOfLines={5}
-                onChangeText={t => changeData("task_report", t)}
+                onChangeText={t => _changeData("task_report", t)}
                 value={data.task_report}
               />
             </View>
@@ -201,7 +201,7 @@ function ViewTask(props) {
                     editable={false}
                     placeholder="Review content"
                     numberOfLines={5}
-                    onChangeText={t => changeData("manager_review", t)}
+                    onChangeText={t => _changeData("manager_review", t)}
                     value={data.manager_review}
                   />
                 </View>

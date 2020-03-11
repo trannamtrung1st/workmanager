@@ -19,10 +19,12 @@ function ListTask(props) {
     status: null,
     //from 7 day ago to now
     fromDate: new Date(new Date().getTime() - 518400000),
-    toDate: new Date()
+    toDate: new Date(),
+    employee_code: null
   });
   const [listTaskContext] = useState({
     setFilterOpen: null,
+    setScannerOpen: null,
     setFilter,
     filter: null,
     reload: forceUpdate,

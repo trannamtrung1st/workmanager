@@ -23,7 +23,7 @@ function CreateTask(props) {
   });
   const data = createTaskContext.data;
 
-  function changeData(name, val) {
+  function _changeData(name, val) {
     data[name] = val;
     forceUpdate();
   }
@@ -55,7 +55,7 @@ function CreateTask(props) {
             <View style={s.inputContainer}>
               <AppInput
                 placeholder="Input"
-                onChangeText={t => changeData("name", t)}
+                onChangeText={t => _changeData("name", t)}
                 value={data.name}
               />
             </View>
@@ -69,7 +69,7 @@ function CreateTask(props) {
                 multiline={true}
                 placeholder="Content"
                 numberOfLines={5}
-                onChangeText={t => changeData("task_content", t)}
+                onChangeText={t => _changeData("task_content", t)}
                 value={data.task_content}
               />
             </View>
