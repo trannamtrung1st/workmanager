@@ -66,6 +66,22 @@ const Database = {
       employee_code: "EMP0012524",
       roles: ["Manager"]
     }
+  ],
+  groups: [
+    {
+      id: 1,
+      name: "Group thứ nhất",
+      description: "Đây là mô tả của group 1",
+      created_time: "2011-10-10T14:48:00",
+      created_user: "trannamtrung1st"
+    },
+    {
+      id: 2,
+      name: "Group thứ hai",
+      description: "Đây là mô tả của group 2",
+      created_time: "2011-10-10T14:48:00",
+      created_user: "trannamtrung2nd"
+    }
   ]
 };
 export default Database;

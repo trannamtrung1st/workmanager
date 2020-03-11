@@ -7,9 +7,13 @@ const SCREENS = {
   createTask: "Create Task",
   viewTask: "View Task",
   user: "User",
+  group: "Group",
   listUser: "List User",
   viewUser: "View User",
   createUser: "Create User",
+  createGroup: "Create Group",
+  viewGroup: "View Group",
+  listGroup: "List Group",
   logout: "Logout"
 };
 

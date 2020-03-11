@@ -8,12 +8,15 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { SCREENS } from "$constants";
 import UserItem from "./UserItem";
 import ActionModal from "./ActionModal";
+import { HookHelper } from "@trannamtrung1st/t-components";
 
 function ListUser(props) {
   const { navigation } = props;
   const { users } = Database;
+  const forceUpdate = HookHelper.useForceUpdate();
   const [listUserContext] = useState({
-    setScannerOpen: null
+    setScannerOpen: null,
+    reload: forceUpdate
   });
 
   function _onSearchPress() {
