@@ -1,3 +1,4 @@
 import AppDrawerNavigator from "./AppDrawerNavigator";
 import TaskStackNavigator from "./TaskStackNavigator";
-export { TaskStackNavigator, AppDrawerNavigator };
+import UserStackNavigator from "./UserStackNavigator";
+export { UserStackNavigator, TaskStackNavigator, AppDrawerNavigator };
