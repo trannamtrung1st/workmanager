@@ -49,18 +49,22 @@ const Database = {
   ],
   users: [
     {
+      id: "1",
       username: "trannamtrung1st",
       email: "trannamtrung1st@gmail.com",
       phone_number: "0152925215",
       full_name: "Trần Nam Trung",
-      employee_code: "EMP0012425"
+      employee_code: "EMP0012425",
+      roles: ["User", "Manager"]
     },
     {
+      id: "2",
       username: "trannamtrung2nd",
       email: "trannamtrung2nd@gmail.com",
       phone_number: "0152925215",
       full_name: "Trần Nam Trung",
-      employee_code: "EMP0012524"
+      employee_code: "EMP0012524",
+      roles: ["User", "Manager"]
     }
   ]
 };

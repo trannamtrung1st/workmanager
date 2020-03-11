@@ -10,9 +10,11 @@ const styles = StyleSheet.create({
   }
 });
 
+const listContainer = [];
 const searchIcon = [appStyles.bottomIcon, styles.searchIcon];
 const btnOp = [commonStyles.alignSelfFlexEnd];
 const s = {
+  listContainer,
   btnOp,
   searchIcon
 };
