@@ -55,7 +55,7 @@ const Database = {
       phone_number: "0152925215",
       full_name: "Trần Nam Trung",
       employee_code: "EMP0012425",
-      roles: ["User", "Manager"]
+      roles: ["User"]
     },
     {
       id: "2",
@@ -64,7 +64,7 @@ const Database = {
       phone_number: "0152925215",
       full_name: "Trần Nam Trung",
       employee_code: "EMP0012524",
-      roles: ["User", "Manager"]
+      roles: ["Manager"]
     }
   ]
 };
