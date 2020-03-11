@@ -16,23 +16,20 @@ function CreateTask(props) {
   const currentDate = new Date();
   let deadline = source ? new Date(source.deadline) : currentDate;
   if (deadline < currentDate) deadline = currentDate;
-
+  let sourceUser = source
+    ? (sourceUser = users.filter(u => u.username == source.of_user)[0])
+    : null;
   const [createTaskContext] = useState({
     data: {
       name: source?.name,
       task_content: source?.task_content,
       deadline: deadline,
       source,
-      employee_code: null
+      employee_code: sourceUser?.employee_code
     },
     setScannerOpen: null
   });
   const data = createTaskContext.data;
-  let sourceUser;
-  if (source) {
-    sourceUser = users.filter(u => u.username == source.of_user)[0];
-    data.employee_code = sourceUser.employee_code;
-  }
 
   function _changeData(name, val) {
     data[name] = val;
