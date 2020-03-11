@@ -12,6 +12,13 @@ const styles = StyleSheet.create({
   },
   link: {
     color: COLOR.primaryBlue
+  },
+  empCodeInp: {
+    flex: 0.8
+  },
+  icon: {
+    fontSize: 35,
+    flex: 0.2
   }
 });
 
@@ -24,7 +31,17 @@ const btnInputContainer = formItemContainer.concat([
 ]);
 const btnOp = [commonStyles.alignSelfFlexEnd];
 const link = [styles.link];
+const flexRow = [commonStyles.flexRow];
+const empCodeInp = inputContainer.concat(styles.empCodeInp);
+const icon = [
+  commonStyles.textCenter,
+  commonStyles.textVerticalCenter,
+  styles.icon
+];
 const s = {
+  icon,
+  empCodeInp,
+  flexRow,
   link,
   form,
   inputContainer,

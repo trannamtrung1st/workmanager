@@ -21,6 +21,9 @@ const styles = StyleSheet.create({
   actionIcon: {
     paddingVertical: 10,
     paddingHorizontal: 10
+  },
+  btnOp: {
+    marginLeft: 5
   }
 });
 const form = [appStyles.borderLightGray, styles.form];
@@ -32,7 +35,7 @@ const btnInputContainer = formItemContainer.concat([
   commonStyles.flexRow,
   commonStyles.justifyFlexEnd
 ]);
-const btnOp = [commonStyles.alignSelfFlexEnd];
+const btnOp = [commonStyles.alignSelfFlexEnd, styles.btnOp];
 const link = [styles.link];
 const italic = [styles.italic];
 const formHeader = [commonStyles.fontWeightBold, styles.formHeader];

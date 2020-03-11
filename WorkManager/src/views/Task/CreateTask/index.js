@@ -4,9 +4,13 @@ import { AppLayout, AppDateTimePicker, AppButton, AppInput } from "$components";
 import { CreateTaskContext } from "$app-contexts";
 import s from "./style";
 import { HookHelper } from "@trannamtrung1st/t-components";
+import { Database } from "$services";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import ScannerModal from "./ScannerModal";
 
 function CreateTask(props) {
   const { navigation, route } = props;
+  const { users } = Database;
   const source = route?.params?.source;
   const forceUpdate = HookHelper.useForceUpdate();
   const currentDate = new Date();
@@ -18,10 +22,17 @@ function CreateTask(props) {
       name: source?.name,
       task_content: source?.task_content,
       deadline: deadline,
-      source
-    }
+      source,
+      employee_code: null
+    },
+    setScannerOpen: null
   });
   const data = createTaskContext.data;
+  let sourceUser;
+  if (source) {
+    sourceUser = users.filter(u => u.username == source.of_user)[0];
+    data.employee_code = sourceUser.employee_code;
+  }
 
   function _changeData(name, val) {
     data[name] = val;
@@ -83,6 +94,24 @@ function CreateTask(props) {
             />
           </View>
 
+          <View style={s.formItemContainer}>
+            <Text>Assign to</Text>
+            <View style={s.flexRow}>
+              <View style={s.empCodeInp}>
+                <AppInput
+                  placeholder="Employee code"
+                  onChangeText={v => _changeData("employee_code", v)}
+                  value={data.employee_code}
+                />
+              </View>
+              <Icon
+                name="camera"
+                style={s.icon}
+                onPress={() => createTaskContext.setScannerOpen(true)}
+              />
+            </View>
+          </View>
+
           <View style={s.btnInputContainer}>
             <AppButton
               text="SUBMIT"
@@ -93,6 +122,7 @@ function CreateTask(props) {
           </View>
         </View>
       </AppLayout>
+      <ScannerModal />
     </CreateTaskContext.Provider>
   );
 }

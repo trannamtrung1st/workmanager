@@ -18,8 +18,8 @@ const Database = {
       deadline: "2011-10-10T14:48:00",
       status: "NEW",
       created_time: "2011-10-10T14:48:00",
-      created_user: "tnt123",
-      of_user: "tnt123",
+      created_user: "trannamtrung1st",
+      of_user: "trannamtrung1st",
       confirm_image:
         "https://www.instamobile.io/wp-content/uploads/2018/10/Screen-Shot-2018-10-25-at-10.09.07-PM.png"
     },
@@ -41,8 +41,8 @@ const Database = {
       deadline: "2011-10-10T14:48:00",
       status: "DOING",
       created_time: "2011-10-10T14:48:00",
-      created_user: "admin",
-      of_user: "admin",
+      created_user: "trannamtrung2nd",
+      of_user: "trannamtrung2nd",
       confirm_image:
         "https://www.instamobile.io/wp-content/uploads/2018/10/Screen-Shot-2018-10-25-at-10.09.07-PM.png"
     }

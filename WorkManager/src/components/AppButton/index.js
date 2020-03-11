@@ -10,6 +10,10 @@ function AppButton(props) {
       finalBtnStyle = s.btnDanger;
       finalTextStyle = s.textDanger;
       break;
+    case "outline-primary":
+      finalBtnStyle = s.btnOutlinePrimary;
+      finalTextStyle = s.textOutlinePrimary;
+      break;
     case "primary":
     default:
       finalBtnStyle = s.btnPrimary;

@@ -1,25 +1,14 @@
 import React, { useState, useContext } from "react";
 import { View, Alert } from "react-native";
-import ImagePicker from "react-native-image-picker";
 import { AppButton } from "$components";
 import s from "./style";
 import Modal from "react-native-modal";
 import { ViewTaskContext } from "$app-contexts";
 
-const options = {
-  title: "Choose an image",
-  takePhotoButtonTitle: "Take a photo",
-  chooseFromLibraryButtonTitle: "Choose from gallery"
-};
 function ActionModal(props) {
   const viewTaskContext = useContext(ViewTaskContext);
   const [modalVisible, setModalVisible] = useState(false);
   viewTaskContext.setModalVisible = setModalVisible;
-  const { onImagePickerResult } = props;
-  function _onUploadImagePress() {
-    setModalVisible(false);
-    ImagePicker.showImagePicker(options, onImagePickerResult);
-  }
 
   function _onStartPress() {
     setModalVisible(false);
@@ -75,9 +64,6 @@ function ActionModal(props) {
     >
       <View style={s.formItemContainer}>
         <AppButton text="START TASK" onPress={_onStartPress} />
-      </View>
-      <View style={s.formItemContainer}>
-        <AppButton text="UPLOAD IMAGE" onPress={_onUploadImagePress} />
       </View>
       <View style={s.formItemContainer}>
         <AppButton type="danger" text="DELETE" onPress={_onDeletePress} />

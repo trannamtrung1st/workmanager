@@ -13,6 +13,13 @@ import s from "./style";
 import { HookHelper } from "@trannamtrung1st/t-components";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ActionModal from "./ActionModal";
+import ImagePicker from "react-native-image-picker";
+
+const options = {
+  title: "Choose an image",
+  takePhotoButtonTitle: "Take a photo",
+  chooseFromLibraryButtonTitle: "Choose from gallery"
+};
 
 function ViewTask(props) {
   const authContext = useContext(AuthContext);
@@ -49,6 +56,10 @@ function ViewTask(props) {
       data.confirm_image = source;
       forceUpdate();
     }
+  }
+
+  function _onUploadImagePress() {
+    ImagePicker.showImagePicker(options, onImagePickerResult);
   }
 
   return (
@@ -141,6 +152,24 @@ function ViewTask(props) {
           </View>
 
           <View style={s.formItemContainer}>
+            <Text>Deadline</Text>
+            <AppDateTimePicker
+              initDate={new Date(data.deadline)}
+              onDateChanged={(ev, v) => (data.deadline = v)}
+            />
+          </View>
+          <View style={s.btnInputContainer}>
+            <AppButton
+              text="UPDATE"
+              onPress={() => {
+                navigation.goBack();
+              }}
+            />
+          </View>
+
+          <Hr />
+          <Text style={s.formHeader}>REPORT SECTION</Text>
+          <View style={s.formItemContainer}>
             <Text>Report</Text>
             <View style={s.inputContainer}>
               <AppInput
@@ -155,15 +184,14 @@ function ViewTask(props) {
           </View>
 
           <View style={s.formItemContainer}>
-            <Text>Deadline</Text>
-            <AppDateTimePicker
-              initDate={new Date(data.deadline)}
-              onDateChanged={(ev, v) => (data.deadline = v)}
-            />
-          </View>
-
-          <View style={s.formItemContainer}>
             <Text>Confirm image</Text>
+            <View style={s.formItemContainer}>
+              <AppButton
+                type="outline-primary"
+                text="UPLOAD IMAGE"
+                onPress={_onUploadImagePress}
+              />
+            </View>
             {data.confirm_image ? (
               <Image
                 source={
@@ -179,61 +207,94 @@ function ViewTask(props) {
               <Text style={s.italic}>Nothing</Text>
             )}
           </View>
+          <View style={s.formItemContainer}>
+            <View style={s.btnInputContainer}>
+              <AppButton
+                btnStyle={s.btnOp}
+                type="danger"
+                text="CANCEL"
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
+              <AppButton
+                btnStyle={s.btnOp}
+                text="FINISH"
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
+            </View>
+          </View>
 
           <Hr />
-
           <Text style={s.formHeader}>REVIEW SECTION</Text>
-          {data.review_time ? (
-            <>
-              <View style={s.formItemContainer}>
-                <Text>
-                  Review time:
-                  <Text> {data.review_time}</Text>
-                </Text>
-              </View>
+          <View style={s.formItemContainer}>
+            <Text>
+              Review time:
+              <Text> {data.review_time}</Text>
+            </Text>
+          </View>
 
-              <View style={s.formItemContainer}>
-                <Text>Manager's review</Text>
-                <View style={s.inactiveInputContainer}>
-                  <AppInput
-                    textAlignVertical={"top"}
-                    multiline={true}
-                    editable={false}
-                    placeholder="Review content"
-                    numberOfLines={5}
-                    onChangeText={t => _changeData("manager_review", t)}
-                    value={data.manager_review}
-                  />
-                </View>
-              </View>
+          <View style={s.formItemContainer}>
+            <Text>Manager's review</Text>
+            <View style={s.inactiveInputContainer}>
+              <AppInput
+                textAlignVertical={"top"}
+                multiline={true}
+                editable={false}
+                placeholder="Review content"
+                numberOfLines={5}
+                onChangeText={t => _changeData("manager_review", t)}
+                value={data.manager_review}
+              />
+            </View>
+          </View>
 
-              <View style={s.formItemContainer}>
-                <Text>Rate</Text>
-                <View style={s.inactiveInputContainer}>
-                  <AppInput
-                    editable={false}
-                    keyboardType="number-pad"
-                    placeholder="Task's result"
-                    onChangeText={t => (data.mark = parseInt(t))}
-                    value={data.mark?.toString()}
-                  />
-                </View>
-              </View>
-            </>
-          ) : null}
-          <View style={s.btnInputContainer}>
-            <AppButton
-              text="UPDATE"
-              onPress={() => {
-                navigation.goBack();
-              }}
-            />
+          <View style={s.formItemContainer}>
+            <Text>Rate</Text>
+            <View style={s.inactiveInputContainer}>
+              <AppInput
+                editable={false}
+                keyboardType="number-pad"
+                placeholder="Task's result"
+                onChangeText={t => (data.mark = parseInt(t))}
+                value={data.mark?.toString()}
+              />
+            </View>
+          </View>
+
+          <View style={s.formItemContainer}>
+            <View style={s.btnInputContainer}>
+              <AppButton
+                btnStyle={s.btnOp}
+                type="danger"
+                text="DECLINE"
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
+              <AppButton
+                btnStyle={s.btnOp}
+                text="ACCEPT"
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
+              <AppButton
+                btnStyle={s.btnOp}
+                text="FINISH"
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
+            </View>
           </View>
         </View>
       </AppLayout>
       <Icon name="th-large" style={s.actionIcon} onPress={_onActionPress} />
 
-      <ActionModal onImagePickerResult={onImagePickerResult} />
+      <ActionModal />
     </ViewTaskContext.Provider>
   );
 }
