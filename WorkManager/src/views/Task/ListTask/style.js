@@ -20,10 +20,13 @@ const styles = StyleSheet.create({
   plusIcon: {
     paddingVertical: 12,
     paddingHorizontal: 15
+  },
+  listContainer: {
+    marginBottom: 100
   }
 });
 const btnOp = [commonStyles.alignSelfFlexEnd];
-const listContainer = [];
+const listContainer = [styles.listContainer];
 const listItem = [commonStyles.w100, styles.listItem];
 const itemNameContainer = [commonStyles.flexRow];
 const itemName = [commonStyles.fontWeightBold];

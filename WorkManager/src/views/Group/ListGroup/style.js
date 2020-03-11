@@ -7,10 +7,13 @@ const styles = StyleSheet.create({
   plusIcon: {
     paddingVertical: 12,
     paddingHorizontal: 15
+  },
+  listContainer: {
+    marginBottom: 100
   }
 });
 
-const listContainer = [];
+const listContainer = [styles.listContainer];
 const plusIcon = [appStyles.bottomIcon, styles.plusIcon];
 const btnOp = [commonStyles.alignSelfFlexEnd];
 const s = {

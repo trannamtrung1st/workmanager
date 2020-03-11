@@ -13,10 +13,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     right: 8,
     bottom: 75
+  },
+  listContainer: {
+    marginBottom: 100
   }
 });
 
-const listContainer = [];
+const listContainer = [styles.listContainer];
 const searchIcon = [appStyles.bottomIcon, styles.searchIcon];
 const plusIcon = [appStyles.bottomIcon, styles.plusIcon];
 const btnOp = [commonStyles.alignSelfFlexEnd];
