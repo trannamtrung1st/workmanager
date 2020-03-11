@@ -4,15 +4,13 @@ import { AppButton } from "$components";
 import { Database } from "$services";
 import s from "./style";
 import QRCodeScanner from "react-native-qrcode-scanner";
-import { CreateTaskContext } from "$app-contexts";
 
 function ScannerModal(props) {
-  const createTaskContext = useContext(CreateTaskContext);
-  const { onSuccess } = props;
+  const { context, onSuccess } = props;
   const { users } = Database;
   const scannerRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
-  createTaskContext.setScannerOpen = setModalVisible;
+  context.setScannerOpen = setModalVisible;
 
   function _onSuccess(e) {
     const user = users.filter(u => u.employee_code == e.data)[0];

@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { View, Text, TextInput } from "react-native";
-import { AppLayout, AppDateTimePicker, AppButton, AppInput } from "$components";
+import {
+  AppLayout,
+  AppDateTimePicker,
+  AppButton,
+  AppInput,
+  ScannerModal
+} from "$components";
 import { CreateTaskContext } from "$app-contexts";
 import s from "./style";
 import { HookHelper } from "@trannamtrung1st/t-components";
 import { Database } from "$services";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import ScannerModal from "./ScannerModal";
 
 function CreateTask(props) {
   const { navigation, route } = props;
@@ -123,7 +128,7 @@ function CreateTask(props) {
           </View>
         </View>
       </AppLayout>
-      <ScannerModal onSuccess={onSuccess} />
+      <ScannerModal context={createTaskContext} onSuccess={onSuccess} />
     </CreateTaskContext.Provider>
   );
 }

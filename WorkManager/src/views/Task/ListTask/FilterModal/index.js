@@ -3,10 +3,14 @@ import { View, Text, Picker, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import { ListTaskContext } from "$app-contexts";
 import s from "./style";
-import { AppButton, AppDateTimePicker, AppInput } from "$components";
+import {
+  AppButton,
+  AppDateTimePicker,
+  AppInput,
+  ScannerModal
+} from "$components";
 import { HookHelper } from "@trannamtrung1st/t-components";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import ScannerModal from "../ScannerModal";
 
 function FilterModal(props) {
   const listTaskContext = useContext(ListTaskContext);
@@ -129,7 +133,7 @@ function FilterModal(props) {
           </View>
         </View>
       </Modal>
-      <ScannerModal onSuccess={onSuccess} />
+      <ScannerModal context={listTaskContext} onSuccess={onSuccess} />
     </>
   );
 }

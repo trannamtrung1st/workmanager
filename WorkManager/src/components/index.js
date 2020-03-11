@@ -4,7 +4,9 @@ import AppDateTimePicker from "./AppDateTimePicker";
 import Hr from "./Hr";
 import AppInput from "./AppInput";
 import ItemStatusBadge from "./ItemStatusBadge";
+import ScannerModal from "./ScannerModal";
 export {
+  ScannerModal,
   ItemStatusBadge,
   AppInput,
   Hr,
