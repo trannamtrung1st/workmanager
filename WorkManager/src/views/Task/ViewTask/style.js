@@ -19,8 +19,7 @@ const styles = StyleSheet.create({
   },
   formHeader: {},
   actionIcon: {
-    paddingVertical: 10,
-    paddingHorizontal: 10
+    width: 62
   },
   btnOp: {
     marginLeft: 5

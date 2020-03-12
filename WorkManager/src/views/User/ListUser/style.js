@@ -5,14 +5,12 @@ import { appStyles } from "$styles";
 
 const styles = StyleSheet.create({
   searchIcon: {
-    paddingVertical: 10,
-    paddingHorizontal: 12
+    width: 62,
+    right: 8,
+    bottom: 77
   },
   plusIcon: {
-    paddingVertical: 12,
-    paddingHorizontal: 15,
-    right: 8,
-    bottom: 75
+    width: 62
   },
   listContainer: {
     marginBottom: 100

@@ -5,8 +5,7 @@ import { appStyles } from "$styles";
 
 const styles = StyleSheet.create({
   plusIcon: {
-    paddingVertical: 12,
-    paddingHorizontal: 15
+    width: 62
   },
   listContainer: {
     marginBottom: 100

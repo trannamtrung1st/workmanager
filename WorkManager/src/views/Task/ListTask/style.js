@@ -18,8 +18,7 @@ const styles = StyleSheet.create({
     color: COLOR.gray
   },
   plusIcon: {
-    paddingVertical: 12,
-    paddingHorizontal: 15
+    width: 62
   },
   listContainer: {
     marginBottom: 100

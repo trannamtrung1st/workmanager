@@ -60,6 +60,7 @@ const appStyles = {
   inactiveInputContainer: inputContainer.concat(styles.inactiveInputContainer),
   formItemContainer: [styles.formItemContainer],
   bottomIcon: [
+    commonStyles.aspect1,
     commonStyles.textCenter,
     commonStyles.textVerticalCenter,
     styles.bgSecGreen,

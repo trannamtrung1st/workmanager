@@ -290,7 +290,7 @@ function ViewTask(props) {
           </View>
         </View>
       </AppLayout>
-      <Icon name="th-large" style={s.actionIcon} onPress={_onActionPress} />
+      <Icon name="bars" style={s.actionIcon} onPress={_onActionPress} />
 
       <ActionModal />
     </ViewTaskContext.Provider>
