@@ -12,6 +12,8 @@
       "$navigation": ["./src/navigation"],
       "$services": ["./src/services"],
       "$constants": ["./constants"],
+      "$app": ["./src"],
+      "$global": ["./global"],
       "$assets/*": ["./assets/*"],
       "$components/*": ["./src/components/*"],
       "$views/*": ["./src/views/*"],
@@ -21,7 +23,9 @@
       "$app-contexts/*": ["./src/contexts/*"],
       "$navigation/*": ["./src/navigation/*"],
       "$services/*": ["./src/services/*"],
-      "$constants/*": ["./constants/*"]
+      "$constants/*": ["./constants/*"],
+      "$global/*": ["./global/*"],
+      "$app/*": ["./src/*"]
     }
   }
 }

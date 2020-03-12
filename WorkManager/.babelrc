@@ -7,6 +7,7 @@
         "alias": {
           "$assets": "./assets",
           "$constants": "./constants",
+          "$global": "./global",
           "$navigation": "./src/navigation",
           "$app-contexts": "./src/contexts",
           "$styles": "./src/styles",
@@ -14,7 +15,8 @@
           "$services": "./src/services",
           "$app-helpers": "./src/helpers",
           "$views": "./src/views",
-          "$api": "./src/api"
+          "$api": "./src/api",
+          "$app": "./src"
         }
       }
     ]

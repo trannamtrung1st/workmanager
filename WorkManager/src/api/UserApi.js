@@ -1,8 +1,9 @@
 import { API } from "$constants";
 import AsyncStorage from "@react-native-community/async-storage";
+import { authFetch } from "$app-helpers";
 
 function login(model, response, error) {
-  fetch(API.endpoint + "users/login", {
+  authFetch(API.endpoint + "users/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -33,7 +34,20 @@ function getTokenThen(success, error) {
     .catch(error);
 }
 
+function register(model, response, error) {
+  authFetch(API.endpoint + "users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(model)
+  })
+    .then(response)
+    .catch(error);
+}
+
 export default {
+  register,
   getTokenThen,
   logout,
   login,

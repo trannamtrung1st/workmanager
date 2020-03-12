@@ -27,7 +27,7 @@ namespace WorkManager.Data
     public static class AppClaimTypes
     {
         public const string Username = "username";
-        public const string Role = "role";
+        public const string Role = "app_role";
         public const string EmployeeCode = "employee_code";
     }
 

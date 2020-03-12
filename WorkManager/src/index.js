@@ -5,59 +5,58 @@ import { AppDrawerNavigator } from "$navigation";
 import { AuthContext } from "$app-contexts";
 import { Login } from "$views";
 import { UserApi } from "$api";
+import { G } from "$global";
 
-let tokenGot = false;
-let savedToken = null;
+let logoutIntervalId;
 export default function App() {
   const [authContext, setAuthContext] = useState(reset());
-  if (!tokenGot) {
-    tokenGot = true;
+  if (!G.tokenGot) {
+    G.tokenGot = true;
     UserApi.getTokenThen(token => {
-      savedToken = JSON.parse(token);
-      setAuthContext(reset());
+      G.tokenModel = JSON.parse(token);
+      console.log(G.tokenModel);
+      const context = reset();
+      setAuthContext(context);
     });
     return null;
   }
 
   function reset() {
     return {
-      accessToken: savedToken?.access_token,
-      expiresUtc: savedToken?.expires_utc,
-      username: savedToken?.username,
-      role: savedToken?.role,
-      employeeCode: savedToken?.employee_code,
-      userId: savedToken?.user_id,
-      logoutTimeoutSet: false,
+      accessToken: G.tokenModel?.access_token,
+      expiresUtc: G.tokenModel?.expires_utc,
+      username: G.tokenModel?.username,
+      role: G.tokenModel?.role,
+      employeeCode: G.tokenModel?.employee_code,
+      userId: G.tokenModel?.user_id,
+      logoutIntervalSet: false,
       login,
       logout
     };
   }
 
   function logout() {
+    if (logoutIntervalId) clearInterval(logoutIntervalId);
     UserApi.logout(() => {
-      saveToken = null;
+      G.tokenModel = null;
       setAuthContext(reset());
     });
   }
 
   function login(tokenModel) {
     UserApi.saveToken(tokenModel);
-    var newContext = {
-      accessToken: tokenModel.access_token,
-      employeeCode: tokenModel.employee_code,
-      expiresUtc: new Date(tokenModel.expires_utc),
-      role: tokenModel.role,
-      userId: tokenModel.user_id,
-      username: tokenModel.username,
-      logoutTimeoutSet: false,
-      login,
-      logout
-    };
-    setAuthContext(newContext);
+    G.tokenModel = tokenModel;
+    setAuthContext(reset());
   }
 
-  if (!authContext.logoutTimeoutSet && authContext.accessToken)
-    setTimeout(logout, authContext.expiresUtc - new Date());
+  if (!authContext.logoutIntervalSet && authContext.accessToken) {
+    authContext.logoutIntervalSet = true;
+    logoutIntervalId = setInterval(() => {
+      if (authContext.expiresUtc <= new Date()) {
+        logout();
+      }
+    }, 60000);
+  }
 
   return (
     <AuthContext.Provider value={authContext}>
