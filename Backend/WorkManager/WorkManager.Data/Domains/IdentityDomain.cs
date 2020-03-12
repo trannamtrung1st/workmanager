@@ -69,6 +69,11 @@ namespace WorkManager.Data.Domains
             }
         }
 
+        public async Task<IEnumerable<string>> GetRoles(AppUsers user)
+        {
+            return (await _userManager.GetRolesAsync(user)).ToList();
+        }
+
         public async Task<AppUsers> GetUserByUserName(string username)
         {
             return await _userManager.FindByNameAsync(username);
@@ -100,9 +105,24 @@ namespace WorkManager.Data.Domains
             return await _userManager.AddToRolesAsync(user, roles);
         }
 
+        public async Task<IdentityResult> Remove(AppUsers user)
+        {
+            return await _userManager.DeleteAsync(user);
+        }
+
         public async Task<IdentityResult> RemoveUserFromRoles(AppUsers user, IEnumerable<string> roles)
         {
             return await _userManager.RemoveFromRolesAsync(user, roles);
+        }
+
+        public async Task<IdentityResult> ChangeRole(AppUsers user, string newRole)
+        {
+            var roles = user.UserRoles.Select(r => r.Role.Name).ToList();
+            var result = await RemoveUserFromRoles(user, roles);
+            if (!result.Succeeded)
+                return result;
+            result = await AddUserToRoles(user, new List<string>() { newRole });
+            return result;
         }
 
         public AppUsers ToUser(RegisterViewModel model)

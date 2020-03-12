@@ -53,7 +53,29 @@ function getUsers(queryObj, response, error) {
     .catch(error);
 }
 
+function deleteUser(id, response, error) {
+  authFetch(API.endpoint + "users/" + id, {
+    method: "DELETE"
+  })
+    .then(response)
+    .catch(error);
+}
+
+function changeRole(model, response, error) {
+  authFetch(API.endpoint + "users/role", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(model)
+  })
+    .then(response)
+    .catch(error);
+}
+
 export default {
+  changeRole,
+  deleteUser,
   getUsers,
   register,
   getTokenThen,

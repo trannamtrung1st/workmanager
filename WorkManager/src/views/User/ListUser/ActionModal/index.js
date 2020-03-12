@@ -1,10 +1,11 @@
 import React, { useState, useContext } from "react";
-import { View, Alert } from "react-native";
+import { View, Alert, Text } from "react-native";
 import { AppButton } from "$components";
 import s from "./style";
 import Modal from "react-native-modal";
-import { ListUserContext } from "$app-contexts";
+import { ListUserContext, AuthContext } from "$app-contexts";
 import { SCREENS } from "$constants";
+import { UserApi } from "$api";
 
 function ActionModal(props) {
   const listUserContext = useContext(ListUserContext);
@@ -16,19 +17,26 @@ function ActionModal(props) {
   listUserContext.setModalVisible = setModalVisible;
 
   function _onDeleteConfirmed() {
-    setModalVisible(reset);
-    Alert.alert(
-      "Message",
-      "Delete successfully",
-      [
-        {
-          text: "Ok",
-          onPress: () => {
-            listUserContext.reload();
-          }
+    UserApi.deleteUser(
+      modalVisible.item.id,
+      async resp => {
+        if (resp.status == 401 || resp.status == 403)
+          alert("Unauthorized or access denied");
+
+        if (resp.ok) {
+          alert("Delete successfully");
+          setModalVisible(reset);
+          listUserContext.reload();
+        } else {
+          const data = await resp.json();
+          console.log(data);
+          alert(data.message);
         }
-      ],
-      { cancelable: false }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
     );
   }
 
@@ -51,7 +59,65 @@ function ActionModal(props) {
   }
 
   function _changeRole(role) {
-    setModalVisible(false);
+    UserApi.changeRole(
+      {
+        user_id: modalVisible.item.id,
+        role
+      },
+      async resp => {
+        if (resp.status == 401 || resp.status == 403)
+          alert("Unauthorized or access denied");
+
+        if (resp.ok) {
+          alert("Change role successfully");
+          setModalVisible(reset);
+          listUserContext.reload();
+        } else {
+          const data = await resp.json();
+          console.log(data);
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
+  }
+
+  if (!modalVisible.item) return null;
+
+  const modalChildren = [];
+  if (modalVisible.item.role == "Admin")
+    modalChildren.push(
+      <View style={s.formItemContainer}>
+        <Text>Nothing to perform</Text>
+      </View>
+    );
+  else {
+    if (modalVisible.item.role == "Manager")
+      modalChildren.push(
+        <View style={s.formItemContainer}>
+          <AppButton
+            text="CHANGE ROLE TO USER"
+            onPress={() => _changeRole("User")}
+          />
+        </View>
+      );
+    else
+      modalChildren.push(
+        <View style={s.formItemContainer}>
+          <AppButton
+            text="CHANGE ROLE TO MANAGER"
+            onPress={() => _changeRole("Manager")}
+          />
+        </View>
+      );
+    modalChildren.push(
+      <View style={s.formItemContainer}>
+        <AppButton type="danger" text="DELETE" onPress={_onDeletePress} />
+      </View>
+    );
   }
 
   return (
@@ -66,21 +132,7 @@ function ActionModal(props) {
       isVisible={modalVisible.show}
       onBackdropPress={() => setModalVisible(reset)}
     >
-      <View style={s.formItemContainer}>
-        <AppButton
-          text="CHANGE ROLE TO USER"
-          onPress={() => _changeRole("User")}
-        />
-      </View>
-      <View style={s.formItemContainer}>
-        <AppButton
-          text="CHANGE ROLE TO MANAGER"
-          onPress={() => _changeRole("Manager")}
-        />
-      </View>
-      <View style={s.formItemContainer}>
-        <AppButton type="danger" text="DELETE" onPress={_onDeletePress} />
-      </View>
+      {modalChildren}
     </Modal>
   );
 }

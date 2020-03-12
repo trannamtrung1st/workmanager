@@ -50,6 +50,12 @@ namespace WorkManager.Data.ViewModels
         //OPTIONAL.  The scope of the access request as described by
     }
 
+    public class ChangeRoleViewModel
+    {
+        public string user_id { get; set; }
+        public string role { get; set; }
+    }
+
     public class AddRolesToUserViewModel
     {
         public string username { get; set; }

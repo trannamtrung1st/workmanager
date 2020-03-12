@@ -14,6 +14,7 @@ using WorkManager.Data.ViewModels;
 using TNT.Core.Helpers.DI;
 using TNT.Core.Http.DI;
 using WorkManager.Data.Models.Extensions;
+using System.Data.SqlClient;
 
 namespace WorkManager.WebApi.Controllers
 {
@@ -244,6 +245,122 @@ namespace WorkManager.WebApi.Controllers
                 });
             }
         }
+
+        [HttpPut("role")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ChangeRole(ChangeRoleViewModel model)
+        {
+            try
+            {
+                var user = await _iDomain.GetUserById(model.user_id);
+                if (user == null)
+                    return NotFound(new ApiResult()
+                    {
+                        Code = ResultCode.NotFound,
+                        Data = null,
+                        Message = ResultCode.NotFound.DisplayName()
+                    });
+                var mess = "";
+                var roles = await _iDomain.GetRoles(user);
+                if (roles.Contains("Admin"))
+                    mess += "Can not change admin's role";
+                if (!string.IsNullOrEmpty(mess))
+                    return BadRequest(new ApiResult()
+                    {
+                        Code = ResultCode.FailValidation,
+                        Message = mess,
+                        Data = null
+                    });
+
+                using (var trans = _uow.BeginTransaction())
+                {
+                    var result = await _iDomain.ChangeRole(user, model.role);
+                    if (result.Succeeded)
+                    {
+                        trans.Commit();
+                        return NoContent();
+                    }
+                    foreach (var err in result.Errors)
+                        ModelState.AddModelError(err.Code, err.Description);
+                }
+                return BadRequest(new ApiResult()
+                {
+                    Code = ResultCode.FailValidation,
+                    Data = ModelState,
+                    Message = ResultCode.FailValidation.DisplayName()
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+
+                return Error(new ApiResult()
+                {
+                    Code = ResultCode.UnknownError,
+                    Message = ResultCode.UnknownError.DisplayName() + ": " + e.Message
+                });
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                var user = await _iDomain.GetUserById(id);
+                if (user == null)
+                    return NotFound(new ApiResult()
+                    {
+                        Code = ResultCode.NotFound,
+                        Data = null,
+                        Message = ResultCode.NotFound.DisplayName()
+                    });
+                var mess = "";
+                var roles = await _iDomain.GetRoles(user);
+                if (roles.Contains("Admin"))
+                    mess += "Can not remove admin";
+                if (!string.IsNullOrEmpty(mess))
+                    return BadRequest(new ApiResult()
+                    {
+                        Code = ResultCode.FailValidation,
+                        Message = mess,
+                        Data = null
+                    });
+
+                var result = await _iDomain.Remove(user);
+                if (result.Succeeded)
+                    return NoContent();
+                foreach (var err in result.Errors)
+                    ModelState.AddModelError(err.Code, err.Description);
+                return BadRequest(new ApiResult()
+                {
+                    Code = ResultCode.FailValidation,
+                    Data = ModelState,
+                    Message = ResultCode.FailValidation.DisplayName()
+                });
+            }
+            catch (SqlException)
+            {
+                return BadRequest(new ApiResult()
+                {
+                    Code = ResultCode.FailValidation,
+                    Data = null,
+                    Message = "Can not delete because user has dependencies"
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+
+                return Error(new ApiResult()
+                {
+                    Code = ResultCode.UnknownError,
+                    Message = ResultCode.UnknownError.DisplayName() + ": " + e.Message
+                });
+            }
+        }
+
 
         #region ADMIN
         //[HttpPost("role")]

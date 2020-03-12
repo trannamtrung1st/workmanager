@@ -38,7 +38,6 @@ function ListUser(props) {
           alert("Unauthorized or access denied");
         const data = await resp.json();
         if (resp.ok) {
-          console.log(data.data.results);
           listUserContext.users = data.data.results;
           forceUpdate();
         } else {
