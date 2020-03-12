@@ -55,6 +55,9 @@ namespace WorkManager.Data.Models.Extensions
                             obj["phone_number"] = p.PhoneNumber;
                             obj["employee_code"] = p.EmployeeCode;
                             break;
+                        case UserGeneralFields.ROLE:
+                            obj["role"] = p.UserRoles.FirstOrDefault()?.Role.Name;
+                            break;
                     }
                 }
                 list.Add(obj);

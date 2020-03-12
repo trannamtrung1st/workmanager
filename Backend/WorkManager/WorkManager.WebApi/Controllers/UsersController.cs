@@ -129,10 +129,10 @@ namespace WorkManager.WebApi.Controllers
             try
             {
                 if (fields.Length == 0)
-                    fields = new string[] { ProductGeneralFields.INFO };
+                    fields = new string[] { UserGeneralFields.INFO };
                 else
                 {
-                    var maps = ProductGeneralFields.Mapping;
+                    var maps = UserGeneralFields.Mapping;
                     if (fields.Any(f => f == null || !maps.ContainsKey(f)))
                         return BadRequest(new ApiResult()
                         {

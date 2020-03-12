@@ -58,8 +58,11 @@ namespace WorkManager.WebApi
 
             #region OAuth
             services.AddDbContext<IdentityContext>(options =>
+            {
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("WorkContext")));
+                    Configuration.GetConnectionString("WorkContext"));
+                options.UseLazyLoadingProxies();
+            });
 
             services.AddDefaultIdentity<AppUsers>(config =>
             {

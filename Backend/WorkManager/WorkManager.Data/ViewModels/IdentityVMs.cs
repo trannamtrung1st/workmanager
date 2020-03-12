@@ -133,12 +133,16 @@ namespace WorkManager.Data.ViewModels
     public class UserGeneralFields
     {
         public const string INFO = "info";
+        public const string ROLE = "role";
 
         public static readonly IDictionary<string, string[]> Mapping =
             new Dictionary<string, string[]>()
             {
                 {
                     INFO, new string[]{ "Id","FullName","UserName","Email","PhoneNumber","EmployeeCode" }
+                },
+                {
+                    ROLE, new string[]{ "UserRoles" }
                 }
             };
     }

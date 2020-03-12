@@ -19,7 +19,7 @@ function ListUser(props) {
     users: null,
     reload: () => {
       UserApi.getUsers(
-        null,
+        { fields: ["info", "role"], limit: 1000 },
         async resp => {
           if (resp.status == 401 || resp.status == 403)
             alert("Unauthorized or access denied");
