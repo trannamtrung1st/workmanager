@@ -20,8 +20,10 @@ function ActionModal(props) {
     UserApi.deleteUser(
       modalVisible.item.id,
       async resp => {
-        if (resp.status == 401 || resp.status == 403)
+        if (resp.status == 401 || resp.status == 403) {
           alert("Unauthorized or access denied");
+          return;
+        }
 
         if (resp.ok) {
           alert("Delete successfully");

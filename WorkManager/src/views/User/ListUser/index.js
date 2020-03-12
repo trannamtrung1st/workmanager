@@ -34,8 +34,10 @@ function ListUser(props) {
     UserApi.getUsers(
       { fields: ["info", "role"], limit: 1000 },
       async resp => {
-        if (resp.status == 401 || resp.status == 403)
+        if (resp.status == 401 || resp.status == 403) {
           alert("Unauthorized or access denied");
+          return;
+        }
         const data = await resp.json();
         if (resp.ok) {
           listUserContext.users = data.data.results;

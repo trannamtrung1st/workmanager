@@ -15,8 +15,10 @@ function ScannerModal(props) {
     UserApi.getUsers(
       { fields: ["info", "role"], employee_code: e.data },
       async resp => {
-        if (resp.status == 401 || resp.status == 403)
+        if (resp.status == 401 || resp.status == 403) {
           alert("Unauthorized or access denied");
+          return;
+        }
         const data = await resp.json();
         if (resp.ok) {
           const user = data.data.results[0];
