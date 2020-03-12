@@ -10,37 +10,51 @@ import UserItem from "./UserItem";
 import ActionModal from "./ActionModal";
 import { HookHelper } from "@trannamtrung1st/t-components";
 import { UserApi } from "$api";
+import { useIsFocused } from "@react-navigation/native";
 
 function ListUser(props) {
   const { navigation } = props;
+
   const forceUpdate = HookHelper.useForceUpdate();
   const [listUserContext] = useState({
     setScannerOpen: null,
     users: null,
-    reload: () => {
-      UserApi.getUsers(
-        { fields: ["info", "role"], limit: 1000 },
-        async resp => {
-          if (resp.status == 401 || resp.status == 403)
-            alert("Unauthorized or access denied");
-          const data = await resp.json();
-          if (resp.ok) {
-            console.log(data.data.results);
-            listUserContext.users = data.data.results;
-            forceUpdate();
-          } else {
-            alert(data.message);
-          }
-        },
-        err => {
-          console.log(err);
-          alert("Something's wrong");
-        }
-      );
-    }
+    reload
   });
+  const isFocused = useIsFocused();
+  if (!isFocused) {
+    reset();
+    return null;
+  }
+
   if (!listUserContext.users) listUserContext.reload();
   const users = listUserContext.users ?? [];
+
+  function reload() {
+    UserApi.getUsers(
+      { fields: ["info", "role"], limit: 1000 },
+      async resp => {
+        if (resp.status == 401 || resp.status == 403)
+          alert("Unauthorized or access denied");
+        const data = await resp.json();
+        if (resp.ok) {
+          console.log(data.data.results);
+          listUserContext.users = data.data.results;
+          forceUpdate();
+        } else {
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
+  }
+
+  function reset() {
+    listUserContext.users = null;
+  }
 
   function _onSearchPress() {
     listUserContext.setScannerOpen(true);

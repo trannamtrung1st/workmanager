@@ -161,6 +161,7 @@ function CreateUser(props) {
               <Picker
                 mode="dropdown"
                 style={s.inputContainer}
+                selectedValue={data.role}
                 onValueChange={v => _changeData("role", v)}
               >
                 <Picker.Item label="User" value="User" />
