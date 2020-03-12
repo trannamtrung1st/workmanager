@@ -5,36 +5,39 @@ import { AppDrawerNavigator } from "$navigation";
 import { AuthContext } from "$app-contexts";
 import { Login } from "$views";
 import { UserApi } from "$api";
-import { HookHelper } from "@trannamtrung1st/t-components";
 
 let tokenGot = false;
 let savedToken = null;
 export default function App() {
-  const forceUpdate = HookHelper.useForceUpdate();
+  const [authContext, setAuthContext] = useState(reset());
   if (!tokenGot) {
     tokenGot = true;
-    saveToken = UserApi.getTokenThen(token => {
-      saveToken = JSON.parse(token);
-      forceUpdate();
+    UserApi.getTokenThen(token => {
+      savedToken = JSON.parse(token);
+      setAuthContext(reset());
     });
+    return null;
   }
 
-  const reset = {
-    accessToken: savedToken?.access_token,
-    expiresUtc: savedToken?.expires_utc,
-    username: savedToken?.username,
-    role: savedToken?.role,
-    employeeCode: savedToken?.employee_code,
-    userId: savedToken?.user_id,
-    logoutTimeoutSet: false,
-    login,
-    logout
-  };
-  const [authContext, setAuthContext] = useState(reset);
+  function reset() {
+    return {
+      accessToken: savedToken?.access_token,
+      expiresUtc: savedToken?.expires_utc,
+      username: savedToken?.username,
+      role: savedToken?.role,
+      employeeCode: savedToken?.employee_code,
+      userId: savedToken?.user_id,
+      logoutTimeoutSet: false,
+      login,
+      logout
+    };
+  }
 
   function logout() {
-    UserApi.logout();
-    setAuthContext(reset);
+    UserApi.logout(() => {
+      saveToken = null;
+      setAuthContext(reset());
+    });
   }
 
   function login(tokenModel) {
@@ -46,7 +49,9 @@ export default function App() {
       role: tokenModel.role,
       userId: tokenModel.user_id,
       username: tokenModel.username,
-      logoutTimeoutSet: false
+      logoutTimeoutSet: false,
+      login,
+      logout
     };
     setAuthContext(newContext);
   }

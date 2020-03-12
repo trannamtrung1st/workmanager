@@ -51,6 +51,8 @@ function Login(props) {
           <View style={s.inputContainer}>
             <Icon name="user" style={s.inputIcon} />
             <AppInput
+              autoCapitalize={"none"}
+              textContentType="username"
               onChangeText={_onUsernameChanged}
               style={s.input}
               placeholder="Username"
@@ -60,6 +62,7 @@ function Login(props) {
           <View style={s.inputContainer}>
             <Icon name="key" style={s.inputIcon} />
             <AppInput
+              autoCapitalize={"none"}
               secureTextEntry={true}
               onChangeText={_onPassChanged}
               textContentType={"password"}

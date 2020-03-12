@@ -19,8 +19,8 @@ function saveToken(tokenModel, success, error) {
     .catch(error);
 }
 
-function logout() {
-  AsyncStorage.removeItem("token");
+function logout(success, error) {
+  AsyncStorage.removeItem("token", success, error);
 }
 
 async function getToken() {
