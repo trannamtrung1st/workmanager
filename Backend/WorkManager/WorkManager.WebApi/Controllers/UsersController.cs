@@ -26,6 +26,9 @@ namespace WorkManager.WebApi.Controllers
         [Inject]
         private readonly IdentityDomain _iDomain;
 
+        [Inject]
+        private readonly EventDomain _eDomain;
+
         #region OAuth
         [HttpPost("login")]
         public async Task<IActionResult> LogIn(AuthorizationGrantViewModel model)
@@ -94,6 +97,7 @@ namespace WorkManager.WebApi.Controllers
                     principal.Identity.AuthenticationType);
 
                 var resp = _iDomain.GenerateTokenResponse(ticket);
+
                 _logger.CustomProperties(user).Info("Login user");
 
                 return Ok(resp);
@@ -133,6 +137,7 @@ namespace WorkManager.WebApi.Controllers
         }
 
         [HttpPost("")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             try
@@ -140,10 +145,13 @@ namespace WorkManager.WebApi.Controllers
                 if (ModelState.IsValid)
                 {
                     var user = _iDomain.ToUser(model);
-                    var result = await _iDomain.CreateUserWithRolesAsync(user, model.password);
+                    var result = await _iDomain.CreateUserWithRolesAsync(user, model.password,
+                        new List<string>() { model.role });
                     if (result.Succeeded)
                     {
                         _logger.CustomProperties(user).Info("Register new user");
+                        _eDomain.CreateUser(model, User);
+                        _uow.SaveChanges();
 
                         return NoContent();
                     }
@@ -159,8 +167,17 @@ namespace WorkManager.WebApi.Controllers
                 if (ModelState.ContainsKey("Username"))
                     message += "Invalid username\n";
                 if (ModelState.ContainsKey("DuplicateUserName"))
-                    message += "Username has already existed";
-
+                    message += "Username has already existed\n";
+                if (string.IsNullOrWhiteSpace(model.employee_code))
+                    message += "Can not leave blank Employee code\n";
+                else if (model.employee_code.Length < 6)
+                    message += "Employee code must have minimum length of 6\n";
+                if (string.IsNullOrWhiteSpace(model.full_name))
+                    message += "Can not leave blank Full name\n";
+                if (ModelState.ContainsKey("phone"))
+                    message += "Invalid phone number\n";
+                if (ModelState.ContainsKey("email"))
+                    message += "Invalid email address\n";
                 return BadRequest(new ApiResult()
                 {
                     Code = ResultCode.FailValidation,
@@ -181,69 +198,69 @@ namespace WorkManager.WebApi.Controllers
         }
 
         #region ADMIN
-        [HttpPost("role")]
-        public async Task<IActionResult> AddRole(AddRolesToUserViewModel model)
-        {
-            try
-            {
-                var user = await _iDomain.GetUserByUserName(model.username);
-                if (user == null)
-                    return NotFound("User not found");
-                var result = await _iDomain.AddUserToRoles(user, model.roles);
-                if (result.Succeeded)
-                    return NoContent();
-                foreach (var err in result.Errors)
-                    ModelState.AddModelError(err.Code, err.Description);
-                return BadRequest(new ApiResult()
-                {
-                    Code = ResultCode.FailValidation,
-                    Data = ModelState,
-                    Message = ResultCode.FailValidation.DisplayName()
-                });
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e);
+        //[HttpPost("role")]
+        //public async Task<IActionResult> AddRole(AddRolesToUserViewModel model)
+        //{
+        //    try
+        //    {
+        //        var user = await _iDomain.GetUserByUserName(model.username);
+        //        if (user == null)
+        //            return NotFound("User not found");
+        //        var result = await _iDomain.AddUserToRoles(user, model.roles);
+        //        if (result.Succeeded)
+        //            return NoContent();
+        //        foreach (var err in result.Errors)
+        //            ModelState.AddModelError(err.Code, err.Description);
+        //        return BadRequest(new ApiResult()
+        //        {
+        //            Code = ResultCode.FailValidation,
+        //            Data = ModelState,
+        //            Message = ResultCode.FailValidation.DisplayName()
+        //        });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        _logger.Error(e);
 
-                return Error(new ApiResult()
-                {
-                    Code = ResultCode.UnknownError,
-                    Message = ResultCode.UnknownError.DisplayName() + ": " + e.Message
-                });
-            }
-        }
+        //        return Error(new ApiResult()
+        //        {
+        //            Code = ResultCode.UnknownError,
+        //            Message = ResultCode.UnknownError.DisplayName() + ": " + e.Message
+        //        });
+        //    }
+        //}
 
-        [HttpDelete("role")]
-        public async Task<IActionResult> RemoveRole(RemoveRolesFromUserViewModel model)
-        {
-            try
-            {
-                var user = await _iDomain.GetUserByUserName(model.username);
-                if (user == null)
-                    return NotFound("User not found");
-                var result = await _iDomain.RemoveUserFromRoles(user, model.roles);
-                if (result.Succeeded)
-                    return NoContent();
-                foreach (var err in result.Errors)
-                    ModelState.AddModelError(err.Code, err.Description);
-                return BadRequest(new ApiResult()
-                {
-                    Code = ResultCode.FailValidation,
-                    Data = ModelState,
-                    Message = ResultCode.FailValidation.DisplayName()
-                });
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e);
+        //[HttpDelete("role")]
+        //public async Task<IActionResult> RemoveRole(RemoveRolesFromUserViewModel model)
+        //{
+        //    try
+        //    {
+        //        var user = await _iDomain.GetUserByUserName(model.username);
+        //        if (user == null)
+        //            return NotFound("User not found");
+        //        var result = await _iDomain.RemoveUserFromRoles(user, model.roles);
+        //        if (result.Succeeded)
+        //            return NoContent();
+        //        foreach (var err in result.Errors)
+        //            ModelState.AddModelError(err.Code, err.Description);
+        //        return BadRequest(new ApiResult()
+        //        {
+        //            Code = ResultCode.FailValidation,
+        //            Data = ModelState,
+        //            Message = ResultCode.FailValidation.DisplayName()
+        //        });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        _logger.Error(e);
 
-                return Error(new ApiResult()
-                {
-                    Code = ResultCode.UnknownError,
-                    Message = ResultCode.UnknownError.DisplayName() + ": " + e.Message
-                });
-            }
-        }
+        //        return Error(new ApiResult()
+        //        {
+        //            Code = ResultCode.UnknownError,
+        //            Message = ResultCode.UnknownError.DisplayName() + ": " + e.Message
+        //        });
+        //    }
+        //}
         #endregion
     }
 }

@@ -24,6 +24,11 @@ namespace WorkManager.Data
         public const string REFRESH_SECRET_KEY = "refresh_workmanager123456789@987654321";
     }
 
+    public static class AppClaimTypes
+    {
+        public const string Username = "username";
+    }
+
     public class App
     {
 

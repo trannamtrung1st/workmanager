@@ -99,7 +99,14 @@ namespace WorkManager.Data.Domains
 
         public AppUsers ToUser(RegisterViewModel model)
         {
-            return new AppUsers { UserName = model.username };
+            return new AppUsers
+            {
+                UserName = model.username,
+                EmployeeCode = model.employee_code,
+                FullName = model.full_name,
+                PhoneNumber = model.phone,
+                Email = model.email
+            };
         }
 
         public async Task<IdentityResult> CreateUserAsync(AppUsers user, string password)
@@ -234,6 +241,7 @@ namespace WorkManager.Data.Domains
             foreach (var r in roles)
                 claims.Add(new Claim(ClaimTypes.Role, r));
             identity.AddClaims(claims);
+            identity.AddClaim(new Claim(AppClaimTypes.Username, user.UserName));
             return identity;
         }
 

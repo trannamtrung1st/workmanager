@@ -26,6 +26,7 @@ namespace WorkManager.Data.Global
             //extra
             services.AddScoped<TemplateDomain>();
             services.AddScoped<IdentityDomain>();
+            services.AddScoped<EventDomain>();
 
             Random = new Random();
         }
