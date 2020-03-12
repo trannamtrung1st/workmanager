@@ -1,5 +1,9 @@
 import { Dimensions } from "react-native";
 
+const API = {
+  endpoint: "http://192.168.5.102:45457/api/"
+};
+
 const SCREENS = {
   dashboard: "Dashboard",
   task: "Task",
@@ -40,4 +44,4 @@ const COLOR = {
   secondaryGreen: "#d4ffb8"
 };
 
-export { SCREENS, COLOR, DIMENSIONS };
+export { SCREENS, COLOR, DIMENSIONS, API };

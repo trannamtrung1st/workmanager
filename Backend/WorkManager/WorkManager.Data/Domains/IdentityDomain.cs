@@ -173,7 +173,7 @@ namespace WorkManager.Data.Domains
             issuer = JWT.REFRESH_ISSUER;
             audience = JWT.REFRESH_AUDIENCE;
             var id = identity.Name;
-            identity = new ClaimsIdentity(
+            var refreshIdentity = new ClaimsIdentity(
                 identity.Claims.Where(c => c.Type == identity.NameClaimType),
                 identity.AuthenticationType);
 
@@ -183,7 +183,7 @@ namespace WorkManager.Data.Domains
             {
                 Issuer = issuer,
                 Audience = audience,
-                Subject = identity,
+                Subject = refreshIdentity,
                 IssuedAt = ticket.Properties.IssuedUtc?.UtcDateTime,
                 Expires = refresh_expires,
                 SigningCredentials = new SigningCredentials(
@@ -196,6 +196,11 @@ namespace WorkManager.Data.Domains
             tokenString = tokenHandler.WriteToken(token);
             resp.refresh_token = tokenString;
             #endregion
+
+            resp.employee_code = identity.FindFirst(AppClaimTypes.EmployeeCode).Value;
+            resp.username = identity.FindFirst(AppClaimTypes.Username).Value;
+            resp.role = identity.FindFirst(AppClaimTypes.Role).Value;
+            resp.user_id = identity.Name;
 
             return resp;
         }
@@ -242,6 +247,8 @@ namespace WorkManager.Data.Domains
                 claims.Add(new Claim(ClaimTypes.Role, r));
             identity.AddClaims(claims);
             identity.AddClaim(new Claim(AppClaimTypes.Username, user.UserName));
+            identity.AddClaim(new Claim(AppClaimTypes.Role, roles.FirstOrDefault()));
+            identity.AddClaim(new Claim(AppClaimTypes.EmployeeCode, user.EmployeeCode));
             return identity;
         }
 

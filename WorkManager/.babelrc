@@ -13,7 +13,8 @@
           "$components": "./src/components",
           "$services": "./src/services",
           "$app-helpers": "./src/helpers",
-          "$views": "./src/views"
+          "$views": "./src/views",
+          "$api": "./src/api"
         }
       }
     ]

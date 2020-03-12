@@ -124,6 +124,10 @@ namespace WorkManager.Data.ViewModels
         public string expires_utc { get; set; }
         public string issued_utc { get; set; }
         public string refresh_token { get; set; }
+        public string username { get; set; }
+        public string user_id { get; set; }
+        public string role { get; set; }
+        public string employee_code { get; set; }
     }
 
 }

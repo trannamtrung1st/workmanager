@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import s from "./style";
 import { AuthContext } from "$app-contexts";
 import { AppButton, AppInput } from "$components";
+import { UserApi } from "$api";
 
 function Login(props) {
   const authContext = useContext(AuthContext);
@@ -11,9 +12,23 @@ function Login(props) {
   const [password, setPassword] = useState(null);
 
   function _login() {
-    authContext.setAuthContext({
-      userToken: "token"
-    });
+    UserApi.login(
+      {
+        username,
+        password
+      },
+      async resp => {
+        const data = await resp.json();
+        if (resp.ok) {
+          authContext.login(data);
+        } else {
+          alert(data.message);
+        }
+      },
+      err => {
+        alert("Something's wrong");
+      }
+    );
   }
 
   function _onUsernameChanged(v) {
