@@ -21,16 +21,16 @@ function FilterModal(props) {
   const [filter, setFilter] = useState({
     renew: true,
     status: null,
-    fromDate: null,
-    toDate: null,
+    from_date: null,
+    to_date: null,
     employee_code: null
   });
 
   if (filter.renew) {
     filter.renew = false;
     filter.status = listTaskContext.filter.status;
-    filter.fromDate = listTaskContext.filter.fromDate;
-    filter.toDate = listTaskContext.filter.toDate;
+    filter.from_date = listTaskContext.filter.from_date;
+    filter.to_date = listTaskContext.filter.to_date;
     filter.employee_code = listTaskContext.filter.employee_code;
   }
   if (!filterOpen) filter.renew = true;
@@ -41,11 +41,11 @@ function FilterModal(props) {
   }
 
   function _onFromDateChanged(ev, itemValue) {
-    if (itemValue) filter.fromDate = itemValue;
+    if (itemValue) filter.from_date = itemValue;
   }
 
   function _onToDateChanged(ev, itemValue) {
-    if (itemValue) filter.toDate = itemValue;
+    if (itemValue) filter.to_date = itemValue;
   }
 
   function onSuccess(user) {
@@ -83,14 +83,14 @@ function FilterModal(props) {
           <View style={s.formItemContainer}>
             <Text>From date</Text>
             <AppDateTimePicker
-              initDate={filter.fromDate}
+              initDate={filter.from_date}
               onDateChanged={_onFromDateChanged}
             />
           </View>
           <View style={s.formItemContainer}>
             <Text>To date</Text>
             <AppDateTimePicker
-              initDate={filter.toDate}
+              initDate={filter.to_date}
               onDateChanged={_onToDateChanged}
             />
           </View>
@@ -121,12 +121,14 @@ function FilterModal(props) {
             <AppButton
               text="FILTER"
               onPress={() => {
-                listTaskContext.setFilter({
+                const newFilter = {
                   status: filter.status,
-                  fromDate: filter.fromDate,
-                  toDate: filter.toDate,
+                  from_date: filter.from_date,
+                  to_date: filter.to_date,
                   employee_code: filter.employee_code
-                });
+                };
+                console.log(newFilter);
+                listTaskContext.setFilter(newFilter);
                 setFilterOpen(false);
               }}
             />

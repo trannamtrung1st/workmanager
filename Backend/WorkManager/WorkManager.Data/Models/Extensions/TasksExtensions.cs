@@ -15,8 +15,20 @@ namespace WorkManager.Data.Models.Extensions
         {
             if (filter.ids != null)
                 query = query.Where(p => filter.ids.Contains(p.Id));
-            if (filter.name_contains != null)
-                query = query.Where(p => filter.name_contains.Any(s => p.Name.Contains(s, StringComparison.OrdinalIgnoreCase)));
+            if (filter.employee_code != null)
+                query = query.Where(p => p.OfUserNavigation.EmployeeCode == filter.employee_code);
+            if (filter.from_date != null)
+            {
+                var fromDate = filter.from_date?.ToUniversalTime().ToStartOfDay();
+                query = query.Where(p => p.CreatedTime >= fromDate);
+            }
+            if (filter.to_date != null)
+            {
+                var toDate = filter.to_date?.ToUniversalTime().ToEndOfDay();
+                query = query.Where(p => p.CreatedTime <= toDate);
+            }
+            if (filter.status != null)
+                query = query.Where(p => p.Status == filter.status);
             return query;
         }
 
@@ -47,6 +59,17 @@ namespace WorkManager.Data.Models.Extensions
                         case TaskGeneralFields.INFO:
                             obj["id"] = p.Id;
                             obj["name"] = p.Name;
+                            obj["task_content"] = p.TaskContent;
+                            obj["status"] = p.Status;
+                            obj["deadline"] = p.Deadline;
+                            break;
+                        case TaskGeneralFields.OF_USER:
+                            obj["of_user"] = new
+                            {
+                                id = p.OfUserNavigation.Id,
+                                full_name = p.OfUserNavigation.FullName,
+                                username = p.OfUserNavigation.UserName
+                            };
                             break;
                     }
                 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { AppLayout, AppButton } from "$components";
 import { Database } from "$services";
 import { ListTaskContext } from "$app-contexts";
@@ -10,27 +10,73 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { SCREENS } from "$constants";
 import ActionModal from "./ActionModal";
 import { HookHelper } from "@trannamtrung1st/t-components";
+import { useIsFocused } from "@react-navigation/native";
+import { TaskApi } from "$api";
 
 function ListTask(props) {
   const { navigation } = props;
-  const { tasks } = Database;
   const forceUpdate = HookHelper.useForceUpdate();
-  const [filter, setFilter] = useState({
-    status: null,
-    //from 7 day ago to now
-    fromDate: new Date(new Date().getTime() - 518400000),
-    toDate: new Date(),
-    employee_code: null
-  });
   const [listTaskContext] = useState({
     setFilterOpen: null,
     setScannerOpen: null,
-    setFilter,
-    filter: null,
-    reload: forceUpdate,
+    setFilter: newFilter => {
+      listTaskContext.filter = newFilter;
+      reload();
+    },
+    filter: {
+      status: null,
+      //from 7 day ago to now
+      from_date: new Date(new Date().getTime() - 518400000),
+      to_date: new Date(),
+      employee_code: null
+    },
+    tasks: null,
+    reload,
     navigate: navigation.navigate
   });
-  listTaskContext.filter = filter;
+
+  const isFocused = useIsFocused();
+  if (!isFocused) {
+    reset();
+    return null;
+  }
+
+  if (!listTaskContext.tasks) reload();
+  const tasks = listTaskContext.tasks ?? [];
+
+  function reload() {
+    const params = {
+      fields: ["info", "of_user"],
+      limit: 1000,
+      ...listTaskContext.filter
+    };
+    params.to_date = params.to_date?.toUTCString();
+    params.from_date = params.from_date?.toUTCString();
+    TaskApi.get(
+      params,
+      async resp => {
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
+        }
+        const data = await resp.json();
+        if (resp.ok) {
+          listTaskContext.tasks = data.data.results;
+          forceUpdate();
+        } else {
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
+  }
+
+  function reset() {
+    listTaskContext.tasks = null;
+  }
 
   function _onFilterPress() {
     listTaskContext.setFilterOpen(true);
@@ -65,14 +111,18 @@ function ListTask(props) {
         </View>
 
         <View style={s.listContainer}>
-          {tasks.map(t => (
-            <TaskItem
-              key={t.id}
-              task={t}
-              onPress={onItemPress}
-              onLongPress={onItemLongPress}
-            />
-          ))}
+          {tasks.length ? (
+            tasks.map(t => (
+              <TaskItem
+                key={t.id}
+                task={t}
+                onPress={onItemPress}
+                onLongPress={onItemLongPress}
+              />
+            ))
+          ) : (
+            <Text>No task matched with current filter</Text>
+          )}
         </View>
 
         <ActionModal />

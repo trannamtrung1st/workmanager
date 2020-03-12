@@ -31,6 +31,7 @@ function CreateTask(props) {
       task_content: source?.task_content,
       deadline: deadline,
       source,
+      source_id: source?.id,
       employee_code: sourceUser?.employee_code
     },
     setScannerOpen: null

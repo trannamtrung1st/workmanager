@@ -134,7 +134,7 @@ namespace WorkManager.WebApi.Controllers
                             Message = "Not found assigned user"
                         });
                     var domain = Service<TaskDomain>();
-                    var entity = domain.CreateTask(model, User);
+                    var entity = domain.CreateTask(model, ofUser, User);
                     _uow.SaveChanges();
                     _logger.CustomProperties(new { model }).Info("Create task");
 

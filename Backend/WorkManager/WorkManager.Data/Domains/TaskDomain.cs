@@ -24,10 +24,10 @@ namespace WorkManager.Data.Domains
             }
         }
 
-        public Tasks CreateTask(CreateTaskViewModel model, ClaimsPrincipal principal)
+        public Tasks CreateTask(CreateTaskViewModel model, AppUsers ofUser, ClaimsPrincipal principal)
         {
             var repo = _uow.GetService<ITasksRepository>();
-            return repo.Create(model, principal.Identity.Name);
+            return repo.Create(model, ofUser, principal.Identity.Name);
         }
 
         public object GetTasksData(TaskFilter filter,

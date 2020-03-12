@@ -17,6 +17,7 @@ function TaskItem(props) {
       </View>
 
       <Text>{task.task_content}</Text>
+      <Text style={s.link}>{task.of_user?.username}</Text>
       <Text style={s.itemTime}>Deadline: {task.deadline}</Text>
     </TouchableOpacity>
   );

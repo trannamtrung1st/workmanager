@@ -35,12 +35,14 @@ namespace WorkManager.Data.ViewModels
         [Required(AllowEmptyStrings = false, ErrorMessage = "Task name is required")]
         [JsonProperty("name")]
         public string Name { get; set; }
-        [JsonProperty("description")]
-        public string Description { get; set; }
+        [JsonProperty("task_content")]
+        public string TaskContent { get; set; }
         [JsonProperty("deadline")]
         public DateTime? Deadline { get; set; }
         [JsonProperty("employee_code")]
         public string EmployeeCode { get; set; }
+        [JsonProperty("source_id")]
+        public string SourceId { get; set; }
 
         public CreateTaskViewModel()
         {
@@ -73,12 +75,17 @@ namespace WorkManager.Data.ViewModels
     public class TaskGeneralFields
     {
         public const string INFO = "info";
+        public const string OF_USER = "of_user";
 
         public static readonly IDictionary<string, string[]> Mapping =
             new Dictionary<string, string[]>()
             {
                 {
-                    INFO, new string[]{ "Id","Name","Description", "CreatedTime","CreatedUser" }
+                    INFO, new string[]{ "Id","Name","TaskContent", "Status","Deadline", "OfUser" }
+                },
+                {
+                    OF_USER, new string[]{ "OfUserNavigation.Id", "OfUserNavigation.UserName",
+                        "OfUserNavigation.FullName" }
                 },
             };
     }
@@ -91,7 +98,10 @@ namespace WorkManager.Data.ViewModels
     public class TaskFilter
     {
         public int[] ids { get; set; }
-        public string[] name_contains { get; set; }
+        public DateTime? from_date { get; set; }
+        public DateTime? to_date { get; set; }
+        public string status { get; set; }
+        public string employee_code { get; set; }
     }
 
 }

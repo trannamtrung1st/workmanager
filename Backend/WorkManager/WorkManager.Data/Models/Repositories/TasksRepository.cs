@@ -10,7 +10,7 @@ namespace WorkManager.Data.Models.Repositories
         #region CREATE
         Tasks Convert(CreateTaskViewModel model);
         Tasks PrepareCreate(Tasks model);
-        Tasks Create(CreateTaskViewModel model, string createdUserId);
+        Tasks Create(CreateTaskViewModel model, AppUsers ofUser, string createdUserId);
         #endregion
 
         #region UPDATE
@@ -35,12 +35,13 @@ namespace WorkManager.Data.Models.Repositories
             model.Deadline = model.Deadline?.ToUniversalTime();
             return model;
         }
-        public Tasks Create(CreateTaskViewModel model, string createdUserId)
+        public Tasks Create(CreateTaskViewModel model, AppUsers ofUser, string createdUserId)
         {
             var entity = Convert(model);
             entity = PrepareCreate(entity);
 
             entity.CreatedUser = createdUserId;
+            entity.OfUser = ofUser.Id;
             entity = Create(entity).Entity;
             return entity;
         }

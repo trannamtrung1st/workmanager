@@ -15,14 +15,19 @@ const styles = StyleSheet.create({
   itemTime: {
     fontStyle: "italic",
     color: COLOR.gray
+  },
+  link: {
+    color: COLOR.primaryBlue
   }
 });
 const listItem = [commonStyles.w100, styles.listItem];
 const itemNameContainer = [commonStyles.flexRow];
 const itemName = [commonStyles.fontWeightBold];
 const itemTime = [commonStyles.textRight, styles.itemTime];
+const link = [styles.link];
 
 const s = {
+  link,
   listItem,
   itemNameContainer,
   itemName,

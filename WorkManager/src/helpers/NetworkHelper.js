@@ -14,10 +14,10 @@ export default {
 function toQuery(obj) {
   let str = [];
   for (let k in obj) {
-    if (!Array.isArray(obj[k])) str.push(k + "=" + obj[k]);
+    if (!Array.isArray(obj[k])) str.push(k + "=" + (obj[k] ?? ""));
     else
       obj[k].forEach(element => {
-        str.push(k + "=" + element);
+        str.push(k + "=" + (element ?? ""));
       });
   }
   return str.join("&");
