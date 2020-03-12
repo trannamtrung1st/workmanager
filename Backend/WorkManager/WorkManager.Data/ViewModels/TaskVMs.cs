@@ -39,8 +39,8 @@ namespace WorkManager.Data.ViewModels
         public string Description { get; set; }
         [JsonProperty("deadline")]
         public DateTime? Deadline { get; set; }
-        [JsonProperty("of_user")]
-        public string OfUser { get; set; }
+        [JsonProperty("employee_code")]
+        public string EmployeeCode { get; set; }
 
         public CreateTaskViewModel()
         {

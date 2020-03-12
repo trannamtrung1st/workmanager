@@ -83,6 +83,10 @@ namespace WorkManager.Data.Domains
         {
             return await _userManager.FindByIdAsync(id);
         }
+        public AppUsers GetUserByEmpCode(string code)
+        {
+            return _userManager.Users.FirstOrDefault(u => u.EmployeeCode == code);
+        }
 
         public object GetUserProfile(AppUsers user)
         {

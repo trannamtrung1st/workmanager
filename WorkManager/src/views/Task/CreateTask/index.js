@@ -12,6 +12,7 @@ import s from "./style";
 import { HookHelper } from "@trannamtrung1st/t-components";
 import { Database } from "$services";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { TaskApi } from "$api";
 
 function CreateTask(props) {
   const { navigation, route } = props;
@@ -43,6 +44,29 @@ function CreateTask(props) {
 
   function onSuccess(user) {
     _changeData("employee_code", user.employee_code);
+  }
+
+  function _onSubmit() {
+    TaskApi.create(
+      data,
+      async resp => {
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
+        }
+
+        if (resp.ok) {
+          alert("Create successfully");
+          navigation.goBack();
+        } else {
+          const data = await resp.json();
+          alert(data.message);
+        }
+      },
+      err => {
+        alert("Something's wrong");
+      }
+    );
   }
 
   return (
@@ -119,12 +143,7 @@ function CreateTask(props) {
           </View>
 
           <View style={s.btnInputContainer}>
-            <AppButton
-              text="SUBMIT"
-              onPress={() => {
-                navigation.goBack();
-              }}
-            />
+            <AppButton text="SUBMIT" onPress={_onSubmit} />
           </View>
         </View>
       </AppLayout>

@@ -1,3 +1,4 @@
 import UserApi from "./UserApi";
 import GroupApi from "./GroupApi";
-export { GroupApi, UserApi };
+import TaskApi from "./TaskApi";
+export { TaskApi, GroupApi, UserApi };
