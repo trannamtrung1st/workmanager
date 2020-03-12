@@ -1,5 +1,12 @@
-import { authFetch } from "$app-helpers";
+import { authFetch, toQuery } from "$app-helpers";
 import { API } from "$constants";
+
+function get(queryObj, response, error) {
+  const query = queryObj ? "?" + toQuery(queryObj) : "";
+  authFetch(API.endpoint + "groups" + query)
+    .then(response)
+    .catch(error);
+}
 
 function create(model, response, error) {
   authFetch(API.endpoint + "groups", {
@@ -12,6 +19,17 @@ function create(model, response, error) {
     .then(response)
     .catch(error);
 }
+
+function deleteGroup(id, response, error) {
+  authFetch(API.endpoint + "groups/" + id, {
+    method: "DELETE"
+  })
+    .then(response)
+    .catch(error);
+}
+
 export default {
+  deleteGroup,
+  get,
   create
 };

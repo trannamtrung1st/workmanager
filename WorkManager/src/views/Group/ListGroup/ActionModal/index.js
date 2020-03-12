@@ -5,6 +5,7 @@ import s from "./style";
 import Modal from "react-native-modal";
 import { ListGroupContext } from "$app-contexts";
 import { SCREENS } from "$constants";
+import { GroupApi } from "$api";
 
 function ActionModal(props) {
   const listGroupContext = useContext(ListGroupContext);
@@ -16,19 +17,28 @@ function ActionModal(props) {
   listGroupContext.setModalVisible = setModalVisible;
 
   function _onDeleteConfirmed() {
-    setModalVisible(reset);
-    Alert.alert(
-      "Message",
-      "Delete successfully",
-      [
-        {
-          text: "Ok",
-          onPress: () => {
-            listGroupContext.reload();
-          }
+    GroupApi.deleteGroup(
+      modalVisible.item.id,
+      async resp => {
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
         }
-      ],
-      { cancelable: false }
+
+        if (resp.ok) {
+          alert("Delete successfully");
+          setModalVisible(reset);
+          listGroupContext.reload();
+        } else {
+          const data = await resp.json();
+          console.log(data);
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
     );
   }
 

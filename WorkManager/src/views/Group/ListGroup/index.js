@@ -9,14 +9,52 @@ import { SCREENS } from "$constants";
 import GroupItem from "./GroupItem";
 import ActionModal from "./ActionModal";
 import { HookHelper } from "@trannamtrung1st/t-components";
+import { GroupApi } from "$api";
+import { useIsFocused } from "@react-navigation/native";
 
 function ListGroup(props) {
   const { navigation } = props;
-  const { groups } = Database;
   const forceUpdate = HookHelper.useForceUpdate();
   const [listGroupContext] = useState({
-    reload: forceUpdate
+    groups: null,
+    reload
   });
+
+  const isFocused = useIsFocused();
+  if (!isFocused) {
+    reset();
+    return null;
+  }
+
+  if (!listGroupContext.groups) listGroupContext.reload();
+  const groups = listGroupContext.groups ?? [];
+
+  function reload() {
+    GroupApi.get(
+      { fields: ["info"], limit: 1000 },
+      async resp => {
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
+        }
+        const data = await resp.json();
+        if (resp.ok) {
+          listGroupContext.groups = data.data.results;
+          forceUpdate();
+        } else {
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
+  }
+
+  function reset() {
+    listGroupContext.groups = null;
+  }
 
   function _onCreatePress() {
     navigation.navigate(SCREENS.createGroup);

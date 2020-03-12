@@ -51,7 +51,12 @@ namespace WorkManager.WebApi.Controllers
                 var result = domain.GetGroupsData(filter,
                     sorts,
                     fields, page, limit, count_total);
-                return Ok(result);
+                return Ok(new ApiResult()
+                {
+                    Code = ResultCode.Success,
+                    Data = result,
+                    Message = ResultCode.Success.DisplayName()
+                });
             }
             catch (Exception e)
             {
