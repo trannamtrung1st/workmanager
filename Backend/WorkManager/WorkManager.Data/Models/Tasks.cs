@@ -16,12 +16,13 @@ namespace WorkManager.Data.Models
         public string TaskContent { get; set; }
         public string TaskReport { get; set; }
         public string ManagerReview { get; set; }
-        public int Mark { get; set; }
-        public DateTime ReviewTime { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public int? Mark { get; set; }
+        public DateTime? ReviewTime { get; set; }
+        public DateTime? StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
+        public DateTime? Deadline { get; set; }
         public string Status { get; set; }
-        public DateTime CreatedTime { get; set; }
+        public DateTime? CreatedTime { get; set; }
         public string CreatedUser { get; set; }
         public string OfUser { get; set; }
         public string ConfirmImage { get; set; }

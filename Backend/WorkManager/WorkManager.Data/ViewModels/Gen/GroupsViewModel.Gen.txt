@@ -14,7 +14,7 @@ namespace WorkManager.Data.ViewModels
 		//[JsonProperty("id")]
 		public int Id { get; set; }
 		//[JsonProperty("created_time")]
-		public DateTime CreatedTime { get; set; }
+		public DateTime? CreatedTime { get; set; }
 		//[JsonProperty("created_user")]
 		public string CreatedUser { get; set; }
 		//[JsonProperty("description")]
@@ -41,7 +41,7 @@ namespace WorkManager.Data.ViewModels
 		//[JsonProperty("id")]
 		public Wrapper<int> Id { get; set; }
 		//[JsonProperty("created_time")]
-		public Wrapper<DateTime> CreatedTime { get; set; }
+		public Wrapper<DateTime?> CreatedTime { get; set; }
 		//[JsonProperty("created_user")]
 		public Wrapper<string> CreatedUser { get; set; }
 		//[JsonProperty("description")]

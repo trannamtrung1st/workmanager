@@ -16,25 +16,27 @@ namespace WorkManager.Data.ViewModels
 		//[JsonProperty("confirm_image")]
 		public string ConfirmImage { get; set; }
 		//[JsonProperty("created_time")]
-		public DateTime CreatedTime { get; set; }
+		public DateTime? CreatedTime { get; set; }
 		//[JsonProperty("created_user")]
 		public string CreatedUser { get; set; }
+		//[JsonProperty("deadline")]
+		public DateTime? Deadline { get; set; }
 		//[JsonProperty("end_time")]
-		public DateTime EndTime { get; set; }
+		public DateTime? EndTime { get; set; }
 		//[JsonProperty("manager_review")]
 		public string ManagerReview { get; set; }
 		//[JsonProperty("mark")]
-		public int Mark { get; set; }
+		public int? Mark { get; set; }
 		//[JsonProperty("name")]
 		public string Name { get; set; }
 		//[JsonProperty("of_user")]
 		public string OfUser { get; set; }
 		//[JsonProperty("review_time")]
-		public DateTime ReviewTime { get; set; }
+		public DateTime? ReviewTime { get; set; }
 		//[JsonProperty("source_id")]
 		public int? SourceId { get; set; }
 		//[JsonProperty("start_time")]
-		public DateTime StartTime { get; set; }
+		public DateTime? StartTime { get; set; }
 		//[JsonProperty("status")]
 		public string Status { get; set; }
 		//[JsonProperty("task_content")]
@@ -67,25 +69,27 @@ namespace WorkManager.Data.ViewModels
 		//[JsonProperty("confirm_image")]
 		public Wrapper<string> ConfirmImage { get; set; }
 		//[JsonProperty("created_time")]
-		public Wrapper<DateTime> CreatedTime { get; set; }
+		public Wrapper<DateTime?> CreatedTime { get; set; }
 		//[JsonProperty("created_user")]
 		public Wrapper<string> CreatedUser { get; set; }
+		//[JsonProperty("deadline")]
+		public Wrapper<DateTime?> Deadline { get; set; }
 		//[JsonProperty("end_time")]
-		public Wrapper<DateTime> EndTime { get; set; }
+		public Wrapper<DateTime?> EndTime { get; set; }
 		//[JsonProperty("manager_review")]
 		public Wrapper<string> ManagerReview { get; set; }
 		//[JsonProperty("mark")]
-		public Wrapper<int> Mark { get; set; }
+		public Wrapper<int?> Mark { get; set; }
 		//[JsonProperty("name")]
 		public Wrapper<string> Name { get; set; }
 		//[JsonProperty("of_user")]
 		public Wrapper<string> OfUser { get; set; }
 		//[JsonProperty("review_time")]
-		public Wrapper<DateTime> ReviewTime { get; set; }
+		public Wrapper<DateTime?> ReviewTime { get; set; }
 		//[JsonProperty("source_id")]
 		public Wrapper<int?> SourceId { get; set; }
 		//[JsonProperty("start_time")]
-		public Wrapper<DateTime> StartTime { get; set; }
+		public Wrapper<DateTime?> StartTime { get; set; }
 		//[JsonProperty("status")]
 		public Wrapper<string> Status { get; set; }
 		//[JsonProperty("task_content")]

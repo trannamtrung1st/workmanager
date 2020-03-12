@@ -20,7 +20,7 @@ namespace WorkManager.Data.ViewModels
 		//[JsonProperty("message")]
 		public string Message { get; set; }
 		//[JsonProperty("time")]
-		public DateTime Time { get; set; }
+		public DateTime? Time { get; set; }
 		//[JsonProperty("user_id")]
 		public string UserId { get; set; }
 		//[JsonProperty("user")]
@@ -47,7 +47,7 @@ namespace WorkManager.Data.ViewModels
 		//[JsonProperty("message")]
 		public Wrapper<string> Message { get; set; }
 		//[JsonProperty("time")]
-		public Wrapper<DateTime> Time { get; set; }
+		public Wrapper<DateTime?> Time { get; set; }
 		//[JsonProperty("user_id")]
 		public Wrapper<string> UserId { get; set; }
 		//[JsonProperty("user")]

@@ -22,7 +22,7 @@ namespace WorkManager.Data.ViewModels
 		//[JsonProperty("level")]
 		public string Level { get; set; }
 		//[JsonProperty("logged")]
-		public DateTime Logged { get; set; }
+		public DateTime? Logged { get; set; }
 		//[JsonProperty("logger")]
 		public string Logger { get; set; }
 		//[JsonProperty("machine_name")]
@@ -57,7 +57,7 @@ namespace WorkManager.Data.ViewModels
 		//[JsonProperty("level")]
 		public Wrapper<string> Level { get; set; }
 		//[JsonProperty("logged")]
-		public Wrapper<DateTime> Logged { get; set; }
+		public Wrapper<DateTime?> Logged { get; set; }
 		//[JsonProperty("logger")]
 		public Wrapper<string> Logger { get; set; }
 		//[JsonProperty("machine_name")]

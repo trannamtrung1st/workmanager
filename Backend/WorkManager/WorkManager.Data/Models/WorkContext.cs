@@ -162,22 +162,16 @@ namespace WorkManager.Data.Models
             modelBuilder.Entity<Events>(entity =>
             {
                 entity.Property(e => e.Action)
-                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Message).IsRequired();
-
                 entity.Property(e => e.Time).HasColumnType("datetime");
 
-                entity.Property(e => e.UserId)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.UserId).HasMaxLength(100);
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Events)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Events_AspNetUsers");
             });
 
@@ -186,20 +180,16 @@ namespace WorkManager.Data.Models
                 entity.HasIndex(e => new { e.GroupId, e.UserId })
                     .HasName("IX_GroupUsers");
 
-                entity.Property(e => e.UserId)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.UserId).HasMaxLength(100);
 
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.GroupUsers)
                     .HasForeignKey(d => d.GroupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_GroupUsers_Groups");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.GroupUsers)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_GroupUsers_AspNetUsers");
             });
 
@@ -207,40 +197,27 @@ namespace WorkManager.Data.Models
             {
                 entity.Property(e => e.CreatedTime).HasColumnType("datetime");
 
-                entity.Property(e => e.CreatedUser)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.CreatedUser).HasMaxLength(100);
 
-                entity.Property(e => e.Description)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.Description).HasMaxLength(500);
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(255);
+                entity.Property(e => e.Name).HasMaxLength(255);
 
                 entity.HasOne(d => d.CreatedUserNavigation)
                     .WithMany(p => p.Groups)
                     .HasForeignKey(d => d.CreatedUser)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Groups_AspNetUsers");
             });
 
             modelBuilder.Entity<Logs>(entity =>
             {
-                entity.Property(e => e.Level)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.Level).HasMaxLength(50);
 
                 entity.Property(e => e.Logged).HasColumnType("datetime");
 
                 entity.Property(e => e.Logger).HasMaxLength(250);
 
-                entity.Property(e => e.MachineName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Message).IsRequired();
+                entity.Property(e => e.MachineName).HasMaxLength(50);
 
                 entity.Property(e => e.UserId).HasMaxLength(100);
 
@@ -256,45 +233,32 @@ namespace WorkManager.Data.Models
             {
                 entity.Property(e => e.CreatedTime).HasColumnType("datetime");
 
-                entity.Property(e => e.CreatedUser)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.CreatedUser).HasMaxLength(100);
+
+                entity.Property(e => e.Deadline).HasColumnType("datetime");
 
                 entity.Property(e => e.EndTime).HasColumnType("datetime");
 
-                entity.Property(e => e.ManagerReview).IsRequired();
+                entity.Property(e => e.Name).HasMaxLength(255);
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(255);
-
-                entity.Property(e => e.OfUser)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.OfUser).HasMaxLength(100);
 
                 entity.Property(e => e.ReviewTime).HasColumnType("datetime");
 
                 entity.Property(e => e.StartTime).HasColumnType("datetime");
 
                 entity.Property(e => e.Status)
-                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
-
-                entity.Property(e => e.TaskContent).IsRequired();
-
-                entity.Property(e => e.TaskReport).IsRequired();
 
                 entity.HasOne(d => d.CreatedUserNavigation)
                     .WithMany(p => p.TasksCreatedUserNavigation)
                     .HasForeignKey(d => d.CreatedUser)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Tasks_AspNetUsers");
 
                 entity.HasOne(d => d.OfUserNavigation)
                     .WithMany(p => p.TasksOfUserNavigation)
                     .HasForeignKey(d => d.OfUser)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Tasks_AspNetUsers1");
 
                 entity.HasOne(d => d.Source)

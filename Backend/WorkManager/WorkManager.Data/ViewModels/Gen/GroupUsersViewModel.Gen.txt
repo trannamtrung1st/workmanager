@@ -14,7 +14,7 @@ namespace WorkManager.Data.ViewModels
 		//[JsonProperty("id")]
 		public int Id { get; set; }
 		//[JsonProperty("group_id")]
-		public int GroupId { get; set; }
+		public int? GroupId { get; set; }
 		//[JsonProperty("user_id")]
 		public string UserId { get; set; }
 		//[JsonProperty("group")]
@@ -37,7 +37,7 @@ namespace WorkManager.Data.ViewModels
 		//[JsonProperty("id")]
 		public Wrapper<int> Id { get; set; }
 		//[JsonProperty("group_id")]
-		public Wrapper<int> GroupId { get; set; }
+		public Wrapper<int?> GroupId { get; set; }
 		//[JsonProperty("user_id")]
 		public Wrapper<string> UserId { get; set; }
 		//[JsonProperty("group")]
