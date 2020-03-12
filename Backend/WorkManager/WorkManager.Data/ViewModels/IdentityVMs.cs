@@ -157,6 +157,7 @@ namespace WorkManager.Data.ViewModels
         public string[] ids { get; set; }
         public string[] name_contains { get; set; }
         public string username { get; set; }
+        public string employee_code { get; set; }
     }
 
 }

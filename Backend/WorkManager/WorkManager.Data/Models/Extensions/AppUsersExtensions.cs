@@ -20,6 +20,8 @@ namespace WorkManager.Data.Models.Extensions
                 filter.name_contains.Any(s => p.FullName.Contains(s, StringComparison.OrdinalIgnoreCase)));
             if (filter.username != null)
                 query = query.Where(p => p.UserName == filter.username);
+            if (filter.employee_code != null)
+                query = query.Where(p => p.EmployeeCode == filter.employee_code);
             return query;
         }
 

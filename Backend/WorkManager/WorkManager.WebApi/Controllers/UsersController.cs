@@ -118,7 +118,7 @@ namespace WorkManager.WebApi.Controllers
 
 
         [HttpGet("")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Get([FromQuery]UserFilter filter,
             [FromQuery]string[] sorts,
             [FromQuery]string[] fields,

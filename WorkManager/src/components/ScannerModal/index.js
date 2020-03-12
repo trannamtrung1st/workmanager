@@ -1,37 +1,52 @@
 import React, { useRef, useState, useContext } from "react";
 import { View, Text, Alert, Modal } from "react-native";
 import { AppButton } from "$components";
-import { Database } from "$services";
 import s from "./style";
 import QRCodeScanner from "react-native-qrcode-scanner";
+import { UserApi } from "$api";
 
 function ScannerModal(props) {
   const { context, onSuccess } = props;
-  const { users } = Database;
   const scannerRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
   context.setScannerOpen = setModalVisible;
 
   function _onSuccess(e) {
-    const user = users.filter(u => u.employee_code == e.data)[0];
-    if (!user) {
-      Alert.alert(
-        "Message",
-        "Not found",
-        [
-          {
-            text: "Ok",
-            onPress: () => {
-              scannerRef.current.reactivate();
-            }
+    UserApi.getUsers(
+      { fields: ["info", "role"], employee_code: e.data },
+      async resp => {
+        if (resp.status == 401 || resp.status == 403)
+          alert("Unauthorized or access denied");
+        const data = await resp.json();
+        if (resp.ok) {
+          const user = data.data.results[0];
+          if (!user) {
+            Alert.alert(
+              "Message",
+              "Not found",
+              [
+                {
+                  text: "Ok",
+                  onPress: () => {
+                    scannerRef.current.reactivate();
+                  }
+                }
+              ],
+              { cancelable: false }
+            );
+            return;
           }
-        ],
-        { cancelable: false }
-      );
-      return;
-    }
-    setModalVisible(false);
-    if (onSuccess) onSuccess(user);
+          setModalVisible(false);
+          if (onSuccess) onSuccess(user);
+        } else {
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
   }
 
   return (
