@@ -23,6 +23,13 @@ namespace WorkManager.Data.Domains
                 return _uow.GetService<IGroupsRepository>().Get();
             }
         }
+        public IQueryable<GroupUsers> GroupUsers
+        {
+            get
+            {
+                return _uow.GetService<IGroupUsersRepository>().Get();
+            }
+        }
 
         public Groups CreateGroup(CreateGroupViewModel model, ClaimsPrincipal principal)
         {
@@ -46,23 +53,27 @@ namespace WorkManager.Data.Domains
             return entity;
         }
 
-        public GroupUsers AddUserToGroup(AddUserToGroupViewModel model)
+        public GroupUsers RemoveUserFromGroup(GroupUsers group)
+        {
+            var repo = _uow.GetService<IGroupUsersRepository>();
+            return repo.Remove(group).Entity;
+        }
+
+        public GroupUsers AddUserToGroup(Groups group, AppUsers user)
         {
             var repo = _uow.GetService<IGroupUsersRepository>();
             var iDomain = _uow.GetService<IdentityDomain>();
             var roleUser = iDomain.GetRoleByName("User");
             return repo.Create(new GroupUsers
             {
-                GroupId = model.group_id,
-                UserId = model.user_id,
+                GroupId = group.Id,
+                UserId = user.Id,
                 RoleId = roleUser.Id
             }).Entity;
         }
 
-        public GroupUsers ChangeUserRoleInGroup(ChangeUserRoleInGroupViewModel model)
+        public GroupUsers ChangeUserRoleInGroup(GroupUsers groupUser)
         {
-            var repo = _uow.GetService<IGroupUsersRepository>();
-            var groupUser = repo.Get().Id(model.user_role_id);
             var iDomain = _uow.GetService<IdentityDomain>();
             AppRoles role;
             if (groupUser.Role.Name.Equals("User"))

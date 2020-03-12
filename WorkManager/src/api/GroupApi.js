@@ -28,7 +28,59 @@ function deleteGroup(id, response, error) {
     .catch(error);
 }
 
+function edit(model, response, error) {
+  authFetch(API.endpoint + "groups/" + model.id, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(model)
+  })
+    .then(response)
+    .catch(error);
+}
+
+function addUserToGroup(model, response, error) {
+  authFetch(API.endpoint + "groups/user", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(model)
+  })
+    .then(response)
+    .catch(error);
+}
+
+function removeUserFromGroup(id, response, error) {
+  authFetch(API.endpoint + "groups/user", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ id })
+  })
+    .then(response)
+    .catch(error);
+}
+
+function changeUserRoleInGroup(id, response, error) {
+  authFetch(API.endpoint + "groups/user", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ id })
+  })
+    .then(response)
+    .catch(error);
+}
+
 export default {
+  removeUserFromGroup,
+  changeUserRoleInGroup,
+  addUserToGroup,
+  edit,
   deleteGroup,
   get,
   create

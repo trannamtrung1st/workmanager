@@ -48,6 +48,11 @@ namespace WorkManager.Data.ViewModels
 
     }
 
+    public class RemoveUserFromGroupViewModel
+    {
+        public int id { get; set; }
+    }
+
     public class AddUserToGroupViewModel
     {
         public string user_id { get; set; }
@@ -55,7 +60,7 @@ namespace WorkManager.Data.ViewModels
     }
     public class ChangeUserRoleInGroupViewModel
     {
-        public int user_role_id { get; set; }
+        public int id { get; set; }
     }
 
     public class EditGroupViewModel : BaseViewModel<Groups>
@@ -87,6 +92,9 @@ namespace WorkManager.Data.ViewModels
             {
                 {
                     INFO, new string[]{ "Id","Name","Description", "CreatedTime","CreatedUser" }
+                },
+                {
+                    GROUP_USERS, new string[]{ "GroupUsers"}
                 },
                 {
                     CREATED_USER, new string[]{

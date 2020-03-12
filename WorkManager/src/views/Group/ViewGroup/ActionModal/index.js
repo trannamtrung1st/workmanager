@@ -1,34 +1,70 @@
 import React, { useState, useContext } from "react";
-import { View, Alert } from "react-native";
+import { View, Alert, Group } from "react-native";
 import { AppButton } from "$components";
 import s from "./style";
 import Modal from "react-native-modal";
 import { ViewGroupContext } from "$app-contexts";
+import { GroupApi } from "$api";
 
 function ActionModal(props) {
+  const reset = {
+    item: null,
+    show: false
+  };
   const viewGroupContext = useContext(ViewGroupContext);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(reset);
   viewGroupContext.setModalVisible = setModalVisible;
 
-  function _onChoosePress() {
-    setModalVisible(false);
-    viewGroupContext.reload();
+  function _onChangePress() {
+    console.log(modalVisible.item.id);
+    GroupApi.changeUserRoleInGroup(
+      modalVisible.item.id,
+      async resp => {
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
+        }
+
+        if (resp.ok) {
+          alert("Change role successfully");
+          setModalVisible(reset);
+          viewGroupContext.reload();
+        } else {
+          const data = await resp.json();
+          console.log(data);
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
   }
 
   function _onRemoveConfirmed() {
-    setModalVisible(false);
-    Alert.alert(
-      "Message",
-      "Remove successfully",
-      [
-        {
-          text: "Ok",
-          onPress: () => {
-            viewGroupContext.reload();
-          }
+    GroupApi.removeUserFromGroup(
+      modalVisible.item.id,
+      async resp => {
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
         }
-      ],
-      { cancelable: false }
+
+        if (resp.ok) {
+          alert("Remove successfully");
+          setModalVisible(reset);
+          viewGroupContext.reload();
+        } else {
+          const data = await resp.json();
+          console.log(data);
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
     );
   }
 
@@ -59,14 +95,11 @@ function ActionModal(props) {
       backdropTransitionInTiming={-1}
       backdropTransitionOutTiming={-1}
       style={s.actionModal}
-      isVisible={modalVisible}
+      isVisible={modalVisible.show}
       onBackdropPress={() => setModalVisible(false)}
     >
       <View style={s.formItemContainer}>
-        <AppButton
-          text="CHOOSE TO BE GROUP'S MANAGER"
-          onPress={_onChoosePress}
-        />
+        <AppButton text="CHANGE ROLE" onPress={_onChangePress} />
       </View>
       <View style={s.formItemContainer}>
         <AppButton type="danger" text="REMOVE" onPress={_onRemovePress} />

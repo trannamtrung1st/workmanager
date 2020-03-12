@@ -6,23 +6,54 @@ import { ViewGroupContext } from "$app-contexts";
 import s from "./style";
 import { HookHelper } from "@trannamtrung1st/t-components";
 import ActionModal from "./ActionModal";
+import { GroupApi } from "$api";
 
 function ViewGroup(props) {
   const { navigation, route } = props;
-  const group = route.params.group;
+  const groupId = route.params.group.id;
   const { users } = Database;
   const forceUpdate = HookHelper.useForceUpdate();
   const [viewGroupContext] = useState({
-    reload: forceUpdate,
-    data: {
-      id: group.id,
-      name: group.name,
-      description: group.description,
-      created_time: group.created_time,
-      created_user: group.created_user
-    }
+    reload,
+    data: null
   });
   const data = viewGroupContext.data;
+  if (data == null) {
+    reload();
+    return null;
+  }
+
+  function reload() {
+    GroupApi.get(
+      {
+        fields: ["info", "created_user", "group_users"],
+        ids: groupId
+      },
+      async resp => {
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
+        }
+
+        const data = await resp.json();
+        if (resp.ok) {
+          const group = data.data.results[0];
+          if (!group) {
+            alert("Not found");
+            return;
+          }
+          viewGroupContext.data = group;
+          forceUpdate();
+        } else {
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
+  }
 
   function _changeData(name, val) {
     data[name] = val;
@@ -36,9 +67,55 @@ function ViewGroup(props) {
     });
   }
 
+  function _onUpdate() {
+    GroupApi.edit(
+      data,
+      async resp => {
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
+        }
+
+        if (resp.ok) {
+          alert("Update successfully");
+          forceUpdate();
+        } else {
+          const data = await resp.json();
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
+  }
+
   function onSuccess(user) {
-    alert("Add " + user.username + " successfully");
-    forceUpdate();
+    GroupApi.addUserToGroup(
+      {
+        user_id: user.id,
+        group_id: viewGroupContext.data.id
+      },
+      async resp => {
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
+        }
+
+        if (resp.ok) {
+          alert("Add " + user.username + " successfully");
+          reload();
+        } else {
+          const data = await resp.json();
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
   }
 
   return (
@@ -72,7 +149,7 @@ function ViewGroup(props) {
             <View style={s.formItemContainer}>
               <Text>
                 Created user:
-                <Text style={s.link}> {data.created_user}</Text>
+                <Text style={s.link}> {data.created_user.username}</Text>
               </Text>
             </View>
 
@@ -91,7 +168,7 @@ function ViewGroup(props) {
             </View>
 
             <View style={s.btnInputContainer}>
-              <AppButton text="UPDATE" onPress={() => {}} />
+              <AppButton text="UPDATE" onPress={_onUpdate} />
             </View>
           </View>
 
@@ -105,30 +182,37 @@ function ViewGroup(props) {
               />
             </View>
 
-            <FlatList
-              style={s.formItemContainer}
-              data={users}
-              renderItem={({ item }) => {
-                return (
-                  <View style={s.formItemContainer}>
-                    <TouchableOpacity
-                      style={s.tblRow}
-                      onPress={() => _onUserPress(item)}
-                    >
-                      <Text>
-                        {item.full_name + ": " + item.username + " "}
-                        {item.username == data.created_user ? (
-                          <Text style={s.bold}>{"(Manager)"}</Text>
-                        ) : (
-                          ""
-                        )}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                );
-              }}
-              keyExtractor={item => item.id}
-            />
+            {viewGroupContext.data.group_users.length ? (
+              <FlatList
+                style={s.formItemContainer}
+                data={viewGroupContext.data.group_users}
+                renderItem={({ item }) => {
+                  return (
+                    <View style={s.formItemContainer}>
+                      <TouchableOpacity
+                        style={s.tblRow}
+                        onPress={() => _onUserPress(item)}
+                      >
+                        <Text>
+                          {item.user.full_name +
+                            ": " +
+                            item.user.username +
+                            " "}
+                          {item.role == "Manager" ? (
+                            <Text style={s.bold}>{"(Manager)"}</Text>
+                          ) : (
+                            ""
+                          )}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                }}
+                keyExtractor={item => item.id}
+              />
+            ) : (
+              <Text>This group doesn't have any member</Text>
+            )}
           </View>
         </View>
         <ActionModal />

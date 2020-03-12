@@ -156,6 +156,138 @@ namespace WorkManager.WebApi.Controllers
             }
         }
 
+        [HttpPost("user")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddUserToGroup(AddUserToGroupViewModel model)
+        {
+            try
+            {
+                var iDomain = Service<IdentityDomain>();
+                var domain = Service<GroupDomain>();
+                var addedUser = await iDomain.GetUserById(model.user_id);
+                var group = domain.Groups.Id(model.group_id);
+                if (addedUser == null || group == null)
+                    return NotFound(new ApiResult
+                    {
+                        Code = ResultCode.NotFound,
+                        Data = null,
+                        Message = ResultCode.NotFound.DisplayName()
+                    });
+                var mess = "";
+                if (group.GroupUsers.Any(u => u.UserId == addedUser.Id))
+                    mess += "User already in group\n";
+                var roles = await iDomain.GetRoles(addedUser);
+                if (roles.Contains("Admin"))
+                    mess += "Can not add admin to a group\n";
+                if (!string.IsNullOrEmpty(mess))
+                    return BadRequest(new ApiResult
+                    {
+                        Code = ResultCode.FailValidation,
+                        Message = mess,
+                        Data = null
+                    });
+
+                var entity = domain.AddUserToGroup(group, addedUser);
+                _uow.SaveChanges();
+                _logger.CustomProperties(new { model }).Info("Add user to group");
+
+                return Ok(entity.Id);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                return Error(new ApiResult()
+                {
+                    Code = ResultCode.UnknownError,
+                    Message = ResultCode.UnknownError.DisplayName() + ": " + e.Message
+                });
+            }
+        }
+
+        [HttpDelete("user")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult RemoveUserFromGroup(RemoveUserFromGroupViewModel model)
+        {
+            try
+            {
+                var domain = Service<GroupDomain>();
+                var groupUser = domain.GroupUsers.Id(model.id);
+                if (groupUser == null)
+                    return NotFound(new ApiResult
+                    {
+                        Code = ResultCode.NotFound,
+                        Data = null,
+                        Message = ResultCode.NotFound.DisplayName()
+                    });
+
+                var entity = domain.RemoveUserFromGroup(groupUser);
+                _uow.SaveChanges();
+                _logger.CustomProperties(new { model }).Info("Remove user from group");
+
+                return Ok(entity.Id);
+            }
+            catch (SqlException)
+            {
+                return BadRequest(new ApiResult()
+                {
+                    Code = ResultCode.FailValidation,
+                    Data = null,
+                    Message = "Can not delete because group has dependencies"
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                return Error(new ApiResult()
+                {
+                    Code = ResultCode.UnknownError,
+                    Message = ResultCode.UnknownError.DisplayName() + ": " + e.Message
+                });
+            }
+        }
+
+        [HttpPatch("user")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult ChangeUserRoleInGroup(ChangeUserRoleInGroupViewModel model)
+        {
+            try
+            {
+                var domain = Service<GroupDomain>();
+                var groupUser = domain.GroupUsers.Id(model.id);
+                if (groupUser == null)
+                    return NotFound(new ApiResult
+                    {
+                        Code = ResultCode.NotFound,
+                        Data = null,
+                        Message = ResultCode.NotFound.DisplayName()
+                    });
+
+                var entity = domain.ChangeUserRoleInGroup(groupUser);
+                _uow.SaveChanges();
+                _logger.CustomProperties(new { model }).Info("Change user role in group");
+
+                return Ok(entity.Id);
+            }
+            catch (SqlException)
+            {
+                return BadRequest(new ApiResult()
+                {
+                    Code = ResultCode.FailValidation,
+                    Data = null,
+                    Message = "Can not delete because group has dependencies"
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                return Error(new ApiResult()
+                {
+                    Code = ResultCode.UnknownError,
+                    Message = ResultCode.UnknownError.DisplayName() + ": " + e.Message
+                });
+            }
+        }
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)

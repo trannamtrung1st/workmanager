@@ -42,6 +42,7 @@ function CreateGroup(props) {
         }
       },
       err => {
+        console.log(err);
         alert("Something's wrong");
       }
     );
