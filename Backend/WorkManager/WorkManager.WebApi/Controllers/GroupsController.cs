@@ -309,17 +309,16 @@ namespace WorkManager.WebApi.Controllers
 
                 return NoContent();
             }
-            catch (SqlException)
-            {
-                return BadRequest(new ApiResult()
-                {
-                    Code = ResultCode.FailValidation,
-                    Data = null,
-                    Message = "Can not delete because group has dependencies"
-                });
-            }
             catch (Exception e)
             {
+                if (e.InnerException != null
+                    && e.InnerException.GetType() == typeof(SqlException))
+                    return BadRequest(new ApiResult()
+                    {
+                        Code = ResultCode.FailValidation,
+                        Data = null,
+                        Message = "Can not delete because group has dependencies"
+                    });
                 _logger.Error(e);
                 return Error(new ApiResult()
                 {

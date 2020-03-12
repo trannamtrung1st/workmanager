@@ -22,6 +22,9 @@ namespace WorkManager.Data.Global
                 cfg.CreateMap<Groups, GroupsViewModel>().ReverseMap();
                 cfg.CreateMap<Groups, CreateGroupViewModel>().ReverseMap();
                 cfg.CreateMap<Groups, EditGroupViewModel>().ReverseMap();
+                cfg.CreateMap<Tasks, TasksViewModel>().ReverseMap();
+                cfg.CreateMap<Tasks, CreateTaskViewModel>().ReverseMap();
+                cfg.CreateMap<Tasks, EditTaskViewModel>().ReverseMap();
             });
             ConfigureAutomapper();
             ConfigureIoC(services);
@@ -31,6 +34,7 @@ namespace WorkManager.Data.Global
             services.AddScoped<IdentityDomain>();
             services.AddScoped<EventDomain>();
             services.AddScoped<GroupDomain>();
+            services.AddScoped<TaskDomain>();
 
             Random = new Random();
         }
