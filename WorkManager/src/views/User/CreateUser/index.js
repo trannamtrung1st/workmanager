@@ -20,7 +20,6 @@ function CreateUser(props) {
       phone: null,
       full_name: null,
       employee_code: null,
-      role: "User"
     }
   });
   const data = createUserContext.data;
@@ -152,21 +151,6 @@ function CreateUser(props) {
                 onChangeText={t => _changeData("employee_code", t)}
                 value={data.employee_code}
               />
-            </View>
-          </View>
-
-          <View style={s.formItemContainer}>
-            <Text>Role</Text>
-            <View style={s.inputContainer}>
-              <Picker
-                mode="dropdown"
-                style={s.inputContainer}
-                selectedValue={data.role}
-                onValueChange={v => _changeData("role", v)}
-              >
-                <Picker.Item label="User" value="User" />
-                <Picker.Item label="Manager" value="Manager" />
-              </Picker>
             </View>
           </View>
 

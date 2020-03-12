@@ -9,6 +9,7 @@ namespace WorkManager.Data.Models
         {
             AspNetRoleClaims = new HashSet<AspNetRoleClaims>();
             AspNetUserRoles = new HashSet<AspNetUserRoles>();
+            GroupUsers = new HashSet<GroupUsers>();
         }
 
         public string Id { get; set; }
@@ -18,5 +19,6 @@ namespace WorkManager.Data.Models
 
         public virtual ICollection<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
+        public virtual ICollection<GroupUsers> GroupUsers { get; set; }
     }
 }

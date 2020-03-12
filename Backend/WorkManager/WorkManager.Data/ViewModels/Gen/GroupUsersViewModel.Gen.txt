@@ -15,10 +15,14 @@ namespace WorkManager.Data.ViewModels
 		public int Id { get; set; }
 		//[JsonProperty("group_id")]
 		public int? GroupId { get; set; }
+		//[JsonProperty("role_id")]
+		public string RoleId { get; set; }
 		//[JsonProperty("user_id")]
 		public string UserId { get; set; }
 		//[JsonProperty("group")]
 		//public GroupsViewModel GroupVM { get; set; }
+		//[JsonProperty("role")]
+		//public AspNetRolesViewModel RoleVM { get; set; }
 		//[JsonProperty("user")]
 		//public AspNetUsersViewModel UserVM { get; set; }
 		
@@ -38,10 +42,14 @@ namespace WorkManager.Data.ViewModels
 		public Wrapper<int> Id { get; set; }
 		//[JsonProperty("group_id")]
 		public Wrapper<int?> GroupId { get; set; }
+		//[JsonProperty("role_id")]
+		public Wrapper<string> RoleId { get; set; }
 		//[JsonProperty("user_id")]
 		public Wrapper<string> UserId { get; set; }
 		//[JsonProperty("group")]
 		//public GroupsViewModel GroupVM { get; set; }
+		//[JsonProperty("role")]
+		//public AspNetRolesViewModel RoleVM { get; set; }
 		//[JsonProperty("user")]
 		//public AspNetUsersViewModel UserVM { get; set; }
 		

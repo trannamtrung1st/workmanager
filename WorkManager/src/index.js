@@ -25,7 +25,6 @@ export default function App() {
       accessToken: G.tokenModel?.access_token,
       expiresUtc: G.tokenModel?.expires_utc,
       username: G.tokenModel?.username,
-      role: G.tokenModel?.role,
       employeeCode: G.tokenModel?.employee_code,
       userId: G.tokenModel?.user_id,
       logoutIntervalSet: false,

@@ -8,8 +8,10 @@ namespace WorkManager.Data.Models
         public int Id { get; set; }
         public int? GroupId { get; set; }
         public string UserId { get; set; }
+        public string RoleId { get; set; }
 
         public virtual Groups Group { get; set; }
+        public virtual AspNetRoles Role { get; set; }
         public virtual AspNetUsers User { get; set; }
     }
 }

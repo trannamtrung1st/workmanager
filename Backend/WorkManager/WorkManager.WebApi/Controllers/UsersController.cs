@@ -194,12 +194,11 @@ namespace WorkManager.WebApi.Controllers
                 if (ModelState.IsValid)
                 {
                     var user = _iDomain.ToUser(model);
-                    var result = await _iDomain.CreateUserWithRolesAsync(user, model.password,
-                        new List<string>() { model.role });
+                    var result = await _iDomain.CreateUserWithRolesAsync(user, model.password);
                     if (result.Succeeded)
                     {
                         _logger.CustomProperties(user).Info("Register new user");
-                        _eDomain.CreateUser(model, User);
+                        _eDomain.CreateUser(user, model, User);
                         _uow.SaveChanges();
 
                         return NoContent();
@@ -209,11 +208,11 @@ namespace WorkManager.WebApi.Controllers
                 }
 
                 var message = "";
-                if (ModelState.ContainsKey("Password"))
+                if (ModelState.ContainsKey("password"))
                     message += "Invalid password\n";
-                if (ModelState.ContainsKey("ConfirmPassword"))
+                if (ModelState.ContainsKey("confirm_password"))
                     message += "The password and confirm password are not matched\n";
-                if (ModelState.ContainsKey("Username"))
+                if (ModelState.ContainsKey("username"))
                     message += "Invalid username\n";
                 if (ModelState.ContainsKey("DuplicateUserName"))
                     message += "Username has already existed\n";
@@ -232,62 +231,6 @@ namespace WorkManager.WebApi.Controllers
                     Code = ResultCode.FailValidation,
                     Data = ModelState,
                     Message = message
-                });
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e);
-
-                return Error(new ApiResult()
-                {
-                    Code = ResultCode.UnknownError,
-                    Message = ResultCode.UnknownError.DisplayName() + ": " + e.Message
-                });
-            }
-        }
-
-        [HttpPut("role")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ChangeRole(ChangeRoleViewModel model)
-        {
-            try
-            {
-                var user = await _iDomain.GetUserById(model.user_id);
-                if (user == null)
-                    return NotFound(new ApiResult()
-                    {
-                        Code = ResultCode.NotFound,
-                        Data = null,
-                        Message = ResultCode.NotFound.DisplayName()
-                    });
-                var mess = "";
-                var roles = await _iDomain.GetRoles(user);
-                if (roles.Contains("Admin"))
-                    mess += "Can not change admin's role";
-                if (!string.IsNullOrEmpty(mess))
-                    return BadRequest(new ApiResult()
-                    {
-                        Code = ResultCode.FailValidation,
-                        Message = mess,
-                        Data = null
-                    });
-
-                using (var trans = _uow.BeginTransaction())
-                {
-                    var result = await _iDomain.ChangeRole(user, model.role);
-                    if (result.Succeeded)
-                    {
-                        trans.Commit();
-                        return NoContent();
-                    }
-                    foreach (var err in result.Errors)
-                        ModelState.AddModelError(err.Code, err.Description);
-                }
-                return BadRequest(new ApiResult()
-                {
-                    Code = ResultCode.FailValidation,
-                    Data = ModelState,
-                    Message = ResultCode.FailValidation.DisplayName()
                 });
             }
             catch (Exception e)
@@ -330,7 +273,11 @@ namespace WorkManager.WebApi.Controllers
 
                 var result = await _iDomain.Remove(user);
                 if (result.Succeeded)
+                {
+                    _eDomain.DeleteUser(user, User);
+                    _uow.SaveChanges();
                     return NoContent();
+                }
                 foreach (var err in result.Errors)
                     ModelState.AddModelError(err.Code, err.Description);
                 return BadRequest(new ApiResult()

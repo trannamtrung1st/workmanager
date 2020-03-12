@@ -58,33 +58,6 @@ function ActionModal(props) {
     );
   }
 
-  function _changeRole(role) {
-    UserApi.changeRole(
-      {
-        user_id: modalVisible.item.id,
-        role
-      },
-      async resp => {
-        if (resp.status == 401 || resp.status == 403)
-          alert("Unauthorized or access denied");
-
-        if (resp.ok) {
-          alert("Change role successfully");
-          setModalVisible(reset);
-          listUserContext.reload();
-        } else {
-          const data = await resp.json();
-          console.log(data);
-          alert(data.message);
-        }
-      },
-      err => {
-        console.log(err);
-        alert("Something's wrong");
-      }
-    );
-  }
-
   if (!modalVisible.item) return null;
 
   const modalChildren = [];
@@ -94,31 +67,12 @@ function ActionModal(props) {
         <Text>Nothing to perform</Text>
       </View>
     );
-  else {
-    if (modalVisible.item.role == "Manager")
-      modalChildren.push(
-        <View style={s.formItemContainer}>
-          <AppButton
-            text="CHANGE ROLE TO USER"
-            onPress={() => _changeRole("User")}
-          />
-        </View>
-      );
-    else
-      modalChildren.push(
-        <View style={s.formItemContainer}>
-          <AppButton
-            text="CHANGE ROLE TO MANAGER"
-            onPress={() => _changeRole("Manager")}
-          />
-        </View>
-      );
+  else
     modalChildren.push(
       <View style={s.formItemContainer}>
         <AppButton type="danger" text="DELETE" onPress={_onDeletePress} />
       </View>
     );
-  }
 
   return (
     <Modal

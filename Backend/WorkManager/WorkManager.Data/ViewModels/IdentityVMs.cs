@@ -102,9 +102,6 @@ namespace WorkManager.Data.ViewModels
         [Compare("password", ErrorMessage = "The password and confirmation password do not match.")]
         public string confirm_password { get; set; }
 
-        [JsonProperty("role")]
-        public string role { get; set; }
-
         [StringLength(50, ErrorMessage = "Employee code must have minimum length of 6 and maximum of 50", MinimumLength = 6)]
         [Required]
         [JsonProperty("employee_code")]

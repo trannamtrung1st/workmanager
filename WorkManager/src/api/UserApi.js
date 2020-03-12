@@ -61,20 +61,7 @@ function deleteUser(id, response, error) {
     .catch(error);
 }
 
-function changeRole(model, response, error) {
-  authFetch(API.endpoint + "users/role", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(model)
-  })
-    .then(response)
-    .catch(error);
-}
-
 export default {
-  changeRole,
   deleteUser,
   getUsers,
   register,

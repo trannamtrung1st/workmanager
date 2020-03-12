@@ -23,6 +23,8 @@ namespace WorkManager.Data.ViewModels
 		//public IEnumerable<AspNetRoleClaimsViewModel> AspNetRoleClaimsVM { get; set; }
 		//[JsonProperty("asp_net_user_roles")]
 		//public IEnumerable<AspNetUserRolesViewModel> AspNetUserRolesVM { get; set; }
+		//[JsonProperty("group_users")]
+		//public IEnumerable<GroupUsersViewModel> GroupUsersVM { get; set; }
 		
 		public AspNetRolesViewModel(AspNetRoles entity) : base(entity)
 		{
@@ -48,6 +50,8 @@ namespace WorkManager.Data.ViewModels
 		//public IEnumerable<AspNetRoleClaimsViewModel> AspNetRoleClaimsVM { get; set; }
 		//[JsonProperty("asp_net_user_roles")]
 		//public IEnumerable<AspNetUserRolesViewModel> AspNetUserRolesVM { get; set; }
+		//[JsonProperty("group_users")]
+		//public IEnumerable<GroupUsersViewModel> GroupUsersVM { get; set; }
 		
 	}
 }

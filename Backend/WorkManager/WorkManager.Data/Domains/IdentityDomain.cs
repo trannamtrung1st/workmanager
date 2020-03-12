@@ -115,16 +115,6 @@ namespace WorkManager.Data.Domains
             return await _userManager.RemoveFromRolesAsync(user, roles);
         }
 
-        public async Task<IdentityResult> ChangeRole(AppUsers user, string newRole)
-        {
-            var roles = user.UserRoles.Select(r => r.Role.Name).ToList();
-            var result = await RemoveUserFromRoles(user, roles);
-            if (!result.Succeeded)
-                return result;
-            result = await AddUserToRoles(user, new List<string>() { newRole });
-            return result;
-        }
-
         public AppUsers ToUser(RegisterViewModel model)
         {
             return new AppUsers
@@ -227,7 +217,7 @@ namespace WorkManager.Data.Domains
 
             resp.employee_code = identity.FindFirst(AppClaimTypes.EmployeeCode).Value;
             resp.username = identity.FindFirst(AppClaimTypes.Username).Value;
-            resp.role = identity.FindFirst(AppClaimTypes.Role).Value;
+            resp.role = identity.FindFirst(AppClaimTypes.Role)?.Value;
             resp.user_id = identity.Name;
 
             return resp;
@@ -275,7 +265,9 @@ namespace WorkManager.Data.Domains
                 claims.Add(new Claim(ClaimTypes.Role, r));
             identity.AddClaims(claims);
             identity.AddClaim(new Claim(AppClaimTypes.Username, user.UserName));
-            identity.AddClaim(new Claim(AppClaimTypes.Role, roles.FirstOrDefault()));
+            var role = roles.FirstOrDefault();
+            if (role != null)
+                identity.AddClaim(new Claim(AppClaimTypes.Role, role));
             identity.AddClaim(new Claim(AppClaimTypes.EmployeeCode, user.EmployeeCode));
             return identity;
         }

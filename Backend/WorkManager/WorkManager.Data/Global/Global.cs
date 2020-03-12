@@ -19,6 +19,9 @@ namespace WorkManager.Data.Global
                 cfg.CreateMap<Products, ProductsViewModel>().ReverseMap();
                 cfg.CreateMap<Products, CreateProductViewModel>().ReverseMap();
                 cfg.CreateMap<Products, EditProductViewModel>().ReverseMap();
+                cfg.CreateMap<Groups, GroupsViewModel>().ReverseMap();
+                cfg.CreateMap<Groups, CreateGroupViewModel>().ReverseMap();
+                cfg.CreateMap<Groups, EditGroupViewModel>().ReverseMap();
             });
             ConfigureAutomapper();
             ConfigureIoC(services);
@@ -27,6 +30,7 @@ namespace WorkManager.Data.Global
             services.AddScoped<TemplateDomain>();
             services.AddScoped<IdentityDomain>();
             services.AddScoped<EventDomain>();
+            services.AddScoped<GroupDomain>();
 
             Random = new Random();
         }
