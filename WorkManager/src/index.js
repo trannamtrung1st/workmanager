@@ -14,7 +14,6 @@ export default function App() {
     G.tokenGot = true;
     UserApi.getTokenThen(token => {
       G.tokenModel = JSON.parse(token);
-      console.log(G.tokenModel);
       const context = reset();
       setAuthContext(context);
     });

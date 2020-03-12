@@ -34,7 +34,6 @@ function CreateUser(props) {
     UserApi.register(
       data,
       async resp => {
-        console.log(resp);
         if (resp.status == 401 || resp.status == 403) {
           alert("Unauthorized or access denied");
           return;
@@ -49,7 +48,6 @@ function CreateUser(props) {
         }
       },
       err => {
-        console.log(err);
         alert("Something's wrong");
       }
     );
