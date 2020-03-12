@@ -1,3 +1,3 @@
 import UserApi from "./UserApi";
-
-export { UserApi };
+import GroupApi from "./GroupApi";
+export { GroupApi, UserApi };
