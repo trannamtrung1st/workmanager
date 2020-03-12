@@ -13,6 +13,7 @@ using WorkManager.Data.Domains;
 using WorkManager.Data.ViewModels;
 using TNT.Core.Helpers.DI;
 using TNT.Core.Http.DI;
+using WorkManager.Data.Models.Extensions;
 
 namespace WorkManager.WebApi.Controllers
 {
@@ -114,6 +115,53 @@ namespace WorkManager.WebApi.Controllers
             }
         }
         #endregion
+
+
+        [HttpGet("")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Get([FromQuery]UserFilter filter,
+            [FromQuery]string[] sorts,
+            [FromQuery]string[] fields,
+            [FromQuery]int page = 0,
+            [FromQuery]int limit = 50,
+            [FromQuery]bool count_total = false)
+        {
+            try
+            {
+                if (fields.Length == 0)
+                    fields = new string[] { ProductGeneralFields.INFO };
+                else
+                {
+                    var maps = ProductGeneralFields.Mapping;
+                    if (fields.Any(f => f == null || !maps.ContainsKey(f)))
+                        return BadRequest(new ApiResult()
+                        {
+                            Code = ResultCode.Unsupported,
+                            Data = null,
+                            Message = ResultCode.Unsupported.DisplayName() + ": fields"
+                        });
+                }
+
+                var result = _iDomain.Users.GetData(filter,
+                    sorts,
+                    fields, page, limit, count_total);
+                return Ok(new ApiResult()
+                {
+                    Code = ResultCode.Success,
+                    Data = result,
+                    Message = ResultCode.Success.DisplayName()
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                return Error(new ApiResult()
+                {
+                    Code = ResultCode.UnknownError,
+                    Message = ResultCode.UnknownError.DisplayName() + ": " + e.Message
+                });
+            }
+        }
 
         [HttpGet("token-info")]
         [Authorize]

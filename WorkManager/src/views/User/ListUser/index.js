@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { View, Text, Alert } from "react-native";
 import { AppLayout, AppButton, AppInput, ScannerModal } from "$components";
 import { Database } from "$services";
@@ -9,15 +9,38 @@ import { SCREENS } from "$constants";
 import UserItem from "./UserItem";
 import ActionModal from "./ActionModal";
 import { HookHelper } from "@trannamtrung1st/t-components";
+import { UserApi } from "$api";
 
 function ListUser(props) {
   const { navigation } = props;
-  const { users } = Database;
   const forceUpdate = HookHelper.useForceUpdate();
   const [listUserContext] = useState({
     setScannerOpen: null,
-    reload: forceUpdate
+    users: null,
+    reload: () => {
+      UserApi.getUsers(
+        null,
+        async resp => {
+          if (resp.status == 401 || resp.status == 403)
+            alert("Unauthorized or access denied");
+          const data = await resp.json();
+          if (resp.ok) {
+            console.log(data.data.results);
+            listUserContext.users = data.data.results;
+            forceUpdate();
+          } else {
+            alert(data.message);
+          }
+        },
+        err => {
+          console.log(err);
+          alert("Something's wrong");
+        }
+      );
+    }
   });
+  if (!listUserContext.users) listUserContext.reload();
+  const users = listUserContext.users ?? [];
 
   function _onSearchPress() {
     listUserContext.setScannerOpen(true);

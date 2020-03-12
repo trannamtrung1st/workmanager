@@ -61,6 +61,14 @@ namespace WorkManager.Data.Domains
         #endregion
 
         #region User
+        public IQueryable<AppUsers> Users
+        {
+            get
+            {
+                return _userManager.Users;
+            }
+        }
+
         public async Task<AppUsers> GetUserByUserName(string username)
         {
             return await _userManager.FindByNameAsync(username);

@@ -1,3 +1,2 @@
-import NetworkHelper, { authFetch } from "./NetworkHelper";
-
-export { NetworkHelper, authFetch };
+import NetworkHelper, { authFetch, toQuery } from "./NetworkHelper";
+export { toQuery, NetworkHelper, authFetch };

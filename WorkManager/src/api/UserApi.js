@@ -1,6 +1,6 @@
 import { API } from "$constants";
 import AsyncStorage from "@react-native-community/async-storage";
-import { authFetch } from "$app-helpers";
+import { authFetch, toQuery } from "$app-helpers";
 
 function login(model, response, error) {
   authFetch(API.endpoint + "users/login", {
@@ -46,7 +46,15 @@ function register(model, response, error) {
     .catch(error);
 }
 
+function getUsers(queryObj, response, error) {
+  const query = queryObj ? "?" + toQuery(queryObj) : "";
+  authFetch(API.endpoint + "users" + query)
+    .then(response)
+    .catch(error);
+}
+
 export default {
+  getUsers,
   register,
   getTokenThen,
   logout,

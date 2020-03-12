@@ -22,7 +22,7 @@ function UserItem(props) {
           <Text style={s.bold}>Full name</Text>: {user.full_name}
         </Text>
         <Text>
-          <Text style={s.bold}>Roles:</Text> {user.roles.join(", ")}
+          <Text style={s.bold}>Role:</Text> {user.role}
         </Text>
       </View>
     </TouchableOpacity>

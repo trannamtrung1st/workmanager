@@ -130,4 +130,29 @@ namespace WorkManager.Data.ViewModels
         public string employee_code { get; set; }
     }
 
+    public class UserGeneralFields
+    {
+        public const string INFO = "info";
+
+        public static readonly IDictionary<string, string[]> Mapping =
+            new Dictionary<string, string[]>()
+            {
+                {
+                    INFO, new string[]{ "Id","FullName","UserName","Email","PhoneNumber","EmployeeCode" }
+                }
+            };
+    }
+
+    public class UserSortFields
+    {
+        public const string Username = "username";
+    }
+
+    public class UserFilter
+    {
+        public string[] ids { get; set; }
+        public string[] name_contains { get; set; }
+        public string username { get; set; }
+    }
+
 }

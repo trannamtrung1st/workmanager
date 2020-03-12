@@ -28,5 +28,7 @@ namespace WorkManager.Data.ViewModels
         Unsupported = 4,
         [Display(Name = "Unauthorized")]
         Unauthorized = 5,
+        [Display(Name = "Success")]
+        Success = 6,
     }
 }
