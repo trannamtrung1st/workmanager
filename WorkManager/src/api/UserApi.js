@@ -1,6 +1,8 @@
 import { API } from "$constants";
 import AsyncStorage from "@react-native-community/async-storage";
 import { authFetch, toQuery } from "$app-helpers";
+import messaging from "@react-native-firebase/messaging";
+import { G } from "$global";
 
 function login(model, response, error) {
   authFetch(API.endpoint + "users/login", {
@@ -16,12 +18,21 @@ function login(model, response, error) {
 
 function saveToken(tokenModel, success, error) {
   AsyncStorage.setItem("token", JSON.stringify(tokenModel))
-    .then(success)
+    .then(v => {
+      messaging()
+        .subscribeToTopic(tokenModel.user_id)
+        .then(v => {
+          if (success) success(v);
+        });
+    })
     .catch(error);
 }
 
-function logout(success, error) {
-  AsyncStorage.removeItem("token", success, error);
+function logout(finish) {
+  AsyncStorage.removeItem("token", error => {
+    if (!error) messaging().unsubscribeFromTopic(G.tokenModel.user_id);
+    if (finish) finish(error);
+  });
 }
 
 async function getToken() {
