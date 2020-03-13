@@ -76,6 +76,7 @@ namespace WorkManager.Data.ViewModels
     {
         public const string INFO = "info";
         public const string OF_USER = "of_user";
+        public const string CREATED_USER = "created_user";
 
         public static readonly IDictionary<string, string[]> Mapping =
             new Dictionary<string, string[]>()
@@ -86,6 +87,10 @@ namespace WorkManager.Data.ViewModels
                 {
                     OF_USER, new string[]{ "OfUserNavigation.Id", "OfUserNavigation.UserName",
                         "OfUserNavigation.FullName" }
+                },
+                {
+                    CREATED_USER, new string[]{ "CreatedUserNavigation.Id", "CreatedUserNavigation.UserName",
+                        "CreatedUserNavigation.FullName" }
                 },
             };
     }

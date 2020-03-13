@@ -84,7 +84,7 @@ function ListTask(props) {
 
   function onItemPress(item) {
     navigation.navigate(SCREENS.viewTask, {
-      task: item
+      id: item.id
     });
   }
 

@@ -71,6 +71,14 @@ namespace WorkManager.Data.Models.Extensions
                                 username = p.OfUserNavigation.UserName
                             };
                             break;
+                        case TaskGeneralFields.CREATED_USER:
+                            obj["created_user"] = new
+                            {
+                                id = p.CreatedUserNavigation.Id,
+                                full_name = p.CreatedUserNavigation.FullName,
+                                username = p.CreatedUserNavigation.UserName
+                            };
+                            break;
                     }
                 }
                 list.Add(obj);

@@ -10,8 +10,7 @@ import { GroupApi } from "$api";
 
 function ViewGroup(props) {
   const { navigation, route } = props;
-  const groupId = route.params.group.id;
-  const { users } = Database;
+  const groupId = route.params.id;
   const forceUpdate = HookHelper.useForceUpdate();
   const [viewGroupContext] = useState({
     reload,

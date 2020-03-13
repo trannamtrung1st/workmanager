@@ -62,7 +62,7 @@ function ListGroup(props) {
 
   function onItemPress(group) {
     navigation.navigate(SCREENS.viewGroup, {
-      group
+      id: group.id
     });
   }
 

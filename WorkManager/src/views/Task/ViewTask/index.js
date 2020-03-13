@@ -14,6 +14,8 @@ import { HookHelper } from "@trannamtrung1st/t-components";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ActionModal from "./ActionModal";
 import ImagePicker from "react-native-image-picker";
+import { Database } from "$services";
+import { TaskApi } from "$api";
 
 const options = {
   title: "Choose an image",
@@ -25,13 +27,74 @@ function ViewTask(props) {
   const authContext = useContext(AuthContext);
   const forceUpdate = HookHelper.useForceUpdate();
   const { navigation, route } = props;
+  const taskId = route.params.id;
   const [viewTaskContext] = useState({
-    data: route.params.task,
+    data: null,
     setModalVisible: null,
-    reload: forceUpdate,
     goBack: navigation.goBack
   });
   const data = viewTaskContext.data;
+
+  if (data == null) {
+    reload();
+    return null;
+  }
+
+  function reload() {
+    TaskApi.get(
+      {
+        fields: ["info", "created_user", "of_user"],
+        ids: taskId
+      },
+      async resp => {
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
+        }
+
+        const data = await resp.json();
+        if (resp.ok) {
+          const task = data.data.results[0];
+          if (!task) {
+            alert("Not found");
+            return;
+          }
+          viewTaskContext.data = task;
+          forceUpdate();
+        } else {
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
+  }
+
+  function _onUpdate() {
+    TaskApi.edit(
+      data,
+      async resp => {
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
+        }
+
+        if (resp.ok) {
+          alert("Update successfully");
+          forceUpdate();
+        } else {
+          const data = await resp.json();
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
+  }
 
   function _changeData(name, val) {
     data[name] = val;
@@ -125,13 +188,13 @@ function ViewTask(props) {
           <View style={s.formItemContainer}>
             <Text>
               Created by:
-              <Text style={s.link}> {data.created_user}</Text>
+              <Text style={s.link}> {data.created_user.username}</Text>
             </Text>
           </View>
           <View style={s.formItemContainer}>
             <Text>
               Assigned to:
-              <Text style={s.link}> {data.of_user}</Text>
+              <Text style={s.link}> {data.of_user.username}</Text>
             </Text>
           </View>
 
@@ -159,9 +222,7 @@ function ViewTask(props) {
           <View style={s.btnInputContainer}>
             <AppButton
               text="UPDATE"
-              onPress={() => {
-                navigation.goBack();
-              }}
+              onPress={_onUpdate}
             />
           </View>
 
