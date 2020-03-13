@@ -40,7 +40,21 @@ function edit(model, response, error) {
     .catch(error);
 }
 
+function changeStatus(id, formData, response, error) {
+  const init = {
+    method: "POST",
+    headers: {
+      "Content-Type": "multipart/form-data"
+    },
+    body: formData
+  };
+  authFetch(API.endpoint + "tasks/" + id + "/status", init)
+    .then(response)
+    .catch(error);
+}
+
 export default {
+  changeStatus,
   edit,
   deleteTask,
   get,

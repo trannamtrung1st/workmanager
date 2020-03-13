@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace WorkManager.Data.ViewModels
 {
@@ -55,13 +56,23 @@ namespace WorkManager.Data.ViewModels
     }
 
 
-    //Status life cycle: NEW, DOING, DONE 
+    //Status life cycle: [NEW, DOING, DONE, CANCEL], [ACCEPTED, DECLINED, FINISH CONFIRMED]
+    //Status by background worker: [LATE]
     public class ChangeTaskStatusViewModel : BaseViewModel<Tasks>
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "Status is required")]
-        [JsonProperty("name")]
-        public string Status { get; set; }
+        [JsonProperty("status")]
+        public string status { get; set; }
 
+        [JsonProperty("task_report")]
+        public string task_report { get; set; }
+        [JsonProperty("confirm_image")]
+        public IFormFile confirm_image { get; set; }
+
+        [JsonProperty("mark")]
+        public double? mark { get; set; }
+        [JsonProperty("manager_review")]
+        public string manager_review { get; set; }
 
         public ChangeTaskStatusViewModel()
         {

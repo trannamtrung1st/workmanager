@@ -11,6 +11,7 @@ using TNT.Core.Http.DI;
 using WorkManager.Data.Models.Extensions;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace WorkManager.WebApi.Controllers
 {
@@ -117,10 +118,10 @@ namespace WorkManager.WebApi.Controllers
             }
         }
 
-        [HttpPatch("{id}/status")]
+        [HttpPost("{id}/status")]
         [Authorize]
         public IActionResult ChangeStatus(int id,
-            ChangeTaskStatusViewModel model)
+            [FromForm] ChangeTaskStatusViewModel model)
         {
             try
             {
@@ -134,6 +135,60 @@ namespace WorkManager.WebApi.Controllers
                             Code = ResultCode.NotFound,
                             Message = ResultCode.NotFound.DisplayName()
                         });
+
+                    //validation
+                    var mess = "";
+                    var status = JsonConvert.DeserializeObject<IEnumerable<string>>(task.Status);
+                    if (status.Contains(model.status))
+                        mess += "Already in this status";
+                    else
+                        switch (model.status)
+                        {
+                            case "DOING":
+                                if (!status.Contains("NEW"))
+                                    mess += "Can not change to DOING";
+                                break;
+                            case "DONE":
+                                if (!status.Contains("DOING"))
+                                    mess += "Can not finish";
+                                if (string.IsNullOrWhiteSpace(model.task_report))
+                                    mess += "Must have report";
+                                break;
+                            case "CANCEL":
+                                if (status.Contains("DONE") || status.Contains("FINISH CONFIRM"))
+                                    mess += "Can not cancel";
+                                if (string.IsNullOrWhiteSpace(model.task_report))
+                                    mess += "Must have report";
+                                break;
+                            case "ACCEPTED":
+                                if (status.Contains("FINISH CONFIRMED"))
+                                    mess += "Already finish";
+                                if (string.IsNullOrWhiteSpace(model.manager_review))
+                                    mess += "Must have a review";
+                                break;
+                            case "DECLINED":
+                                if (status.Contains("FINISH CONFIRMED"))
+                                    mess += "Already finish";
+                                if (string.IsNullOrWhiteSpace(model.manager_review))
+                                    mess += "Must have a review";
+                                break;
+                            case "FINISH CONFIRMED":
+                                if (!status.Contains("DONE"))
+                                    mess += "Haven't done yet";
+                                if (string.IsNullOrWhiteSpace(model.manager_review))
+                                    mess += "Must have a review";
+                                break;
+                            default:
+                                mess += "Unsupported status";
+                                break;
+                        }
+                    if (!string.IsNullOrEmpty(mess))
+                        return BadRequest(new ApiResult
+                        {
+                            Code = ResultCode.FailValidation,
+                            Message = mess
+                        });
+                    //end validation
 
                     domain.ChangeStatus(task, model);
                     _uow.SaveChanges();

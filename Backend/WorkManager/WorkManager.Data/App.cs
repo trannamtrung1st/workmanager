@@ -31,9 +31,25 @@ namespace WorkManager.Data
         public const string EmployeeCode = "employee_code";
     }
 
+    public static class UserTaskStatus
+    {
+        public static IEnumerable<string> All = new List<string>()
+        {
+            "NEW","DOING","DONE","CANCEL","ACCEPTED","DECLINED","FINISH CONFIRMED"
+        };
+    }
+
+    public static class BackgroundTaskStatus
+    {
+        public static IEnumerable<string> All = new List<string>()
+        {
+            "DUE SOON", "LATE"
+        };
+    }
+
     public class App
     {
-
+        public string AppWebRoot { get; set; }
         public string Name { get; set; }
         public string ApiUrl { get; set; }
         public string SecretsFileName { get; set; }

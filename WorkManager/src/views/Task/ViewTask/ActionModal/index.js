@@ -4,31 +4,65 @@ import { AppButton } from "$components";
 import s from "./style";
 import Modal from "react-native-modal";
 import { ViewTaskContext } from "$app-contexts";
+import { TaskApi } from "$api";
 
 function ActionModal(props) {
   const viewTaskContext = useContext(ViewTaskContext);
+  const { task } = props;
   const [modalVisible, setModalVisible] = useState(false);
   viewTaskContext.setModalVisible = setModalVisible;
 
   function _onStartPress() {
-    setModalVisible(false);
-    viewTaskContext.reload();
+    const formData = new FormData();
+    formData.append("status", "DOING");
+    TaskApi.changeStatus(
+      task.id,
+      formData,
+      async resp => {
+        console.log(resp);
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
+        }
+
+        if (resp.ok) {
+          alert("Start successfully");
+          setModalVisible(false);
+          viewTaskContext.reload();
+        } else {
+          const data = await resp.json();
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
   }
 
   function _onDeleteConfirmed() {
-    setModalVisible(false);
-    Alert.alert(
-      "Message",
-      "Delete successfully",
-      [
-        {
-          text: "Ok",
-          onPress: () => {
-            viewTaskContext.goBack();
-          }
+    TaskApi.deleteTask(
+      task.id,
+      async resp => {
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
         }
-      ],
-      { cancelable: false }
+
+        if (resp.ok) {
+          alert("Delete successfully");
+          setModalVisible(false);
+          viewTaskContext.goBack();
+        } else {
+          const data = await resp.json();
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
     );
   }
 

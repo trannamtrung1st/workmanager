@@ -31,7 +31,8 @@ function ViewTask(props) {
   const [viewTaskContext] = useState({
     data: null,
     setModalVisible: null,
-    goBack: navigation.goBack
+    goBack: navigation.goBack,
+    reload
   });
   const data = viewTaskContext.data;
 
@@ -361,7 +362,7 @@ function ViewTask(props) {
       </AppLayout>
       <Icon name="bars" style={s.actionIcon} onPress={_onActionPress} />
 
-      <ActionModal />
+      <ActionModal task={viewTaskContext.data} />
     </ViewTaskContext.Provider>
   );
 }
