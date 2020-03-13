@@ -54,6 +54,25 @@ namespace WorkManager.Data.ViewModels
 
     }
 
+
+    //Status life cycle: NEW, DOING, DONE 
+    public class ChangeTaskStatusViewModel : BaseViewModel<Tasks>
+    {
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Status is required")]
+        [JsonProperty("name")]
+        public string Status { get; set; }
+
+
+        public ChangeTaskStatusViewModel()
+        {
+        }
+
+        public ChangeTaskStatusViewModel(Tasks entity) : base(entity)
+        {
+        }
+
+    }
+
     public class EditTaskViewModel : BaseViewModel<Tasks>
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "Task name is required")]

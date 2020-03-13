@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TNT.Core.Helpers.Data;
+using Newtonsoft.Json;
 
 namespace WorkManager.Data.Models.Extensions
 {
@@ -28,7 +29,7 @@ namespace WorkManager.Data.Models.Extensions
                 query = query.Where(p => p.CreatedTime <= toDate);
             }
             if (filter.status != null)
-                query = query.Where(p => p.Status == filter.status);
+                query = query.Where(p => p.Status.Contains("\"" + filter.status + "\""));
             return query;
         }
 
@@ -60,7 +61,7 @@ namespace WorkManager.Data.Models.Extensions
                             obj["id"] = p.Id;
                             obj["name"] = p.Name;
                             obj["task_content"] = p.TaskContent;
-                            obj["status"] = p.Status;
+                            obj["status"] = JsonConvert.DeserializeObject<IEnumerable<string>>(p.Status);
                             obj["deadline"] = p.Deadline;
                             break;
                         case TaskGeneralFields.DETAIL:

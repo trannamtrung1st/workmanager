@@ -45,6 +45,12 @@ namespace WorkManager.Data.Domains
             repo.Edit(entity, model);
             return entity;
         }
+
+        public Tasks ChangeStatus(Tasks entity, ChangeTaskStatusViewModel model)
+        {
+            return entity;
+        }
+
         public Tasks Delete(Tasks entity)
         {
             var repo = _uow.GetService<ITasksRepository>();

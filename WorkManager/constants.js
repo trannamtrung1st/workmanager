@@ -1,7 +1,7 @@
 import { Dimensions } from "react-native";
 
 const API = {
-  endpoint: "http://192.168.5.105:45455/api/"
+  endpoint: "http://192.168.1.125:45455/api/"
 };
 
 const SCREENS = {

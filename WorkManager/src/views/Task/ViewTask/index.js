@@ -192,7 +192,9 @@ function ViewTask(props) {
           ) : null}
           <View style={s.formRowItemContainer}>
             <Text>Status: </Text>
-            <ItemStatusBadge status={data.status} />
+            {data.status.map(s => (
+              <ItemStatusBadge status={s} />
+            ))}
           </View>
           <View style={s.formItemContainer}>
             <Text>

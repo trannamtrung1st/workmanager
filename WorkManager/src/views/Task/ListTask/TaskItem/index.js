@@ -5,6 +5,7 @@ import { ItemStatusBadge } from "$components";
 
 function TaskItem(props) {
   const { task, onPress, onLongPress } = props;
+  console.log(task);
   return (
     <TouchableOpacity
       style={s.listItem}
@@ -13,7 +14,9 @@ function TaskItem(props) {
     >
       <View style={s.itemNameContainer}>
         <Text style={s.itemName}>{task.name}&nbsp;&nbsp;&nbsp;</Text>
-        <ItemStatusBadge status={task.status} />
+        {task.status.map(t => (
+          <ItemStatusBadge status={t} />
+        ))}
       </View>
 
       <Text>{task.task_content}</Text>

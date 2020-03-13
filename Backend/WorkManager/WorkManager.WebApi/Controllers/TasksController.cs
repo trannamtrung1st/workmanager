@@ -117,6 +117,54 @@ namespace WorkManager.WebApi.Controllers
             }
         }
 
+        [HttpPatch("{id}/status")]
+        [Authorize]
+        public IActionResult ChangeStatus(int id,
+            ChangeTaskStatusViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var domain = Service<TaskDomain>();
+                    var task = domain.Tasks.Id(id);
+                    if (task == null)
+                        return NotFound(new ApiResult()
+                        {
+                            Code = ResultCode.NotFound,
+                            Message = ResultCode.NotFound.DisplayName()
+                        });
+
+                    domain.ChangeStatus(task, model);
+                    _uow.SaveChanges();
+                    _logger.CustomProperties(new { id, model }).Info("Change status");
+
+                    return NoContent();
+                }
+
+                var message = "";
+                if (ModelState.ContainsKey("status"))
+                    message += string.Join('\n',
+                        ModelState["status"].Errors.Select(e => e.ErrorMessage).ToList());
+
+                return BadRequest(new ApiResult()
+                {
+                    Code = ResultCode.FailValidation,
+                    Data = ModelState,
+                    Message = message
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                return Error(new ApiResult()
+                {
+                    Code = ResultCode.UnknownError,
+                    Message = ResultCode.UnknownError.DisplayName() + ": " + e.Message
+                });
+            }
+        }
+
         [HttpPost("")]
         [Authorize]
         public IActionResult Create(CreateTaskViewModel model)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using WorkManager.Data.ViewModels;
@@ -31,7 +32,7 @@ namespace WorkManager.Data.Models.Repositories
         public Tasks PrepareCreate(Tasks model)
         {
             model.CreatedTime = DateTime.UtcNow;
-            model.Status = "NEW";
+            model.Status = JsonConvert.SerializeObject(new List<string> { "NEW" });
             model.Deadline = model.Deadline?.ToUniversalTime();
             return model;
         }
