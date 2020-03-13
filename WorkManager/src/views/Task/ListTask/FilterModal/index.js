@@ -77,6 +77,13 @@ function FilterModal(props) {
                 <Picker.Item label="New" value="NEW" />
                 <Picker.Item label="Doing" value="DOING" />
                 <Picker.Item label="Done" value="DONE" />
+                <Picker.Item label="Cancel" value="CANCEL" />
+                <Picker.Item label="Declined" value="DECLINED" />
+                <Picker.Item label="Accepted" value="ACCEPTED" />
+                <Picker.Item
+                  label="Finish confirmed"
+                  value="FINISH CONFIRMED"
+                />
               </Picker>
             </View>
           </View>
@@ -127,7 +134,6 @@ function FilterModal(props) {
                   to_date: filter.to_date,
                   employee_code: filter.employee_code
                 };
-                console.log(newFilter);
                 listTaskContext.setFilter(newFilter);
                 setFilterOpen(false);
               }}

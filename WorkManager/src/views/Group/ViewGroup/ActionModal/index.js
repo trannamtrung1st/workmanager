@@ -16,7 +16,6 @@ function ActionModal(props) {
   viewGroupContext.setModalVisible = setModalVisible;
 
   function _onChangePress() {
-    console.log(modalVisible.item.id);
     GroupApi.changeUserRoleInGroup(
       modalVisible.item.id,
       async resp => {
@@ -31,7 +30,6 @@ function ActionModal(props) {
           viewGroupContext.reload();
         } else {
           const data = await resp.json();
-          console.log(data);
           alert(data.message);
         }
       },
@@ -57,7 +55,6 @@ function ActionModal(props) {
           viewGroupContext.reload();
         } else {
           const data = await resp.json();
-          console.log(data);
           alert(data.message);
         }
       },

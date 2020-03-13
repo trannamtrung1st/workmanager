@@ -31,7 +31,6 @@ function ActionModal(props) {
           listGroupContext.reload();
         } else {
           const data = await resp.json();
-          console.log(data);
           alert(data.message);
         }
       },

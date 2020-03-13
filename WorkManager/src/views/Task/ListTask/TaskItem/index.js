@@ -5,7 +5,6 @@ import { ItemStatusBadge } from "$components";
 
 function TaskItem(props) {
   const { task, onPress, onLongPress } = props;
-  console.log(task);
   return (
     <TouchableOpacity
       style={s.listItem}

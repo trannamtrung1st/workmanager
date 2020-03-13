@@ -19,7 +19,6 @@ function ActionModal(props) {
       task.id,
       formData,
       async resp => {
-        console.log(resp);
         if (resp.status == 401 || resp.status == 403) {
           alert("Unauthorized or access denied");
           return;
