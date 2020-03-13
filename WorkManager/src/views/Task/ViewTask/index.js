@@ -384,14 +384,8 @@ function ViewTask(props) {
               <AppInput
                 keyboardType="number-pad"
                 placeholder="Task's result"
-                onChangeText={t => _changeData("mark", parseInt(t))}
-                value={
-                  data.mark
-                    ? isNaN(data.mark)
-                      ? data.mark.toString()
-                      : null
-                    : null
-                }
+                onChangeText={t => _changeData("mark", t)}
+                value={data.mark?.toString()}
               />
             </View>
           </View>

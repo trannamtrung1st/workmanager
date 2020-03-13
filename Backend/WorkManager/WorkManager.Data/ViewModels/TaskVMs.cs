@@ -70,7 +70,7 @@ namespace WorkManager.Data.ViewModels
         public IFormFile confirm_image { get; set; }
 
         [JsonProperty("mark")]
-        public double? mark { get; set; }
+        public int? mark { get; set; }
         [JsonProperty("manager_review")]
         public string manager_review { get; set; }
 
@@ -89,8 +89,10 @@ namespace WorkManager.Data.ViewModels
         [Required(AllowEmptyStrings = false, ErrorMessage = "Task name is required")]
         [JsonProperty("name")]
         public string Name { get; set; }
-        [JsonProperty("description")]
-        public string Description { get; set; }
+        [JsonProperty("task_content")]
+        public string TaskContent { get; set; }
+        [JsonProperty("deadline")]
+        public DateTime? Deadline { get; set; }
 
         public EditTaskViewModel()
         {

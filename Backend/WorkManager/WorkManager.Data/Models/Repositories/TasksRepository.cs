@@ -52,6 +52,8 @@ namespace WorkManager.Data.Models.Repositories
         public Tasks Edit(Tasks entity, EditTaskViewModel editModel)
         {
             entity.Name = editModel.Name;
+            entity.TaskContent = editModel.TaskContent;
+            entity.Deadline = editModel.Deadline?.ToUniversalTime();
             return entity;
         }
         #endregion

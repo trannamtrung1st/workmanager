@@ -81,6 +81,7 @@ namespace WorkManager.Data.Domains
                     currentStatus.Remove("ACCEPTED");
                     currentStatus.Add(model.status);
 
+                    entity.Mark = model.mark;
                     entity.ReviewTime = DateTime.UtcNow;
                     entity.ManagerReview = model.manager_review;
                     break;
@@ -89,6 +90,7 @@ namespace WorkManager.Data.Domains
                     currentStatus.Add(model.status);
 
                     entity.ManagerReview = model.manager_review;
+                    entity.Mark = model.mark;
                     break;
                 case "FINISH CONFIRMED":
 
@@ -96,6 +98,7 @@ namespace WorkManager.Data.Domains
                     currentStatus.Remove("DECLINED");
                     currentStatus.Add(model.status);
 
+                    entity.Mark = model.mark;
                     entity.Status = model.status;
                     entity.ManagerReview = model.manager_review;
                     entity.ReviewTime = DateTime.UtcNow;
