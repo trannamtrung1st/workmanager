@@ -16,6 +16,7 @@ import ActionModal from "./ActionModal";
 import ImagePicker from "react-native-image-picker";
 import { Database } from "$services";
 import { TaskApi } from "$api";
+import { API } from "$constants";
 
 const options = {
   title: "Choose an image",
@@ -131,6 +132,75 @@ function ViewTask(props) {
 
   function _onUploadImagePress() {
     ImagePicker.showImagePicker(options, onImagePickerResult);
+  }
+
+  function _onFinish() {
+    const formData = new FormData();
+    formData.append("status", "DONE");
+    formData.append("task_report", data.task_report ?? "");
+    if (data.confirm_image && typeof data.confirm_image != "string") {
+      formData.append("confirm_image", {
+        uri: data.confirm_image.uri,
+        type: "image/png", // or photo.type
+        name: "confirm.png"
+      });
+    }
+
+    TaskApi.changeStatus(
+      data.id,
+      formData,
+      async resp => {
+        console.log(resp);
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
+        }
+
+        if (resp.ok) {
+          alert("Finish successfully");
+          viewTaskContext.reload();
+        } else {
+          const data = await resp.json();
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
+  }
+
+  function _onChangeStatus(status) {
+    const formData = new FormData();
+    formData.append("status", status);
+    formData.append("manager_review", data.manager_review ?? "");
+    formData.append("task_report", data.task_report ?? "");
+    formData.append("mark", data.mark ?? "");
+
+    TaskApi.changeStatus(
+      data.id,
+      formData,
+      async resp => {
+        console.log(resp);
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
+        }
+
+        if (resp.ok) {
+          alert("Update status successfully");
+          viewTaskContext.reload();
+        } else {
+          const data = await resp.json();
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
   }
 
   return (
@@ -264,7 +334,7 @@ function ViewTask(props) {
               <Image
                 source={
                   typeof data.confirm_image == "string"
-                    ? { uri: data.confirm_image }
+                    ? { uri: API.base + data.confirm_image }
                     : data.confirm_image
                 }
                 style={s.image}
@@ -281,17 +351,9 @@ function ViewTask(props) {
                 btnStyle={s.btnOp}
                 type="danger"
                 text="CANCEL"
-                onPress={() => {
-                  navigation.goBack();
-                }}
+                onPress={() => _onChangeStatus("CANCEL")}
               />
-              <AppButton
-                btnStyle={s.btnOp}
-                text="FINISH"
-                onPress={() => {
-                  navigation.goBack();
-                }}
-              />
+              <AppButton btnStyle={s.btnOp} text="FINISH" onPress={_onFinish} />
             </View>
           </View>
 
@@ -306,11 +368,10 @@ function ViewTask(props) {
 
           <View style={s.formItemContainer}>
             <Text>Manager's review</Text>
-            <View style={s.inactiveInputContainer}>
+            <View style={s.inputContainer}>
               <AppInput
                 textAlignVertical={"top"}
                 multiline={true}
-                editable={false}
                 placeholder="Review content"
                 numberOfLines={5}
                 onChangeText={t => _changeData("manager_review", t)}
@@ -321,13 +382,18 @@ function ViewTask(props) {
 
           <View style={s.formItemContainer}>
             <Text>Rate</Text>
-            <View style={s.inactiveInputContainer}>
+            <View style={s.inputContainer}>
               <AppInput
-                editable={false}
                 keyboardType="number-pad"
                 placeholder="Task's result"
-                onChangeText={t => (data.mark = parseInt(t))}
-                value={data.mark?.toString()}
+                onChangeText={t => _changeData("mark", parseInt(t))}
+                value={
+                  data.mark
+                    ? isNaN(data.mark)
+                      ? data.mark.toString()
+                      : null
+                    : null
+                }
               />
             </View>
           </View>
@@ -338,23 +404,17 @@ function ViewTask(props) {
                 btnStyle={s.btnOp}
                 type="danger"
                 text="DECLINE"
-                onPress={() => {
-                  navigation.goBack();
-                }}
+                onPress={() => _onChangeStatus("DECLINED")}
               />
               <AppButton
                 btnStyle={s.btnOp}
                 text="ACCEPT"
-                onPress={() => {
-                  navigation.goBack();
-                }}
+                onPress={() => _onChangeStatus("ACCEPTED")}
               />
               <AppButton
                 btnStyle={s.btnOp}
-                text="FINISH"
-                onPress={() => {
-                  navigation.goBack();
-                }}
+                text="CONFIRM"
+                onPress={() => _onChangeStatus("FINISH CONFIRMED")}
               />
             </View>
           </View>

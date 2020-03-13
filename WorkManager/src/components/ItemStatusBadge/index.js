@@ -10,10 +10,16 @@ function ItemStatusBadge(props) {
       finalStatus = s.newStatus;
       break;
     case "DOING":
+    case "ACCEPTED":
       finalStatus = s.doingStatus;
       break;
     case "DONE":
+    case "FINISH CONFIRMED":
       finalStatus = s.doneStatus;
+      break;
+    case "CANCEL":
+    case "DECLINED":
+      finalStatus = s.dangerStatus;
       break;
   }
 

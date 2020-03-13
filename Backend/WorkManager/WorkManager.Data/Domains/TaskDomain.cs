@@ -52,6 +52,7 @@ namespace WorkManager.Data.Domains
         public Tasks ChangeStatus(Tasks entity, ChangeTaskStatusViewModel model)
         {
             var currentStatus = JsonConvert.DeserializeObject<List<string>>(entity.Status);
+            currentStatus.Remove(model.status);
             switch (model.status)
             {
                 case "DOING":
@@ -99,6 +100,7 @@ namespace WorkManager.Data.Domains
                     entity.ManagerReview = model.manager_review;
                     entity.ReviewTime = DateTime.UtcNow;
                     break;
+                default: throw new Exception("Unsupported status");
             }
             entity.Status = JsonConvert.SerializeObject(currentStatus);
             return entity;

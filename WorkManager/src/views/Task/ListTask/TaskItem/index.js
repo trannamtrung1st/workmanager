@@ -13,7 +13,7 @@ function TaskItem(props) {
       onLongPress={() => onLongPress(task)}
     >
       <View style={s.itemNameContainer}>
-        <Text style={s.itemName}>{task.name}&nbsp;&nbsp;&nbsp;</Text>
+        <Text style={s.itemName}>{task.name}&nbsp;&nbsp;</Text>
         {task.status.map(t => (
           <ItemStatusBadge status={t} />
         ))}

@@ -139,49 +139,51 @@ namespace WorkManager.WebApi.Controllers
                     //validation
                     var mess = "";
                     var status = JsonConvert.DeserializeObject<IEnumerable<string>>(task.Status);
-                    if (status.Contains(model.status))
-                        mess += "Already in this status";
-                    else
-                        switch (model.status)
-                        {
-                            case "DOING":
-                                if (!status.Contains("NEW"))
-                                    mess += "Can not change to DOING";
-                                break;
-                            case "DONE":
-                                if (!status.Contains("DOING"))
-                                    mess += "Can not finish";
-                                if (string.IsNullOrWhiteSpace(model.task_report))
-                                    mess += "Must have report";
-                                break;
-                            case "CANCEL":
-                                if (status.Contains("DONE") || status.Contains("FINISH CONFIRM"))
-                                    mess += "Can not cancel";
-                                if (string.IsNullOrWhiteSpace(model.task_report))
-                                    mess += "Must have report";
-                                break;
-                            case "ACCEPTED":
-                                if (status.Contains("FINISH CONFIRMED"))
-                                    mess += "Already finish";
-                                if (string.IsNullOrWhiteSpace(model.manager_review))
-                                    mess += "Must have a review";
-                                break;
-                            case "DECLINED":
-                                if (status.Contains("FINISH CONFIRMED"))
-                                    mess += "Already finish";
-                                if (string.IsNullOrWhiteSpace(model.manager_review))
-                                    mess += "Must have a review";
-                                break;
-                            case "FINISH CONFIRMED":
-                                if (!status.Contains("DONE"))
-                                    mess += "Haven't done yet";
-                                if (string.IsNullOrWhiteSpace(model.manager_review))
-                                    mess += "Must have a review";
-                                break;
-                            default:
-                                mess += "Unsupported status";
-                                break;
-                        }
+                    switch (model.status)
+                    {
+                        case "DOING":
+                            if (!status.Contains("NEW") && !status.Contains(model.status))
+                                mess += "Can not change to DOING\n";
+                            break;
+                        case "DONE":
+                            if (!status.Contains("DOING") && !status.Contains(model.status))
+                                mess += "Can not finish\n";
+                            if (string.IsNullOrWhiteSpace(model.task_report))
+                                mess += "Must have report";
+                            break;
+                        case "CANCEL":
+                            if ((status.Contains("DONE") || status.Contains("FINISH CONFIRM")) 
+                                && !status.Contains(model.status))
+                                mess += "Can not cancel\n";
+                            if (string.IsNullOrWhiteSpace(model.task_report))
+                                mess += "Must have report\n";
+                            break;
+                        case "ACCEPTED":
+                            if (status.Contains("FINISH CONFIRMED") && !status.Contains(model.status))
+                                mess += "Already finish\n";
+                            if (status.Contains("CANCEL"))
+                                mess += "Already cancel\n";
+                            if (string.IsNullOrWhiteSpace(model.manager_review))
+                                mess += "Must have a review\n";
+                            break;
+                        case "DECLINED":
+                            if (status.Contains("FINISH CONFIRMED") && !status.Contains(model.status))
+                                mess += "Already finish\n";
+                            if (status.Contains("CANCEL"))
+                                mess += "Already cancel\n";
+                            if (string.IsNullOrWhiteSpace(model.manager_review))
+                                mess += "Must have a review\n";
+                            break;
+                        case "FINISH CONFIRMED":
+                            if (!status.Contains("DONE") && !status.Contains(model.status))
+                                mess += "Haven't done yet\n";
+                            if (string.IsNullOrWhiteSpace(model.manager_review))
+                                mess += "Must have a review\n";
+                            break;
+                        default:
+                            mess += "Unsupported status\n";
+                            break;
+                    }
                     if (!string.IsNullOrEmpty(mess))
                         return BadRequest(new ApiResult
                         {
@@ -198,9 +200,14 @@ namespace WorkManager.WebApi.Controllers
                 }
 
                 var message = "";
-                if (ModelState.ContainsKey("status"))
-                    message += string.Join('\n',
-                        ModelState["status"].Errors.Select(e => e.ErrorMessage).ToList());
+                message += string.Join('\n',
+                    ModelState["status"].Errors.Select(e => e.ErrorMessage).ToList());
+                message += string.Join('\n',
+                    ModelState["mark"].Errors.Select(e => e.ErrorMessage).ToList());
+                message += string.Join('\n',
+                    ModelState["id"].Errors.Select(e => e.ErrorMessage).ToList());
+                message += string.Join('\n',
+                    ModelState["manager_review"].Errors.Select(e => e.ErrorMessage).ToList());
 
                 return BadRequest(new ApiResult()
                 {
