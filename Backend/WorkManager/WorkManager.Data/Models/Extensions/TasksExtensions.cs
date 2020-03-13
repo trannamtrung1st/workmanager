@@ -63,6 +63,15 @@ namespace WorkManager.Data.Models.Extensions
                             obj["status"] = p.Status;
                             obj["deadline"] = p.Deadline;
                             break;
+                        case TaskGeneralFields.DETAIL:
+                            obj["start_time"] = p.StartTime;
+                            obj["end_time"] = p.EndTime;
+                            obj["created_time"] = p.CreatedTime;
+                            obj["review_time"] = p.ReviewTime;
+                            obj["source_id"] = p.SourceId;
+                            obj["of_user_id"] = p.OfUser;
+                            obj["created_user_id"] = p.CreatedUser;
+                            break;
                         case TaskGeneralFields.OF_USER:
                             obj["of_user"] = new
                             {
@@ -71,6 +80,14 @@ namespace WorkManager.Data.Models.Extensions
                                 username = p.OfUserNavigation.UserName
                             };
                             break;
+                        case TaskGeneralFields.SOURCE:
+                            if (p.SourceId != null)
+                                obj["source"] = new
+                                {
+                                    id = p.Source?.Id,
+                                    name = p.Source?.Name,
+                                };
+                            break;
                         case TaskGeneralFields.CREATED_USER:
                             obj["created_user"] = new
                             {
@@ -78,6 +95,14 @@ namespace WorkManager.Data.Models.Extensions
                                 full_name = p.CreatedUserNavigation.FullName,
                                 username = p.CreatedUserNavigation.UserName
                             };
+                            break;
+                        case TaskGeneralFields.REPORT:
+                            obj["confirm_image"] = p.ConfirmImage;
+                            obj["task_report"] = p.TaskReport;
+                            break;
+                        case TaskGeneralFields.REVIEW:
+                            obj["manager_review"] = p.ManagerReview;
+                            obj["mark"] = p.Mark;
                             break;
                     }
                 }

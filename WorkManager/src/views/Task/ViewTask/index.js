@@ -43,7 +43,15 @@ function ViewTask(props) {
   function reload() {
     TaskApi.get(
       {
-        fields: ["info", "created_user", "of_user"],
+        fields: [
+          "info",
+          "detail",
+          "created_user",
+          "source",
+          "of_user",
+          "report",
+          "review"
+        ],
         ids: taskId
       },
       async resp => {
@@ -59,6 +67,7 @@ function ViewTask(props) {
             alert("Not found");
             return;
           }
+
           viewTaskContext.data = task;
           forceUpdate();
         } else {
@@ -220,10 +229,7 @@ function ViewTask(props) {
             />
           </View>
           <View style={s.btnInputContainer}>
-            <AppButton
-              text="UPDATE"
-              onPress={_onUpdate}
-            />
+            <AppButton text="UPDATE" onPress={_onUpdate} />
           </View>
 
           <Hr />

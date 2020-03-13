@@ -75,14 +75,22 @@ namespace WorkManager.Data.ViewModels
     public class TaskGeneralFields
     {
         public const string INFO = "info";
+        public const string DETAIL = "detail";
         public const string OF_USER = "of_user";
         public const string CREATED_USER = "created_user";
+        public const string REPORT = "report";
+        public const string REVIEW = "review";
+        public const string SOURCE = "source";
 
         public static readonly IDictionary<string, string[]> Mapping =
             new Dictionary<string, string[]>()
             {
                 {
-                    INFO, new string[]{ "Id","Name","TaskContent", "Status","Deadline", "OfUser" }
+                    INFO, new string[]{ "Id","Name","TaskContent", "Status","Deadline", }
+                },
+                {
+                    DETAIL, new string[]{"StartTime","EndTime", "CreatedTime","ReviewTime",
+                        "OfUser","CreatedUser", "SourceId"}
                 },
                 {
                     OF_USER, new string[]{ "OfUserNavigation.Id", "OfUserNavigation.UserName",
@@ -91,6 +99,15 @@ namespace WorkManager.Data.ViewModels
                 {
                     CREATED_USER, new string[]{ "CreatedUserNavigation.Id", "CreatedUserNavigation.UserName",
                         "CreatedUserNavigation.FullName" }
+                },
+                {
+                    REPORT, new string[]{ "TaskReport", "ConfirmImage" }
+                },
+                {
+                    REVIEW, new string[]{ "ManagerReview","Mark" }
+                },
+                {
+                    SOURCE, new string[]{ "Source?.Id", "Source?.Name", }
                 },
             };
     }
