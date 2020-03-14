@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TNT.Core.Helpers.Data;
+using System.Security.Claims;
 
 namespace WorkManager.Data.Models.Extensions
 {
@@ -11,12 +12,15 @@ namespace WorkManager.Data.Models.Extensions
     {
         #region READ
         public static IQueryable<Groups> Filter(
-            this IQueryable<Groups> query, GroupFilter filter)
+            this IQueryable<Groups> query, GroupFilter filter, ClaimsPrincipal principal, string roleManagerId)
         {
             if (filter.ids != null)
                 query = query.Where(p => filter.ids.Contains(p.Id));
             if (filter.name_contains != null)
                 query = query.Where(p => filter.name_contains.Any(s => p.Name.Contains(s, StringComparison.OrdinalIgnoreCase)));
+            if (!principal.IsInRole("Admin"))
+                query = query.Where(p => p.GroupUsers.Any(u =>
+                    u.UserId == principal.Identity.Name && u.RoleId == roleManagerId));
             return query;
         }
 
@@ -114,9 +118,9 @@ namespace WorkManager.Data.Models.Extensions
            string[] sorts,
            string[] fields,
            int page,
-           int limit, bool countTotal)
+           int limit, bool countTotal, ClaimsPrincipal principal, string roleManagerId)
         {
-            query = query.Filter(filter);
+            query = query.Filter(filter, principal, roleManagerId);
             query = query.QueryFields(fields);
             query = query.Sort(sorts);
             int? count = null;

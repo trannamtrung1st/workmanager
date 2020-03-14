@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import {
   AppLayout,
@@ -8,13 +8,14 @@ import {
   HistoryBox
 } from "$components";
 import { Database } from "$services";
-import { ViewGroupContext } from "$app-contexts";
+import { ViewGroupContext, AuthContext } from "$app-contexts";
 import s from "./style";
 import { HookHelper } from "@trannamtrung1st/t-components";
 import ActionModal from "./ActionModal";
 import { GroupApi } from "$api";
 
 function ViewGroup(props) {
+  const authContext = useContext(AuthContext);
   const { navigation, route } = props;
   const groupId = route.params.id;
   const forceUpdate = HookHelper.useForceUpdate();
@@ -174,21 +175,25 @@ function ViewGroup(props) {
               </View>
             </View>
 
-            <View style={s.btnInputContainer}>
-              <AppButton text="UPDATE" onPress={_onUpdate} />
-            </View>
+            {authContext.role != "Admin" ? null : (
+              <View style={s.btnInputContainer}>
+                <AppButton text="UPDATE" onPress={_onUpdate} />
+              </View>
+            )}
           </View>
 
           <View style={s.tblUser}>
             <Text style={s.formHeader}>GROUP'S USERS</Text>
 
-            <View style={s.btnInputContainer}>
-              <AppButton
-                text="ADD"
-                onPress={() => viewGroupContext.setScannerOpen(true)}
-              />
-            </View>
-
+            {authContext.role != "Admin" ? null : (
+              <View style={s.btnInputContainer}>
+                <AppButton
+                  text="ADD"
+                  onPress={() => viewGroupContext.setScannerOpen(true)}
+                />
+              </View>
+            )}
+            
             {viewGroupContext.data.group_users.length ? (
               viewGroupContext.data.group_users.map(item => (
                 <View style={s.formItemContainer}>

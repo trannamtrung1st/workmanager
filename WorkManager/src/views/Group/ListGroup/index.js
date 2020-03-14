@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, Alert } from "react-native";
 import { AppLayout, ScannerModal } from "$components";
 import { Database } from "$services";
-import { ListGroupContext } from "$app-contexts";
+import { ListGroupContext, AuthContext } from "$app-contexts";
 import s from "./style";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { SCREENS } from "$constants";
@@ -13,6 +13,7 @@ import { GroupApi } from "$api";
 import { useIsFocused } from "@react-navigation/native";
 
 function ListGroup(props) {
+  const authContext = useContext(AuthContext);
   const { navigation } = props;
   const forceUpdate = HookHelper.useForceUpdate();
   const [listGroupContext] = useState({
@@ -77,19 +78,25 @@ function ListGroup(props) {
     <ListGroupContext.Provider value={listGroupContext}>
       <AppLayout {...props} screenHeader="List of groups">
         <View style={s.listContainer}>
-          {groups.map(u => (
-            <GroupItem
-              key={u.id}
-              group={u}
-              onPress={onItemPress}
-              onLongPress={onItemLongPress}
-            />
-          ))}
+          {groups.length ? (
+            groups.map(u => (
+              <GroupItem
+                key={u.id}
+                group={u}
+                onPress={onItemPress}
+                onLongPress={onItemLongPress}
+              />
+            ))
+          ) : (
+            <Text>You don't manage any group</Text>
+          )}
         </View>
 
         <ActionModal />
       </AppLayout>
-      <Icon name="plus" style={s.plusIcon} onPress={_onCreatePress} />
+      {authContext.role != "Admin" ? null : (
+        <Icon name="plus" style={s.plusIcon} onPress={_onCreatePress} />
+      )}
     </ListGroupContext.Provider>
   );
 }

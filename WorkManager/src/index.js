@@ -75,6 +75,7 @@ export default function App() {
       expiresUtc: G.tokenModel?.expires_utc,
       username: G.tokenModel?.username,
       employeeCode: G.tokenModel?.employee_code,
+      role: G.tokenModel?.role,
       userId: G.tokenModel?.user_id,
       logoutIntervalSet: false,
       login,

@@ -27,7 +27,7 @@ namespace WorkManager.WebApi.Controllers
         private EventDomain _eDomain;
 
         [HttpGet("")]
-        [Authorize(Roles = "Admin,Manager")]
+        [Authorize]
         public IActionResult Get([FromQuery]GroupFilter filter,
             [FromQuery]string[] sorts,
             [FromQuery]string[] fields,
@@ -38,6 +38,7 @@ namespace WorkManager.WebApi.Controllers
             try
             {
                 var domain = Service<GroupDomain>();
+                var iDomain = Service<IdentityDomain>();
 
                 if (fields.Length == 0)
                     fields = new string[] { GroupGeneralFields.INFO };
@@ -53,9 +54,10 @@ namespace WorkManager.WebApi.Controllers
                         });
                 }
 
+                var roleManager = iDomain.GetRoleByName("Manager");
                 var result = domain.GetGroupsData(filter,
                     sorts,
-                    fields, page, limit, count_total);
+                    fields, page, limit, count_total, User, roleManager.Id);
                 return Ok(new ApiResult()
                 {
                     Code = ResultCode.Success,

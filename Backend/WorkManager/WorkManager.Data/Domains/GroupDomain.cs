@@ -41,9 +41,9 @@ namespace WorkManager.Data.Domains
             string[] sorts,
             string[] fields,
             int page,
-            int limit, bool countTotal)
+            int limit, bool countTotal, ClaimsPrincipal principal, string roleManagerId)
         {
-            return Groups.GetData(filter, sorts, fields, page, limit, countTotal);
+            return Groups.GetData(filter, sorts, fields, page, limit, countTotal, principal, roleManagerId);
         }
 
         public Groups EditGroup(Groups entity, EditGroupViewModel model)
