@@ -15,7 +15,6 @@ function HistoryBox(props) {
     reload();
   }
   history = history ?? [];
-  console.log(queryObj);
 
   function reload() {
     EventApi.get(
