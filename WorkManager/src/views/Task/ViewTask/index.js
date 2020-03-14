@@ -302,117 +302,151 @@ function ViewTask(props) {
               onDateChanged={(ev, v) => (data.deadline = v)}
             />
           </View>
-          <View style={s.btnInputContainer}>
-            <AppButton text="UPDATE" onPress={_onUpdate} />
-          </View>
+          {data.status.indexOf("FINISH CONFIRMED") > -1 ||
+          data.status.indexOf("DONE") > -1 ? null : (
+            <View style={s.btnInputContainer}>
+              <AppButton text="UPDATE" onPress={_onUpdate} />
+            </View>
+          )}
 
           <Hr />
           <Text style={s.formHeader}>REPORT SECTION</Text>
-          <View style={s.formItemContainer}>
-            <Text>Report</Text>
-            <View style={s.inputContainer}>
-              <AppInput
-                textAlignVertical={"top"}
-                multiline={true}
-                placeholder="Report content"
-                numberOfLines={5}
-                onChangeText={t => _changeData("task_report", t)}
-                value={data.task_report}
-              />
-            </View>
-          </View>
+          {data.status.indexOf("DOING") < 0 &&
+          data.status.indexOf("DONE") < 0 ? (
+            <Text>Task hasn't started</Text>
+          ) : (
+            <>
+              <View style={s.formItemContainer}>
+                <Text>Report</Text>
+                <View style={s.inputContainer}>
+                  <AppInput
+                    textAlignVertical={"top"}
+                    multiline={true}
+                    placeholder="Report content"
+                    numberOfLines={5}
+                    onChangeText={t => _changeData("task_report", t)}
+                    value={data.task_report}
+                  />
+                </View>
+              </View>
+              <View style={s.formItemContainer}>
+                <Text>Confirm image</Text>
+                <View style={s.formItemContainer}>
+                  <AppButton
+                    type="outline-primary"
+                    text="UPLOAD IMAGE"
+                    onPress={_onUploadImagePress}
+                  />
+                </View>
+                {data.confirm_image ? (
+                  <Image
+                    source={
+                      typeof data.confirm_image == "string"
+                        ? { uri: API.base + data.confirm_image }
+                        : data.confirm_image
+                    }
+                    style={s.image}
+                    resizeMethod={"scale"}
+                    resizeMode={"contain"}
+                  />
+                ) : (
+                  <Text style={s.italic}>Nothing</Text>
+                )}
+              </View>
+              <View style={s.formItemContainer}>
+                <View style={s.btnInputContainer}>
+                  {data.status.indexOf("DONE") > -1 ||
+                  data.status.indexOf("FINISH CONFIRMED") > -1 ? null : (
+                    <AppButton
+                      btnStyle={s.btnOp}
+                      type="danger"
+                      text="CANCEL"
+                      onPress={() => _onChangeStatus("CANCEL")}
+                    />
+                  )}
 
-          <View style={s.formItemContainer}>
-            <Text>Confirm image</Text>
-            <View style={s.formItemContainer}>
-              <AppButton
-                type="outline-primary"
-                text="UPLOAD IMAGE"
-                onPress={_onUploadImagePress}
-              />
-            </View>
-            {data.confirm_image ? (
-              <Image
-                source={
-                  typeof data.confirm_image == "string"
-                    ? { uri: API.base + data.confirm_image }
-                    : data.confirm_image
-                }
-                style={s.image}
-                resizeMethod={"scale"}
-                resizeMode={"contain"}
-              />
-            ) : (
-              <Text style={s.italic}>Nothing</Text>
-            )}
-          </View>
-          <View style={s.formItemContainer}>
-            <View style={s.btnInputContainer}>
-              <AppButton
-                btnStyle={s.btnOp}
-                type="danger"
-                text="CANCEL"
-                onPress={() => _onChangeStatus("CANCEL")}
-              />
-              <AppButton btnStyle={s.btnOp} text="FINISH" onPress={_onFinish} />
-            </View>
-          </View>
+                  {data.status.indexOf("DOING") < 0 &&
+                  data.status.indexOf("DONE") < 0 ? null : (
+                    <AppButton
+                      btnStyle={s.btnOp}
+                      text="FINISH"
+                      onPress={_onFinish}
+                    />
+                  )}
+                </View>
+              </View>
+            </>
+          )}
 
           <Hr />
           <Text style={s.formHeader}>REVIEW SECTION</Text>
-          <View style={s.formItemContainer}>
-            <Text>
-              Review time:
-              <Text> {data.review_time}</Text>
-            </Text>
-          </View>
 
-          <View style={s.formItemContainer}>
-            <Text>Manager's review</Text>
-            <View style={s.inputContainer}>
-              <AppInput
-                textAlignVertical={"top"}
-                multiline={true}
-                placeholder="Review content"
-                numberOfLines={5}
-                onChangeText={t => _changeData("manager_review", t)}
-                value={data.manager_review}
-              />
-            </View>
-          </View>
+          {data.status.indexOf("CANCEL") > -1 ? (
+            <Text>Task was canceled</Text>
+          ) : (
+            <>
+              <View style={s.formItemContainer}>
+                <Text>
+                  Review time:
+                  <Text> {data.review_time}</Text>
+                </Text>
+              </View>
 
-          <View style={s.formItemContainer}>
-            <Text>Rate</Text>
-            <View style={s.inputContainer}>
-              <AppInput
-                keyboardType="number-pad"
-                placeholder="Task's result"
-                onChangeText={t => _changeData("mark", t)}
-                value={data.mark?.toString()}
-              />
-            </View>
-          </View>
+              <View style={s.formItemContainer}>
+                <Text>Manager's review</Text>
+                <View style={s.inputContainer}>
+                  <AppInput
+                    textAlignVertical={"top"}
+                    multiline={true}
+                    placeholder="Review content"
+                    numberOfLines={5}
+                    onChangeText={t => _changeData("manager_review", t)}
+                    value={data.manager_review}
+                  />
+                </View>
+              </View>
 
-          <View style={s.formItemContainer}>
-            <View style={s.btnInputContainer}>
-              <AppButton
-                btnStyle={s.btnOp}
-                type="danger"
-                text="DECLINE"
-                onPress={() => _onChangeStatus("DECLINED")}
-              />
-              <AppButton
-                btnStyle={s.btnOp}
-                text="ACCEPT"
-                onPress={() => _onChangeStatus("ACCEPTED")}
-              />
-              <AppButton
-                btnStyle={s.btnOp}
-                text="CONFIRM"
-                onPress={() => _onChangeStatus("FINISH CONFIRMED")}
-              />
-            </View>
-          </View>
+              <View style={s.formItemContainer}>
+                <Text>Rate</Text>
+                <View style={s.inputContainer}>
+                  <AppInput
+                    keyboardType="number-pad"
+                    placeholder="Task's result"
+                    onChangeText={t => _changeData("mark", t)}
+                    value={data.mark?.toString()}
+                  />
+                </View>
+              </View>
+
+              <View style={s.formItemContainer}>
+                <View style={s.btnInputContainer}>
+                  {data.status.indexOf("FINISH CONFIRMED") > -1 ? null : (
+                    <>
+                      <AppButton
+                        btnStyle={s.btnOp}
+                        type="danger"
+                        text="DECLINE"
+                        onPress={() => _onChangeStatus("DECLINED")}
+                      />
+                      <AppButton
+                        btnStyle={s.btnOp}
+                        text="ACCEPT"
+                        onPress={() => _onChangeStatus("ACCEPTED")}
+                      />
+                    </>
+                  )}
+
+                  {data.status.indexOf("DONE") < 0 ? null : (
+                    <AppButton
+                      btnStyle={s.btnOp}
+                      text="CONFIRM"
+                      onPress={() => _onChangeStatus("FINISH CONFIRMED")}
+                    />
+                  )}
+                </View>
+              </View>
+            </>
+          )}
         </View>
 
         <HistoryBox

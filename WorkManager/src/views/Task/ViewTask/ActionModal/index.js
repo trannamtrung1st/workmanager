@@ -95,9 +95,11 @@ function ActionModal(props) {
       isVisible={modalVisible}
       onBackdropPress={() => setModalVisible(false)}
     >
-      <View style={s.formItemContainer}>
-        <AppButton text="START TASK" onPress={_onStartPress} />
-      </View>
+      {task.status.indexOf("NEW") < 0 ? null : (
+        <View style={s.formItemContainer}>
+          <AppButton text="START TASK" onPress={_onStartPress} />
+        </View>
+      )}
       <View style={s.formItemContainer}>
         <AppButton type="danger" text="DELETE" onPress={_onDeletePress} />
       </View>

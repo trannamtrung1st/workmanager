@@ -63,8 +63,9 @@ namespace WorkManager.Data.Domains
                     break;
                 case "DONE":
                     currentStatus.Remove("DOING");
+                    currentStatus.Remove("DUE SOON");
                     currentStatus.Add(model.status);
-
+                    
                     entity.EndTime = DateTime.UtcNow;
                     entity.TaskReport = model.task_report;
                     if (model.confirm_image != null)
@@ -93,7 +94,7 @@ namespace WorkManager.Data.Domains
                     entity.Mark = model.mark;
                     break;
                 case "FINISH CONFIRMED":
-
+                    currentStatus.Remove("DUE SOON");
                     currentStatus.Remove("ACCEPTED");
                     currentStatus.Remove("DECLINED");
                     currentStatus.Add(model.status);
