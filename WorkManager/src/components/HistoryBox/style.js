@@ -16,35 +16,31 @@ const styles = StyleSheet.create({
   tblUser: {},
   tblRow: {
     paddingVertical: 10
+  },
+  italic: {
+    fontStyle: "italic"
   }
 });
 
 const form = [appStyles.borderLightGray, styles.form];
 const formItemContainer = [appStyles.formItemContainer];
 const inputContainer = [appStyles.inputContainer];
-const inactiveInputContainer = [appStyles.inactiveInputContainer];
-const btnInputContainer = formItemContainer.concat([
-  commonStyles.flexRow,
-  commonStyles.justifyFlexEnd
-]);
-const btnOp = [commonStyles.alignSelfFlexEnd];
 const link = [styles.link];
-const tblUser = form.concat(styles.tblUser);
+const tbl = form.concat(styles.tblUser);
 const tblRow = inputContainer.concat(styles.tblRow);
 const formHeader = [commonStyles.fontWeightBold, styles.formHeader];
 const bold = [commonStyles.fontWeightBold];
+const italic = [styles.italic];
 const s = {
+  italic,
   bold,
   formHeader,
   tblRow,
   link,
-  tblUser,
+  tbl,
   form,
   inputContainer,
-  formItemContainer,
-  btnInputContainer,
-  inactiveInputContainer,
-  btnOp
+  formItemContainer
 };
 
 export default s;

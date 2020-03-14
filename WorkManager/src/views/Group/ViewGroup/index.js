@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import { AppLayout, AppButton, AppInput, ScannerModal } from "$components";
+import {
+  AppLayout,
+  AppButton,
+  AppInput,
+  ScannerModal,
+  HistoryBox
+} from "$components";
 import { Database } from "$services";
 import { ViewGroupContext } from "$app-contexts";
 import s from "./style";
@@ -14,7 +20,8 @@ function ViewGroup(props) {
   const forceUpdate = HookHelper.useForceUpdate();
   const [viewGroupContext] = useState({
     reload,
-    data: null
+    data: null,
+    historyBox: null
   });
   const data = viewGroupContext.data;
   if (data == null) {
@@ -23,6 +30,7 @@ function ViewGroup(props) {
   }
 
   function reload() {
+    if (viewGroupContext.historyBox) viewGroupContext.historyBox.reload();
     GroupApi.get(
       {
         fields: ["info", "created_user", "group_users"],
@@ -77,7 +85,7 @@ function ViewGroup(props) {
 
         if (resp.ok) {
           alert("Update successfully");
-          forceUpdate();
+          reload();
         } else {
           const data = await resp.json();
           alert(data.message);
@@ -182,37 +190,35 @@ function ViewGroup(props) {
             </View>
 
             {viewGroupContext.data.group_users.length ? (
-              <FlatList
-                style={s.formItemContainer}
-                data={viewGroupContext.data.group_users}
-                renderItem={({ item }) => {
-                  return (
-                    <View style={s.formItemContainer}>
-                      <TouchableOpacity
-                        style={s.tblRow}
-                        onPress={() => _onUserPress(item)}
-                      >
-                        <Text>
-                          {item.user.full_name +
-                            ": " +
-                            item.user.username +
-                            " "}
-                          {item.role == "Manager" ? (
-                            <Text style={s.bold}>{"(Manager)"}</Text>
-                          ) : (
-                            ""
-                          )}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  );
-                }}
-                keyExtractor={item => item.id}
-              />
+              viewGroupContext.data.group_users.map(item => (
+                <View style={s.formItemContainer}>
+                  <TouchableOpacity
+                    style={s.tblRow}
+                    onPress={() => _onUserPress(item)}
+                  >
+                    <Text>
+                      {item.user.full_name + ": " + item.user.username + " "}
+                      {item.role == "Manager" ? (
+                        <Text style={s.bold}>{"(Manager)"}</Text>
+                      ) : (
+                        ""
+                      )}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ))
             ) : (
               <Text>This group doesn't have any member</Text>
             )}
           </View>
+
+          <HistoryBox
+            funcRef={ref => (viewGroupContext.historyBox = ref)}
+            queryObj={{
+              group_id: data.id,
+              sorts: "dtime"
+            }}
+          />
         </View>
         <ActionModal />
         <ScannerModal context={viewGroupContext} onSuccess={onSuccess} />

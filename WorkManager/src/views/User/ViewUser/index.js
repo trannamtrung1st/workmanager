@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text } from "react-native";
-import { AppLayout, AppButton, AppInput } from "$components";
+import { AppLayout, AppButton, AppInput, HistoryBox } from "$components";
 import { Database } from "$services";
 import { ViewUserContext } from "$app-contexts";
 import s from "./style";
@@ -8,7 +8,9 @@ import s from "./style";
 function ViewUser(props) {
   const { navigation, route } = props;
   const user = route.params.user;
-  const [viewUserContext] = useState({});
+  const [viewUserContext] = useState({
+    historyBox: null
+  });
 
   return (
     <ViewUserContext.Provider value={viewUserContext}>
@@ -59,6 +61,14 @@ function ViewUser(props) {
                   <AppButton text="UPDATE" onPress={() => {}} />
                 </View> */}
           </View>
+
+          <HistoryBox
+            funcRef={ref => (viewUserContext.historyBox = ref)}
+            queryObj={{
+              user_id: user.id,
+              sorts: "dtime"
+            }}
+          />
         </View>
       </AppLayout>
     </ViewUserContext.Provider>

@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
   content: {
     padding: 18
   },
+  contentContainer: {
+    paddingBottom: 100
+  },
   screenHeaderText: {
     fontSize: 18,
     textTransform: "uppercase"
@@ -48,7 +51,9 @@ const appName = [commonStyles.textBlack, commonStyles.fontWeightBold];
 const content = [commonStyles.flex1, styles.content];
 const screenHeader = [styles.screenHeader];
 const screenHeaderText = [commonStyles.fontWeightBold, styles.screenHeaderText];
+const contentContainer = [styles.contentContainer];
 const s = {
+  contentContainer,
   layout,
   header,
   btnMenuIcon,

@@ -5,7 +5,9 @@ import Hr from "./Hr";
 import AppInput from "./AppInput";
 import ItemStatusBadge from "./ItemStatusBadge";
 import ScannerModal from "./ScannerModal";
+import HistoryBox from "./HistoryBox";
 export {
+  HistoryBox,
   ScannerModal,
   ItemStatusBadge,
   AppInput,

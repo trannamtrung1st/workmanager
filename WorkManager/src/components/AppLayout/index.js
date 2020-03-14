@@ -22,7 +22,7 @@ function AppLayout(props) {
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={s.content}>
+      <ScrollView style={s.content} contentContainerStyle={s.contentContainer}>
         <View style={s.screenHeader}>
           <Text style={s.screenHeaderText}>{screenHeader}</Text>
         </View>

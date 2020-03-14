@@ -277,10 +277,16 @@ namespace WorkManager.WebApi.Controllers
                             Message = "Not found assigned user"
                         });
                     var domain = Service<TaskDomain>();
-                    var entity = domain.CreateTask(model, ofUser, User);
-                    var ev = _eDomain.CreateTask(entity, ofUser, User);
-                    _uow.SaveChanges();
-
+                    Tasks entity;
+                    Events ev;
+                    using (var trans = _uow.BeginTransaction())
+                    {
+                        entity = domain.CreateTask(model, ofUser, User);
+                        _uow.SaveChanges();
+                        ev = _eDomain.CreateTask(entity, ofUser, User);
+                        _uow.SaveChanges();
+                        trans.Commit();
+                    }
                     if (entity.OfUser != entity.CreatedUser)
                     {
                         var data = new Dictionary<string, string>();

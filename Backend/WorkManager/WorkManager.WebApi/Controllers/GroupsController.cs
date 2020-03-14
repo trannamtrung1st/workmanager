@@ -142,13 +142,19 @@ namespace WorkManager.WebApi.Controllers
                 if (ModelState.IsValid)
                 {
                     var domain = Service<GroupDomain>();
-                    var entity = domain.CreateGroup(model, User);
-                    _eDomain.CreateGroup(entity, User);
-
-                    _uow.SaveChanges();
+                    int id;
+                    using (var trans = _uow.BeginTransaction())
+                    {
+                        var entity = domain.CreateGroup(model, User);
+                        _uow.SaveChanges();
+                        _eDomain.CreateGroup(entity, User);
+                        _uow.SaveChanges();
+                        trans.Commit();
+                        id = entity.Id;
+                    }
                     _logger.CustomProperties(new { model }).Info("Create group");
 
-                    return Ok(entity.Id);
+                    return Ok(id);
                 }
 
                 var message = "";

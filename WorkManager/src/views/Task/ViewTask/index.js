@@ -6,7 +6,8 @@ import {
   AppButton,
   Hr,
   AppInput,
-  ItemStatusBadge
+  ItemStatusBadge,
+  HistoryBox
 } from "$components";
 import { ViewTaskContext, AuthContext } from "$app-contexts";
 import s from "./style";
@@ -33,7 +34,8 @@ function ViewTask(props) {
     data: null,
     setModalVisible: null,
     goBack: navigation.goBack,
-    reload
+    reload,
+    historyBox: null
   });
   const data = viewTaskContext.data;
 
@@ -43,6 +45,7 @@ function ViewTask(props) {
   }
 
   function reload() {
+    if (viewTaskContext.historyBox) viewTaskContext.historyBox.reload();
     TaskApi.get(
       {
         fields: [
@@ -94,7 +97,7 @@ function ViewTask(props) {
 
         if (resp.ok) {
           alert("Update successfully");
-          forceUpdate();
+          reload();
         } else {
           const data = await resp.json();
           alert(data.message);
@@ -411,6 +414,14 @@ function ViewTask(props) {
             </View>
           </View>
         </View>
+
+        <HistoryBox
+          funcRef={ref => (viewTaskContext.historyBox = ref)}
+          queryObj={{
+            task_id: data.id,
+            sorts: "dtime"
+          }}
+        />
       </AppLayout>
       <Icon name="bars" style={s.actionIcon} onPress={_onActionPress} />
 

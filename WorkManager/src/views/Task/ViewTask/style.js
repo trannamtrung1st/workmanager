@@ -8,8 +8,7 @@ const styles = StyleSheet.create({
   form: {
     paddingHorizontal: 17,
     paddingVertical: 10,
-    marginVertical: 10,
-    marginBottom: 100
+    marginVertical: 10
   },
   link: {
     color: COLOR.primaryBlue
