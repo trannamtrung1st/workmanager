@@ -24,7 +24,7 @@ namespace WorkManager.Data.Models.Extensions
             if (filter.employee_code != null)
                 query = query.Where(p => p.EmployeeCode == filter.employee_code);
             if (!principal.IsInRole("Admin"))
-                query = query.Where(p => p.GroupUsers.Any(gu =>
+                query = query.Where(p => p.Id == principal.Identity.Name || p.GroupUsers.Any(gu =>
                     gu.Group.GroupUsers.Any(
                         gus => gus.UserId == principal.Identity.Name
                             && gus.RoleId == roleManagerId)));
