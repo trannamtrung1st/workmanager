@@ -149,7 +149,7 @@ namespace WorkManager.WebApi.Controllers
 
 
         [HttpGet("")]
-        [Authorize(Roles = "Admin,Manager")]
+        [Authorize]
         public IActionResult Get([FromQuery]UserFilter filter,
             [FromQuery]string[] sorts,
             [FromQuery]string[] fields,
@@ -173,9 +173,10 @@ namespace WorkManager.WebApi.Controllers
                         });
                 }
 
-                var result = _iDomain.Users.GetData(filter,
+                var roleManager = _iDomain.GetRoleByName("Manager");
+                var result = _iDomain.DataUsers.GetData(filter,
                     sorts,
-                    fields, page, limit, count_total);
+                    fields, page, limit, count_total, User, roleManager.Id);
                 return Ok(new ApiResult()
                 {
                     Code = ResultCode.Success,

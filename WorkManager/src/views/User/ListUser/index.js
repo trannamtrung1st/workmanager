@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from "react";
 import { View, Text, Alert } from "react-native";
 import { AppLayout, AppButton, AppInput, ScannerModal } from "$components";
 import { Database } from "$services";
-import { ListUserContext } from "$app-contexts";
+import { ListUserContext, AuthContext } from "$app-contexts";
 import s from "./style";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { SCREENS } from "$constants";
@@ -13,6 +13,7 @@ import { UserApi } from "$api";
 import { useIsFocused } from "@react-navigation/native";
 
 function ListUser(props) {
+  const authContext = useContext(AuthContext);
   const { navigation } = props;
 
   const forceUpdate = HookHelper.useForceUpdate();
@@ -88,22 +89,36 @@ function ListUser(props) {
     <ListUserContext.Provider value={listUserContext}>
       <AppLayout {...props} screenHeader="List of users">
         <View style={s.listContainer}>
-          {users.map((u, idx) => (
-            <UserItem
-              no={idx + 1}
-              key={u.id}
-              user={u}
-              onPress={onItemPress}
-              onLongPress={onItemLongPress}
-            />
-          ))}
+          {users.length ? (
+            users.map((u, idx) => (
+              <UserItem
+                no={idx + 1}
+                key={u.id}
+                user={u}
+                onPress={onItemPress}
+                onLongPress={onItemLongPress}
+              />
+            ))
+          ) : (
+            <Text>You don't manage any user</Text>
+          )}
         </View>
 
         <ActionModal />
         <ScannerModal context={listUserContext} onSuccess={onSuccess} />
       </AppLayout>
-      <Icon name="search" style={s.searchIcon} onPress={_onSearchPress} />
-      <Icon name="plus" style={s.plusIcon} onPress={_onCreatePress} />
+      {authContext.role != "Admin" ? (
+        <Icon name="search" style={s.searchIcon} onPress={_onSearchPress} />
+      ) : (
+        <>
+          <Icon
+            name="search"
+            style={s.topSearchIcon}
+            onPress={_onSearchPress}
+          />
+          <Icon name="plus" style={s.plusIcon} onPress={_onCreatePress} />
+        </>
+      )}
     </ListUserContext.Provider>
   );
 }

@@ -62,11 +62,19 @@ namespace WorkManager.Data.Domains
         #endregion
 
         #region User
-        public IQueryable<AppUsers> Users
+        public IQueryable<AppUsers> IdentityUsers
         {
             get
             {
                 return _userManager.Users;
+            }
+        }
+
+        public IQueryable<AspNetUsers> DataUsers
+        {
+            get
+            {
+                return _uow.GetService<IAspNetUsersRepository>().Get();
             }
         }
 

@@ -148,7 +148,7 @@ namespace WorkManager.Data.ViewModels
                     INFO, new string[]{ "Id","FullName","UserName","Email","PhoneNumber","EmployeeCode" }
                 },
                 {
-                    ROLE, new string[]{ "UserRoles" }
+                    ROLE, new string[]{ "AspNetUserRoles" }
                 }
             };
     }
