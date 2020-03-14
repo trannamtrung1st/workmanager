@@ -7,9 +7,6 @@ import { AppRegistry } from "react-native";
 import App from "./src";
 import { name as appName } from "./app.json";
 
-console.disableYellowBox = true;
-AppRegistry.registerComponent(appName, () => App);
-
 // Background Firebase handler
 import messaging, { firebase } from "@react-native-firebase/messaging";
 
@@ -35,3 +32,6 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
   // messageArray.push(remoteMessage.data);
   // await AsyncStorage.setItem("messages", JSON.stringify(messageArray));
 });
+
+console.disableYellowBox = true;
+AppRegistry.registerComponent(appName, () => App);

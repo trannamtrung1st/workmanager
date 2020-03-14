@@ -53,6 +53,7 @@ namespace WorkManager.Data
         public string Name { get; set; }
         public string ApiUrl { get; set; }
         public string SecretsFileName { get; set; }
+        public string FirebaseSecret { get; set; }
         public float TokenValidHours { get; set; }
         public float CookiePersistentHours { get; set; }
         public NLogAppConfig NLog { get; set; }
