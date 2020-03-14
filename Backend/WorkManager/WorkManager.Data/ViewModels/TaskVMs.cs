@@ -57,7 +57,7 @@ namespace WorkManager.Data.ViewModels
 
 
     //Status life cycle: [NEW, DOING, DONE, CANCEL], [ACCEPTED, DECLINED, FINISH CONFIRMED]
-    //Status by background worker: [LATE]
+    //Status by background worker: [DUE SOON, LATE]
     public class ChangeTaskStatusViewModel : BaseViewModel<Tasks>
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "Status is required")]

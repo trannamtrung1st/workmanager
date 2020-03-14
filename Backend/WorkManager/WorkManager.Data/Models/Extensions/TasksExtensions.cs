@@ -142,6 +142,25 @@ namespace WorkManager.Data.Models.Extensions
             return query.Skip(page * limit).Take(limit);
         }
 
+        public static IQueryable<Tasks> DueSoon(this IQueryable<Tasks> query)
+        {
+            var now = DateTime.UtcNow;
+            return query.Where(q => (q.Deadline - now).Value.TotalHours <= 24);
+        }
+        public static IQueryable<Tasks> Late(this IQueryable<Tasks> query)
+        {
+            var now = DateTime.UtcNow;
+            return query.Where(q => q.Deadline <= now);
+        }
+        public static IQueryable<Tasks> NotInStatus(this IQueryable<Tasks> query, string status)
+        {
+            return query.Where(q => !q.Status.Contains("\"" + status + "\""));
+        }
+        public static IQueryable<Tasks> InStatus(this IQueryable<Tasks> query, string status)
+        {
+            return query.Where(q => q.Status.Contains("\"" + status + "\""));
+        }
+
         public static object GetData(this IQueryable<Tasks> query,
            TaskFilter filter,
            string[] sorts,

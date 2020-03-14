@@ -413,3 +413,4 @@ MigrationBackup/
 .ionide/
 WorkManager/android/app/google-services.json
 Backend/WorkManager/WorkManager.WebApi/Secrets/
+Backend/WorkManager/WorkManager.BackgroundWorker/Secrets/
