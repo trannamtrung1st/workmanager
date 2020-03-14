@@ -17,6 +17,8 @@ export default function App() {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log("FCM Message Data:", remoteMessage.data);
 
+      const data = remoteMessage.data;
+
       // Update a users messages list using AsyncStorage
       // const currentMessages = await AsyncStorage.getItem("messages");
       // const messageArray = JSON.parse(currentMessages) ?? [];
@@ -43,8 +45,9 @@ export default function App() {
         // importance: "high", // (optional) set notification importance, default: high
 
         /* iOS and Android properties */
-        title: "Some message babe <3", // (optional)
-        message: "My Notification Message" // (required)
+        // title: "Some message babe <3", // (optional)
+        // message: "My Notification Message" // (required)
+        ...data
         // playSound: false, // (optional) default: true
         // soundName: "default", // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
         // number: "10", // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
