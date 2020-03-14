@@ -7,7 +7,7 @@ import { appStyles } from "$styles";
 const styles = StyleSheet.create({
   page: {},
   form: {
-    height: DIMENSIONS.height * 0.26
+    height: 250
   },
   header: {
     flex: 0.2

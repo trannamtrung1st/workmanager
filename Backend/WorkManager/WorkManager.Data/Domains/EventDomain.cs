@@ -49,7 +49,7 @@ namespace WorkManager.Data.Domains
             FirebaseMessaging.DefaultInstance.UnsubscribeFromTopicAsync(tokens, topic);
         }
 
-        public void UnsubscribeFromTopic(IList<string> tokens, string topic)
+        public void UnsubscribeFromTopic(List<string> tokens, string topic)
         {
             FirebaseMessaging.DefaultInstance.UnsubscribeFromTopicAsync(tokens, topic);
         }

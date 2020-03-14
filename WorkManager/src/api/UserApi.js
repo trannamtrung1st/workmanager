@@ -5,6 +5,7 @@ import messaging from "@react-native-firebase/messaging";
 import { G } from "$global";
 
 function login(model, response, error) {
+  console.log(model);
   authFetch(API.endpoint + "users/login", {
     method: "POST",
     headers: {
