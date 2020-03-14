@@ -6,6 +6,7 @@ import "react-native-gesture-handler";
 import { AppRegistry } from "react-native";
 import App from "./src";
 import { name as appName } from "./app.json";
+import { NotiApi } from "$api";
 
 import PushNotification from "react-native-push-notification";
 
@@ -17,12 +18,8 @@ PushNotification.configure({
 
   // (required) Called when a remote or local notification is opened or received
   onNotification: function(notification) {
-    console.log("NOTIFICATION:", notification);
-    alert(
-      "Go to the entity specified in message to see the detail information"
-    );
-
     // process the notification
+    NotiApi.handleNotification(notification);
 
     // required on iOS only (see fetchCompletionHandler docs: https://github.com/react-native-community/react-native-push-notification-ios)
     // notification.finish(PushNotificationIOS.FetchResult.NoData);

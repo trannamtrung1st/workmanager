@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AppDrawerNavigator } from "$navigation";
 import { AuthContext } from "$app-contexts";
 import { Login } from "$views";
-import { UserApi } from "$api";
+import { UserApi, NotiApi } from "$api";
 import { G } from "$global";
 import messaging from "@react-native-firebase/messaging";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -13,6 +13,10 @@ import PushNotification from "react-native-push-notification";
 let logoutIntervalId;
 export default function App() {
   useEffect(() => {
+    PushNotification.popInitialNotification(notification => {
+      NotiApi.handleNotification(notification);
+    });
+
     //foreground handler
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log("FCM Message Data:", remoteMessage.data);
