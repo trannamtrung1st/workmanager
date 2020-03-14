@@ -11,6 +11,8 @@ using TNT.Core.Http.DI;
 using WorkManager.Data.Models.Extensions;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Authorization;
+using TNT.Core.Helpers.DI;
+using FirebaseAdmin.Messaging;
 
 namespace WorkManager.WebApi.Controllers
 {
@@ -20,6 +22,9 @@ namespace WorkManager.WebApi.Controllers
     public class GroupsController : BaseController
     {
         private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+
+        [Inject]
+        private EventDomain _eDomain;
 
         [HttpGet("")]
         [Authorize(Roles = "Admin,Manager")]
@@ -88,7 +93,18 @@ namespace WorkManager.WebApi.Controllers
                         });
 
                     domain.EditGroup(group, model);
+                    var ev = _eDomain.EditGroup(group, User);
                     _uow.SaveChanges();
+
+                    var data = new Dictionary<string, string>();
+                    data["title"] = "Your group is edited";
+                    data["message"] = ev.Message;
+                    _eDomain.Notify(new Message
+                    {
+                        Topic = $"GROUP_MEMBER_{group.Id}",
+                        Data = data
+                    });
+
                     _logger.CustomProperties(new { id, model }).Info("Edit group");
 
                     return NoContent();
@@ -127,6 +143,8 @@ namespace WorkManager.WebApi.Controllers
                 {
                     var domain = Service<GroupDomain>();
                     var entity = domain.CreateGroup(model, User);
+                    _eDomain.CreateGroup(entity, User);
+
                     _uow.SaveChanges();
                     _logger.CustomProperties(new { model }).Info("Create group");
 
@@ -188,7 +206,28 @@ namespace WorkManager.WebApi.Controllers
                     });
 
                 var entity = domain.AddUserToGroup(group, addedUser);
+                var ev = _eDomain.AddUserToGroup(group, addedUser, User);
                 _uow.SaveChanges();
+
+                var data = new Dictionary<string, string>();
+                data["title"] = "Your group has a new member";
+                data["message"] = ev.Message;
+                _eDomain.Notify(new Message
+                {
+                    Topic = $"GROUP_MEMBER_{group.Id}",
+                    Data = data
+                });
+
+                var userData = new Dictionary<string, string>();
+                userData["title"] = "You've been added to a group";
+                userData["message"] = ev.Message;
+                _eDomain.Notify(new Message
+                {
+                    Topic = addedUser.Id,
+                    Data = userData
+                });
+                _eDomain.SubscribeToTopic(addedUser, $"GROUP_MEMBER_{group.Id}");
+
                 _logger.CustomProperties(new { model }).Info("Add user to group");
 
                 return Ok(entity.Id);
@@ -221,22 +260,42 @@ namespace WorkManager.WebApi.Controllers
                     });
 
                 var entity = domain.RemoveUserFromGroup(groupUser);
+                var ev = _eDomain.RemoveUserFromGroup(groupUser, User);
                 _uow.SaveChanges();
+
+                var data = new Dictionary<string, string>();
+                data["title"] = "A group member has been removed";
+                data["message"] = ev.Message;
+                _eDomain.Notify(new Message
+                {
+                    Topic = $"GROUP_MEMBER_{groupUser.GroupId}",
+                    Data = data
+                });
+
+                var userData = new Dictionary<string, string>();
+                userData["title"] = "You've been removed from group";
+                userData["message"] = ev.Message;
+                _eDomain.Notify(new Message
+                {
+                    Topic = groupUser.UserId,
+                    Data = userData
+                });
+                _eDomain.UnsubscribeFromTopic(groupUser.User, $"GROUP_MEMBER_{groupUser.GroupId}");
+
                 _logger.CustomProperties(new { model }).Info("Remove user from group");
 
                 return Ok(entity.Id);
             }
-            catch (SqlException)
-            {
-                return BadRequest(new ApiResult()
-                {
-                    Code = ResultCode.FailValidation,
-                    Data = null,
-                    Message = "Can not delete because group has dependencies"
-                });
-            }
             catch (Exception e)
             {
+                if (e.InnerException != null
+                    && e.InnerException.GetType() == typeof(SqlException))
+                    return BadRequest(new ApiResult()
+                    {
+                        Code = ResultCode.FailValidation,
+                        Data = null,
+                        Message = "Can not delete because it has dependencies"
+                    });
                 _logger.Error(e);
                 return Error(new ApiResult()
                 {
@@ -262,20 +321,22 @@ namespace WorkManager.WebApi.Controllers
                         Message = ResultCode.NotFound.DisplayName()
                     });
 
-                var entity = domain.ChangeUserRoleInGroup(groupUser);
+                var tuple = domain.ChangeUserRoleInGroup(groupUser);
+                var ev = _eDomain.ChangeUserRoleInGroup(groupUser, tuple.Item2, User);
                 _uow.SaveChanges();
+
+                var data = new Dictionary<string, string>();
+                data["title"] = "Your role is changed";
+                data["message"] = ev.Message;
+                _eDomain.Notify(new Message
+                {
+                    Topic = groupUser.UserId,
+                    Data = data
+                });
+
                 _logger.CustomProperties(new { model }).Info("Change user role in group");
 
-                return Ok(entity.Id);
-            }
-            catch (SqlException)
-            {
-                return BadRequest(new ApiResult()
-                {
-                    Code = ResultCode.FailValidation,
-                    Data = null,
-                    Message = "Can not delete because group has dependencies"
-                });
+                return Ok(tuple.Item1.Id);
             }
             catch (Exception e)
             {
@@ -303,8 +364,24 @@ namespace WorkManager.WebApi.Controllers
                         Message = ResultCode.NotFound.DisplayName()
                     });
 
+                var groupUsersTokens = group.GroupUsers.Select(u =>
+                    u.User.AspNetUserTokens.Select(t => t.Value)).ToList();
                 domain.Delete(group);
+                var ev = _eDomain.DeleteGroup(group, User);
                 _uow.SaveChanges();
+
+                var data = new Dictionary<string, string>();
+                data["title"] = "Your group is deleted";
+                data["message"] = ev.Message;
+                _eDomain.Notify(new Message
+                {
+                    Topic = $"GROUP_MEMBER_{group.Id}",
+                    Data = data
+                });
+
+                foreach (var t in groupUsersTokens)
+                    _eDomain.UnsubscribeFromTopic(t.ToList(), $"GROUP_MEMBER_{group.Id}");
+
                 _logger.CustomProperties(new { id }).Info("Delete group");
 
                 return NoContent();

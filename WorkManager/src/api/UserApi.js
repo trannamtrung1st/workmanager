@@ -28,11 +28,23 @@ function saveToken(tokenModel, success, error) {
     .catch(error);
 }
 
-function logout(finish) {
-  AsyncStorage.removeItem("token", error => {
-    if (!error) messaging().unsubscribeFromTopic(G.tokenModel.user_id);
-    if (finish) finish(error);
-  });
+function logout(finish, error) {
+  authFetch(API.endpoint + "users/logout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      fcm_token: G.currentFCMToken
+    })
+  })
+    .then(v => {
+      AsyncStorage.removeItem("token", err => {
+        if (!err) messaging().unsubscribeFromTopic(G.tokenModel.user_id);
+        if (finish) finish(err);
+      });
+    })
+    .catch(error);
 }
 
 async function getToken() {

@@ -1,6 +1,7 @@
 const G = {
   tokenModel: null,
-  tokenGot: false
+  tokenGot: false,
+  currentFCMToken: null
 };
 
 export { G };

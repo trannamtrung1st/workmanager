@@ -52,12 +52,13 @@ PushNotification.configure({
 
 // Background Firebase handler
 import messaging, { firebase } from "@react-native-firebase/messaging";
+import { G } from "$global";
 
 //FCM TOKEN
 messaging()
   .getToken()
   .then(token => {
-    console.log(token);
+    G.currentFCMToken = token;
   });
 
 const unsubscribe = messaging().onTokenRefresh(async fcmToken => {

@@ -12,7 +12,7 @@ namespace WorkManager.Data.Models
     public class IdentityContext : IdentityDbContext<AppUsers, AppRoles, string,
         IdentityUserClaim<string>,
         AppUserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>,
-        IdentityUserToken<string>>
+        AppUserToken>
     {
         public IdentityContext(DbContextOptions<IdentityContext> options)
             : base(options)
@@ -31,6 +31,11 @@ namespace WorkManager.Data.Models
                 b.HasMany(e => e.UserRoles)
                     .WithOne(e => e.User)
                     .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
+
+                b.HasMany(e => e.UserTokens)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ut => ut.UserId)
                     .IsRequired();
             });
 
@@ -57,6 +62,12 @@ namespace WorkManager.Data.Models
         public string EmployeeCode { get; set; }
 
         public virtual ICollection<AppUserRole> UserRoles { get; set; }
+        public virtual ICollection<AppUserToken> UserTokens { get; set; }
+    }
+
+    public class AppUserToken: IdentityUserToken<string>
+    {
+        public virtual AppUsers User { get; set; }
     }
 
     public class AppUserRole : IdentityUserRole<string>

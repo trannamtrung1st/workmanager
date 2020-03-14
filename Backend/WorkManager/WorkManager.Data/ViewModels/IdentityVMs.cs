@@ -48,6 +48,15 @@ namespace WorkManager.Data.ViewModels
         [JsonProperty("scope")]
         public string scope { get; set; }
         //OPTIONAL.  The scope of the access request as described by
+
+        [JsonProperty("fcm_token")]
+        public string fcm_token { get; set; }
+    }
+
+    public class LogoutViewModel
+    {
+        [JsonProperty("fcm_token")]
+        public string fcm_token { get; set; }
     }
 
     public class AddRolesToUserViewModel

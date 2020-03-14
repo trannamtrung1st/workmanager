@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using TNT.Core.Helpers.DI;
+using WorkManager.Data.Models.Repositories;
 
 namespace WorkManager.Data.Domains
 {
@@ -67,6 +68,28 @@ namespace WorkManager.Data.Domains
             {
                 return _userManager.Users;
             }
+        }
+
+        public List<string> GetTokensNameEqual(AspNetUsers user, string provider, string name)
+        {
+            return user.AspNetUserTokens.Where(t => t.LoginProvider == provider && t.Name == name)
+                .Select(t => t.Value).ToList();
+        }
+        public List<string> GetTokensNameStartsWith(AspNetUsers user, string provider, string name)
+        {
+            return user.AspNetUserTokens.Where(t => t.LoginProvider == provider && t.Name.StartsWith(name))
+                .Select(t => t.Value).ToList();
+        }
+
+        public List<string> GetTokensNameEqual(AppUsers user, string provider, string name)
+        {
+            return user.UserTokens.Where(t => t.LoginProvider == provider && t.Name == name)
+                .Select(t => t.Value).ToList();
+        }
+        public List<string> GetTokensNameStartsWith(AppUsers user, string provider, string name)
+        {
+            return user.UserTokens.Where(t => t.LoginProvider == provider && t.Name.StartsWith(name))
+                .Select(t => t.Value).ToList();
         }
 
         public async Task<IEnumerable<string>> GetRoles(AppUsers user)
@@ -291,6 +314,25 @@ namespace WorkManager.Data.Domains
         }
 
         #endregion
+
+        public async Task<IdentityResult> LinkFCMToken(AppUsers user, string token)
+        {
+            var result = await _userManager
+                .SetAuthenticationTokenAsync(user, "Firebase", $"FCMToken{DateTime.UtcNow.Ticks}", token);
+            return result;
+        }
+
+        public string UnlinkFCMToken(string token)
+        {
+            var repo = _uow.GetService<IAspNetUserTokensRepository>();
+            var userToken = repo.Get().FirstOrDefault(t => t.Value == token);
+            if (userToken != null)
+            {
+                repo.Remove(userToken);
+                return token;
+            }
+            return null;
+        }
 
         #region External Login
         public AuthenticationProperties ConfigureExternalAuthenticationProperties(string provider, string redirectUrl, string userId = null)

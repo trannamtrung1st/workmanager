@@ -15,6 +15,7 @@ using TNT.Core.Helpers.DI;
 using TNT.Core.Http.DI;
 using WorkManager.Data.Models.Extensions;
 using System.Data.SqlClient;
+using FirebaseAdmin.Messaging;
 
 namespace WorkManager.WebApi.Controllers
 {
@@ -100,9 +101,38 @@ namespace WorkManager.WebApi.Controllers
 
                 var resp = _iDomain.GenerateTokenResponse(ticket);
 
-                _logger.CustomProperties(user).Info("Login user");
+                var linkResult = await _iDomain.LinkFCMToken(user, model.fcm_token);
+                if (!linkResult.Succeeded)
+                    throw new Exception("Can not link FCM token");
 
+                _logger.CustomProperties(user).Info("Login user");
                 return Ok(resp);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+
+                return Error(new ApiResult()
+                {
+                    Code = ResultCode.UnknownError,
+                    Message = ResultCode.UnknownError.DisplayName() + ": " + e.Message
+                });
+            }
+        }
+
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout(LogoutViewModel model)
+        {
+            try
+            {
+                AppUsers user = await _iDomain.GetUserById(User.Identity.Name);
+
+                var unlinkToken = _iDomain.UnlinkFCMToken(model.fcm_token);
+                _uow.SaveChanges();
+
+                _logger.CustomProperties(user).Info("Login user");
+                return Ok(unlinkToken);
             }
             catch (Exception e)
             {
@@ -274,8 +304,18 @@ namespace WorkManager.WebApi.Controllers
                 var result = await _iDomain.Remove(user);
                 if (result.Succeeded)
                 {
-                    _eDomain.DeleteUser(user, User);
+                    var ev = _eDomain.DeleteUser(user, User);
                     _uow.SaveChanges();
+
+                    var data = new Dictionary<string, string>();
+                    data["title"] = "So sorry";
+                    data["message"] = ev.Message;
+                    _eDomain.Notify(new Message
+                    {
+                        Topic = user.Id,
+                        Data = data
+                    });
+
                     return NoContent();
                 }
                 foreach (var err in result.Errors)

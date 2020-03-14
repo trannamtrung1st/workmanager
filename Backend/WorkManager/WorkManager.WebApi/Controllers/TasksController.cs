@@ -12,6 +12,8 @@ using WorkManager.Data.Models.Extensions;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
+using TNT.Core.Helpers.DI;
+using FirebaseAdmin.Messaging;
 
 namespace WorkManager.WebApi.Controllers
 {
@@ -21,6 +23,9 @@ namespace WorkManager.WebApi.Controllers
     public class TasksController : BaseController
     {
         private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+
+        [Inject]
+        private EventDomain _eDomain;
 
         [HttpGet("")]
         [Authorize]
@@ -89,7 +94,21 @@ namespace WorkManager.WebApi.Controllers
                         });
 
                     domain.EditTask(task, model);
+                    var ev = _eDomain.EditTask(task, User);
                     _uow.SaveChanges();
+
+                    if (task.OfUser != task.CreatedUser)
+                    {
+                        var data = new Dictionary<string, string>();
+                        data["title"] = "Your task has been edited";
+                        data["message"] = ev.Message;
+                        _eDomain.Notify(new Message
+                        {
+                            Topic = User.Identity.Name == task.OfUser ? task.CreatedUser : task.OfUser,
+                            Data = data
+                        });
+                    }
+
                     _logger.CustomProperties(new { id, model }).Info("Edit task");
 
                     return NoContent();
@@ -152,7 +171,7 @@ namespace WorkManager.WebApi.Controllers
                                 mess += "Must have report";
                             break;
                         case "CANCEL":
-                            if ((status.Contains("DONE") || status.Contains("FINISH CONFIRM")) 
+                            if ((status.Contains("DONE") || status.Contains("FINISH CONFIRM"))
                                 && !status.Contains(model.status))
                                 mess += "Can not cancel\n";
                             if (string.IsNullOrWhiteSpace(model.task_report))
@@ -193,7 +212,21 @@ namespace WorkManager.WebApi.Controllers
                     //end validation
 
                     domain.ChangeStatus(task, model);
+                    var ev = _eDomain.ChangeTaskStatus(task, model, User);
                     _uow.SaveChanges();
+
+                    if (task.OfUser != task.CreatedUser)
+                    {
+                        var data = new Dictionary<string, string>();
+                        data["title"] = "Your task status has been changed";
+                        data["message"] = ev.Message;
+                        _eDomain.Notify(new Message
+                        {
+                            Topic = User.Identity.Name == task.OfUser ? task.CreatedUser : task.OfUser,
+                            Data = data
+                        });
+                    }
+
                     _logger.CustomProperties(new { id, model }).Info("Change status");
 
                     return NoContent();
@@ -245,7 +278,21 @@ namespace WorkManager.WebApi.Controllers
                         });
                     var domain = Service<TaskDomain>();
                     var entity = domain.CreateTask(model, ofUser, User);
+                    var ev = _eDomain.CreateTask(entity, ofUser, User);
                     _uow.SaveChanges();
+
+                    if (entity.OfUser != entity.CreatedUser)
+                    {
+                        var data = new Dictionary<string, string>();
+                        data["title"] = "You have a new task";
+                        data["message"] = ev.Message;
+                        _eDomain.Notify(new Message
+                        {
+                            Topic = entity.OfUser,
+                            Data = data
+                        });
+                    }
+
                     _logger.CustomProperties(new { model }).Info("Create task");
 
                     return Ok(entity.Id);
@@ -290,7 +337,21 @@ namespace WorkManager.WebApi.Controllers
                     });
 
                 domain.Delete(task);
+                var ev = _eDomain.DeleteTask(task, User);
                 _uow.SaveChanges();
+
+                if (task.OfUser != task.CreatedUser)
+                {
+                    var data = new Dictionary<string, string>();
+                    data["title"] = "Your task has been deleted";
+                    data["message"] = ev.Message;
+                    _eDomain.Notify(new Message
+                    {
+                        Topic = task.OfUser,
+                        Data = data
+                    });
+                }
+
                 _logger.CustomProperties(new { id }).Info("Delete task");
 
                 return NoContent();

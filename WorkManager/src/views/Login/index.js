@@ -5,6 +5,7 @@ import s from "./style";
 import { AuthContext } from "$app-contexts";
 import { AppButton, AppInput } from "$components";
 import { UserApi } from "$api";
+import { G } from "$global";
 
 function Login(props) {
   const authContext = useContext(AuthContext);
@@ -15,7 +16,8 @@ function Login(props) {
     UserApi.login(
       {
         username,
-        password
+        password,
+        fcm_token: G.currentFCMToken
       },
       async resp => {
         const data = await resp.json();

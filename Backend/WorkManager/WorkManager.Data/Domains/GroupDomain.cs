@@ -72,7 +72,7 @@ namespace WorkManager.Data.Domains
             }).Entity;
         }
 
-        public GroupUsers ChangeUserRoleInGroup(GroupUsers groupUser)
+        public ValueTuple<GroupUsers, string> ChangeUserRoleInGroup(GroupUsers groupUser)
         {
             var iDomain = _uow.GetService<IdentityDomain>();
             AppRoles role;
@@ -81,7 +81,7 @@ namespace WorkManager.Data.Domains
             else
                 role = iDomain.GetRoleByName("User");
             groupUser.RoleId = role.Id;
-            return groupUser;
+            return ValueTuple.Create(groupUser, role.Name);
         }
 
         public Groups Delete(Groups entity)
