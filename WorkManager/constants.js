@@ -6,7 +6,6 @@ const API = {
 };
 
 const SCREENS = {
-  dashboard: "Dashboard",
   task: "Task",
   listTask: "List Task",
   createTask: "Create Task",
