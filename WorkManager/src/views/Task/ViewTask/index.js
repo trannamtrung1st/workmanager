@@ -299,7 +299,7 @@ function ViewTask(props) {
             <Text>Deadline</Text>
             <AppDateTimePicker
               initDate={new Date(data.deadline)}
-              onDateChanged={(ev, v) => (data.deadline = v)}
+              onDateChanged={(ev, v) => (data.deadline = v ?? data.deadline)}
             />
           </View>
           {data.status.indexOf("FINISH CONFIRMED") > -1 ||
@@ -331,13 +331,15 @@ function ViewTask(props) {
               </View>
               <View style={s.formItemContainer}>
                 <Text>Confirm image</Text>
-                <View style={s.formItemContainer}>
-                  <AppButton
-                    type="outline-primary"
-                    text="UPLOAD IMAGE"
-                    onPress={_onUploadImagePress}
-                  />
-                </View>
+                {data.of_user.id != authContext.userId ? null : (
+                  <View style={s.formItemContainer}>
+                    <AppButton
+                      type="outline-primary"
+                      text="UPLOAD IMAGE"
+                      onPress={_onUploadImagePress}
+                    />
+                  </View>
+                )}
                 {data.confirm_image ? (
                   <Image
                     source={
@@ -353,28 +355,30 @@ function ViewTask(props) {
                   <Text style={s.italic}>Nothing</Text>
                 )}
               </View>
-              <View style={s.formItemContainer}>
-                <View style={s.btnInputContainer}>
-                  {data.status.indexOf("DONE") > -1 ||
-                  data.status.indexOf("FINISH CONFIRMED") > -1 ? null : (
-                    <AppButton
-                      btnStyle={s.btnOp}
-                      type="danger"
-                      text="CANCEL"
-                      onPress={() => _onChangeStatus("CANCEL")}
-                    />
-                  )}
+              {data.of_user.id != authContext.userId ? null : (
+                <View style={s.formItemContainer}>
+                  <View style={s.btnInputContainer}>
+                    {data.status.indexOf("DONE") > -1 ||
+                    data.status.indexOf("FINISH CONFIRMED") > -1 ? null : (
+                      <AppButton
+                        btnStyle={s.btnOp}
+                        type="danger"
+                        text="CANCEL"
+                        onPress={() => _onChangeStatus("CANCEL")}
+                      />
+                    )}
 
-                  {data.status.indexOf("DOING") < 0 &&
-                  data.status.indexOf("DONE") < 0 ? null : (
-                    <AppButton
-                      btnStyle={s.btnOp}
-                      text="FINISH"
-                      onPress={_onFinish}
-                    />
-                  )}
+                    {data.status.indexOf("DOING") < 0 &&
+                    data.status.indexOf("DONE") < 0 ? null : (
+                      <AppButton
+                        btnStyle={s.btnOp}
+                        text="FINISH"
+                        onPress={_onFinish}
+                      />
+                    )}
+                  </View>
                 </View>
-              </View>
+              )}
             </>
           )}
 
@@ -418,33 +422,36 @@ function ViewTask(props) {
                 </View>
               </View>
 
-              <View style={s.formItemContainer}>
-                <View style={s.btnInputContainer}>
-                  {data.status.indexOf("FINISH CONFIRMED") > -1 ? null : (
-                    <>
-                      <AppButton
-                        btnStyle={s.btnOp}
-                        type="danger"
-                        text="DECLINE"
-                        onPress={() => _onChangeStatus("DECLINED")}
-                      />
-                      <AppButton
-                        btnStyle={s.btnOp}
-                        text="ACCEPT"
-                        onPress={() => _onChangeStatus("ACCEPTED")}
-                      />
-                    </>
-                  )}
+              {authContext.role != "Admin" &&
+              authContext.userId != data.created_user.id ? null : (
+                <View style={s.formItemContainer}>
+                  <View style={s.btnInputContainer}>
+                    {data.status.indexOf("FINISH CONFIRMED") > -1 ? null : (
+                      <>
+                        <AppButton
+                          btnStyle={s.btnOp}
+                          type="danger"
+                          text="DECLINE"
+                          onPress={() => _onChangeStatus("DECLINED")}
+                        />
+                        <AppButton
+                          btnStyle={s.btnOp}
+                          text="ACCEPT"
+                          onPress={() => _onChangeStatus("ACCEPTED")}
+                        />
+                      </>
+                    )}
 
-                  {data.status.indexOf("DONE") < 0 ? null : (
-                    <AppButton
-                      btnStyle={s.btnOp}
-                      text="CONFIRM"
-                      onPress={() => _onChangeStatus("FINISH CONFIRMED")}
-                    />
-                  )}
+                    {data.status.indexOf("DONE") < 0 ? null : (
+                      <AppButton
+                        btnStyle={s.btnOp}
+                        text="CONFIRM"
+                        onPress={() => _onChangeStatus("FINISH CONFIRMED")}
+                      />
+                    )}
+                  </View>
                 </View>
-              </View>
+              )}
             </>
           )}
         </View>

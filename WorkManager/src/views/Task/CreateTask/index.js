@@ -121,7 +121,7 @@ function CreateTask(props) {
             <Text>Deadline</Text>
             <AppDateTimePicker
               initDate={data.deadline}
-              onDateChanged={(ev, v) => (data.deadline = v)}
+              onDateChanged={(ev, v) => (data.deadline = v ?? data.deadline)}
             />
           </View>
 

@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
-import { View, Alert, Group } from "react-native";
+import { View, Alert, Group, Text } from "react-native";
 import { AppButton } from "$components";
 import s from "./style";
 import Modal from "react-native-modal";
-import { ViewGroupContext } from "$app-contexts";
+import { ViewGroupContext, AuthContext } from "$app-contexts";
 import { GroupApi } from "$api";
 
 function ActionModal(props) {
+  const authContext = useContext(AuthContext);
   const reset = {
     item: null,
     show: false
@@ -95,12 +96,18 @@ function ActionModal(props) {
       isVisible={modalVisible.show}
       onBackdropPress={() => setModalVisible(false)}
     >
-      <View style={s.formItemContainer}>
-        <AppButton text="CHANGE ROLE" onPress={_onChangePress} />
-      </View>
-      <View style={s.formItemContainer}>
-        <AppButton type="danger" text="REMOVE" onPress={_onRemovePress} />
-      </View>
+      {authContext.role != "Admin" ? (
+        <Text>Nothing to perform</Text>
+      ) : (
+        <>
+          <View style={s.formItemContainer}>
+            <AppButton text="CHANGE ROLE" onPress={_onChangePress} />
+          </View>
+          <View style={s.formItemContainer}>
+            <AppButton type="danger" text="REMOVE" onPress={_onRemovePress} />
+          </View>
+        </>
+      )}
     </Modal>
   );
 }

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text } from "react-native";
 import { AppLayout, AppButton } from "$components";
 import { Database } from "$services";
-import { ListTaskContext } from "$app-contexts";
+import { ListTaskContext, AuthContext } from "$app-contexts";
 import FilterModal from "./FilterModal";
 import TaskItem from "./TaskItem";
 import s from "./style";
@@ -14,6 +14,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { TaskApi } from "$api";
 
 function ListTask(props) {
+  const authContext = useContext(AuthContext);
   const { navigation } = props;
   const forceUpdate = HookHelper.useForceUpdate();
   const [listTaskContext] = useState({
@@ -28,7 +29,7 @@ function ListTask(props) {
       //from 7 day ago to now
       from_date: new Date(new Date().getTime() - 518400000),
       to_date: new Date(),
-      employee_code: null
+      employee_code: authContext.employeeCode
     },
     tasks: null,
     reload,
@@ -46,7 +47,7 @@ function ListTask(props) {
 
   function reload() {
     const params = {
-      fields: ["info", "of_user"],
+      fields: ["info", "of_user", "created_user"],
       limit: 1000,
       ...listTaskContext.filter
     };

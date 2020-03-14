@@ -3,11 +3,12 @@ import { View, Alert } from "react-native";
 import { AppButton } from "$components";
 import s from "./style";
 import Modal from "react-native-modal";
-import { ListTaskContext } from "$app-contexts";
+import { ListTaskContext, AuthContext } from "$app-contexts";
 import { SCREENS } from "$constants";
 import { TaskApi } from "$api";
 
 function ActionModal(props) {
+  const authContext = useContext(AuthContext);
   const listTaskContext = useContext(ListTaskContext);
   const reset = {
     item: null,
@@ -82,9 +83,12 @@ function ActionModal(props) {
       <View style={s.formItemContainer}>
         <AppButton text="CREATE NEW FROM THIS TASK" onPress={_onCreatePress} />
       </View>
-      <View style={s.formItemContainer}>
-        <AppButton type="danger" text="DELETE" onPress={_onDeletePress} />
-      </View>
+      {!modalVisible.item ||
+      modalVisible.item.created_user.id != authContext.userId ? null : (
+        <View style={s.formItemContainer}>
+          <AppButton type="danger" text="DELETE" onPress={_onDeletePress} />
+        </View>
+      )}
     </Modal>
   );
 }

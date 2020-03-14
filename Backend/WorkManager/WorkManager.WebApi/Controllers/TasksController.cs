@@ -54,9 +54,10 @@ namespace WorkManager.WebApi.Controllers
                         });
                 }
 
-                var result = domain.GetTasksData(filter,
+                var iDomain = _uow.GetService<IdentityDomain>();
+                var result = domain.Tasks.GetData(filter,
                     sorts,
-                    fields, page, limit, count_total);
+                    fields, page, limit, count_total, User);
                 return Ok(new ApiResult()
                 {
                     Code = ResultCode.Success,

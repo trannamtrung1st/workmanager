@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
-import { View, Alert } from "react-native";
+import { View, Alert, Text } from "react-native";
 import { AppButton } from "$components";
 import s from "./style";
 import Modal from "react-native-modal";
-import { ViewTaskContext } from "$app-contexts";
+import { ViewTaskContext, AuthContext } from "$app-contexts";
 import { TaskApi } from "$api";
 
 function ActionModal(props) {
+  var authContext = useContext(AuthContext);
   const viewTaskContext = useContext(ViewTaskContext);
   const { task } = props;
   const [modalVisible, setModalVisible] = useState(false);
@@ -83,6 +84,20 @@ function ActionModal(props) {
     );
   }
 
+  const children = [];
+  if (task.status.indexOf("NEW") > -1 && authContext.userId == task.of_user.id)
+    children.push(
+      <View style={s.formItemContainer}>
+        <AppButton text="START TASK" onPress={_onStartPress} />
+      </View>
+    );
+  if (authContext.userId == task.created_user.id)
+    children.push(
+      <View style={s.formItemContainer}>
+        <AppButton type="danger" text="DELETE" onPress={_onDeletePress} />
+      </View>
+    );
+
   return (
     <Modal
       animationIn="slideInUp"
@@ -95,14 +110,7 @@ function ActionModal(props) {
       isVisible={modalVisible}
       onBackdropPress={() => setModalVisible(false)}
     >
-      {task.status.indexOf("NEW") < 0 ? null : (
-        <View style={s.formItemContainer}>
-          <AppButton text="START TASK" onPress={_onStartPress} />
-        </View>
-      )}
-      <View style={s.formItemContainer}>
-        <AppButton type="danger" text="DELETE" onPress={_onDeletePress} />
-      </View>
+      {children.length ? children : <Text>Nothing to perform</Text>}
     </Modal>
   );
 }

@@ -101,9 +101,12 @@ namespace WorkManager.WebApi.Controllers
 
                 var resp = _iDomain.GenerateTokenResponse(ticket);
 
-                var linkResult = await _iDomain.LinkFCMToken(user, model.fcm_token);
-                if (!linkResult.Succeeded)
-                    throw new Exception("Can not link FCM token");
+                if (model.fcm_token != null)
+                {
+                    var linkResult = await _iDomain.LinkFCMToken(user, model.fcm_token);
+                    if (!linkResult.Succeeded)
+                        throw new Exception("Can not link FCM token");
+                }
 
                 _logger.CustomProperties(user).Info("Login user");
                 return Ok(resp);

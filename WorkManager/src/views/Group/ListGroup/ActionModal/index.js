@@ -1,13 +1,14 @@
 import React, { useState, useContext } from "react";
-import { View, Alert } from "react-native";
+import { View, Alert, Text } from "react-native";
 import { AppButton } from "$components";
 import s from "./style";
 import Modal from "react-native-modal";
-import { ListGroupContext } from "$app-contexts";
+import { ListGroupContext, AuthContext } from "$app-contexts";
 import { SCREENS } from "$constants";
 import { GroupApi } from "$api";
 
 function ActionModal(props) {
+  var authContext = useContext(AuthContext);
   const listGroupContext = useContext(ListGroupContext);
   const reset = {
     item: null,
@@ -71,9 +72,13 @@ function ActionModal(props) {
       isVisible={modalVisible.show}
       onBackdropPress={() => setModalVisible(reset)}
     >
-      <View style={s.formItemContainer}>
-        <AppButton type="danger" text="DELETE" onPress={_onDeletePress} />
-      </View>
+      {authContext.role != "Admin" ? (
+        <Text>Nothing to perform</Text>
+      ) : (
+        <View style={s.formItemContainer}>
+          <AppButton type="danger" text="DELETE" onPress={_onDeletePress} />
+        </View>
+      )}
     </Modal>
   );
 }

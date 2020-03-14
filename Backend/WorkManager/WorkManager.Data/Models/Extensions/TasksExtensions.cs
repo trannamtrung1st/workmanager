@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using TNT.Core.Helpers.Data;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace WorkManager.Data.Models.Extensions
 {
@@ -12,7 +13,7 @@ namespace WorkManager.Data.Models.Extensions
     {
         #region READ
         public static IQueryable<Tasks> Filter(
-            this IQueryable<Tasks> query, TaskFilter filter)
+            this IQueryable<Tasks> query, TaskFilter filter, ClaimsPrincipal principal)
         {
             if (filter.ids != null)
                 query = query.Where(p => filter.ids.Contains(p.Id));
@@ -29,7 +30,12 @@ namespace WorkManager.Data.Models.Extensions
                 query = query.Where(p => p.CreatedTime <= toDate);
             }
             if (filter.status != null)
-                query = query.Where(p => p.Status.Contains("\"" + filter.status + "\""));
+                query = query.InStatus(filter.status);
+
+            if (!principal.IsInRole("Admin"))
+                query = query.Where(p => p.OfUser == principal.Identity.Name ||
+                    p.CreatedUser == principal.Identity.Name);
+
             return query;
         }
 
@@ -166,9 +172,9 @@ namespace WorkManager.Data.Models.Extensions
            string[] sorts,
            string[] fields,
            int page,
-           int limit, bool countTotal)
+           int limit, bool countTotal, ClaimsPrincipal principal)
         {
-            query = query.Filter(filter);
+            query = query.Filter(filter, principal);
             query = query.QueryFields(fields);
             query = query.Sort(sorts);
             int? count = null;

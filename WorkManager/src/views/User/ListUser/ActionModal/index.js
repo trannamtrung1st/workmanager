@@ -8,6 +8,7 @@ import { SCREENS } from "$constants";
 import { UserApi } from "$api";
 
 function ActionModal(props) {
+  const authContext = useContext(AuthContext);
   const listUserContext = useContext(ListUserContext);
   const reset = {
     item: null,
@@ -87,7 +88,11 @@ function ActionModal(props) {
       isVisible={modalVisible.show}
       onBackdropPress={() => setModalVisible(reset)}
     >
-      {modalChildren}
+      {authContext.role != "Admin" ? (
+        <Text>Nothing to perform</Text>
+      ) : (
+        modalChildren
+      )}
     </Modal>
   );
 }

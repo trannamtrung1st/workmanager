@@ -33,15 +33,6 @@ namespace WorkManager.Data.Domains
             return repo.Create(model, ofUser, principal.Identity.Name);
         }
 
-        public object GetTasksData(TaskFilter filter,
-            string[] sorts,
-            string[] fields,
-            int page,
-            int limit, bool countTotal)
-        {
-            return Tasks.GetData(filter, sorts, fields, page, limit, countTotal);
-        }
-
         public Tasks EditTask(Tasks entity, EditTaskViewModel model)
         {
             var repo = _uow.GetService<ITasksRepository>();
