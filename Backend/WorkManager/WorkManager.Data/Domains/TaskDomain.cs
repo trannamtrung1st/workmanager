@@ -56,7 +56,7 @@ namespace WorkManager.Data.Domains
                     currentStatus.Remove("DOING");
                     currentStatus.Remove("DUE SOON");
                     currentStatus.Add(model.status);
-                    
+
                     entity.EndTime = DateTime.UtcNow;
                     entity.TaskReport = model.task_report;
                     if (model.confirm_image != null)
@@ -105,7 +105,9 @@ namespace WorkManager.Data.Domains
         {
             var relFolderPath = $"/uploads/tasks/{task.Id}";
             Directory.CreateDirectory($"{App.Instance.AppWebRoot}{relFolderPath}");
-            var relPath = $"{relFolderPath}/confirm.png";
+            var relPath = 
+                $"{relFolderPath}/{task.OfUserNavigation.UserName}-{task.Id}-" +
+                $"{task.EndTime?.ToString("ddMMyyyyhhmm")}.png";
             using (var stream = new FileStream(
                 $"{App.Instance.AppWebRoot}{relPath}", FileMode.Create))
             {
