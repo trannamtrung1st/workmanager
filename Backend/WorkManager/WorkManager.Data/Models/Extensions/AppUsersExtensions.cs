@@ -120,6 +120,25 @@ namespace WorkManager.Data.Models.Extensions
             var result = query.SelectFields(fields, count);
             return result;
         }
+
+        public static AppUsers FirstByEmpCode(this IQueryable<AppUsers> users, string empCode)
+        {
+            return users.FirstOrDefault(u => u.EmployeeCode == empCode);
+        }
+        public static AspNetUsers FirstByEmpCode(this IQueryable<AspNetUsers> users, string empCode)
+        {
+            return users.FirstOrDefault(u => u.EmployeeCode == empCode);
+        }
+        public static IQueryable<AppUsers> ByEmpCode(this IQueryable<AppUsers> users, string empCode)
+        {
+            return users.Where(u => u.EmployeeCode == empCode);
+        }
+        public static IQueryable<AspNetUsers> ByEmpCode(this IQueryable<AspNetUsers> users, string empCode)
+        {
+            return users.Where(u => u.EmployeeCode == empCode);
+        }
+
+
         #endregion
     }
 

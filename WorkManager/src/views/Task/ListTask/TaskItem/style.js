@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   }
 });
 const listItem = [commonStyles.w100, styles.listItem];
-const itemNameContainer = [commonStyles.flexRow];
+const itemNameContainer = [commonStyles.flexRow, commonStyles.flexWrap];
 const itemName = [commonStyles.fontWeightBold];
 const itemTime = [commonStyles.textRight, styles.itemTime];
 const link = [styles.link];

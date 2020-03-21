@@ -142,6 +142,8 @@ namespace WorkManager.Data.Domains
 
         public async Task<IdentityResult> Remove(AppUsers user)
         {
+            var tokenRepo = _uow.GetService<IAspNetUserTokensRepository>();
+            tokenRepo.RemoveIf(t => t.UserId == user.Id);
             return await _userManager.DeleteAsync(user);
         }
 

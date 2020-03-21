@@ -204,6 +204,10 @@ function ViewTask(props) {
     );
   }
 
+  const ownTask = data.of_user.id == authContext.userId;
+  const allowReview =
+    authContext.role == "Admin" || authContext.userId == data.created_user.id;
+
   return (
     <ViewTaskContext.Provider value={viewTaskContext}>
       <AppLayout {...props} screenHeader="Task detail">
@@ -318,8 +322,11 @@ function ViewTask(props) {
             <>
               <View style={s.formItemContainer}>
                 <Text>Report</Text>
-                <View style={s.inputContainer}>
+                <View
+                  style={ownTask ? s.inputContainer : s.inactiveInputContainer}
+                >
                   <AppInput
+                    editable={ownTask}
                     textAlignVertical={"top"}
                     multiline={true}
                     placeholder="Report content"
@@ -331,7 +338,7 @@ function ViewTask(props) {
               </View>
               <View style={s.formItemContainer}>
                 <Text>Confirm image</Text>
-                {data.of_user.id != authContext.userId ? null : (
+                {!ownTask ? null : (
                   <View style={s.formItemContainer}>
                     <AppButton
                       type="outline-primary"
@@ -355,7 +362,7 @@ function ViewTask(props) {
                   <Text style={s.italic}>Nothing</Text>
                 )}
               </View>
-              {data.of_user.id != authContext.userId ? null : (
+              {!ownTask ? null : (
                 <View style={s.formItemContainer}>
                   <View style={s.btnInputContainer}>
                     {data.status.indexOf("DONE") > -1 ||
@@ -398,8 +405,13 @@ function ViewTask(props) {
 
               <View style={s.formItemContainer}>
                 <Text>Manager's review</Text>
-                <View style={s.inputContainer}>
+                <View
+                  style={
+                    allowReview ? s.inputContainer : s.inactiveInputContainer
+                  }
+                >
                   <AppInput
+                    editable={allowReview}
                     textAlignVertical={"top"}
                     multiline={true}
                     placeholder="Review content"
@@ -412,8 +424,13 @@ function ViewTask(props) {
 
               <View style={s.formItemContainer}>
                 <Text>Rate</Text>
-                <View style={s.inputContainer}>
+                <View
+                  style={
+                    allowReview ? s.inputContainer : s.inactiveInputContainer
+                  }
+                >
                   <AppInput
+                    editable={allowReview}
                     keyboardType="number-pad"
                     placeholder="Task's result"
                     onChangeText={t => _changeData("mark", t)}
@@ -422,8 +439,7 @@ function ViewTask(props) {
                 </View>
               </View>
 
-              {authContext.role != "Admin" &&
-              authContext.userId != data.created_user.id ? null : (
+              {!allowReview ? null : (
                 <View style={s.formItemContainer}>
                   <View style={s.btnInputContainer}>
                     {data.status.indexOf("FINISH CONFIRMED") > -1 ? null : (

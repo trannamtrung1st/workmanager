@@ -42,22 +42,9 @@ namespace WorkManager.Data.Domains
             var tokens = iDomain.GetTokensNameStartsWith(user, "Firebase", "FCMToken");
             FirebaseMessaging.DefaultInstance.SubscribeToTopicAsync(tokens, topic);
         }
-        public void UnsubscribeFromTopic(AspNetUsers user, string topic)
-        {
-            var iDomain = _uow.GetService<IdentityDomain>();
-            var tokens = iDomain.GetTokensNameStartsWith(user, "Firebase", "FCMToken");
-            FirebaseMessaging.DefaultInstance.UnsubscribeFromTopicAsync(tokens, topic);
-        }
 
         public void UnsubscribeFromTopic(List<string> tokens, string topic)
         {
-            FirebaseMessaging.DefaultInstance.UnsubscribeFromTopicAsync(tokens, topic);
-        }
-
-        public void UnsubscribeFromTopic(AppUsers user, string topic)
-        {
-            var iDomain = _uow.GetService<IdentityDomain>();
-            var tokens = iDomain.GetTokensNameStartsWith(user, "Firebase", "FCMToken");
             FirebaseMessaging.DefaultInstance.UnsubscribeFromTopicAsync(tokens, topic);
         }
 

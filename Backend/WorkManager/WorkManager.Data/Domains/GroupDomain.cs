@@ -87,6 +87,8 @@ namespace WorkManager.Data.Domains
         public Groups Delete(Groups entity)
         {
             var repo = _uow.GetService<IGroupsRepository>();
+            var guRepo = _uow.GetService<IGroupUsersRepository>();
+            guRepo.RemoveRange(entity.GroupUsers);
             return repo.Remove(entity).Entity;
         }
     }

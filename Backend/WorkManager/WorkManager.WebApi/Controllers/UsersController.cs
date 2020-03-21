@@ -227,6 +227,14 @@ namespace WorkManager.WebApi.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var existed = _iDomain.DataUsers.ByEmpCode(model.employee_code).Any();
+                    if (existed)
+                        return BadRequest(new ApiResult
+                        {
+                            Code = ResultCode.FailValidation,
+                            Message = "Employee code existed"
+                        });
+
                     var user = _iDomain.ToUser(model);
                     var result = await _iDomain.CreateUserWithRolesAsync(user, model.password);
                     if (result.Succeeded)
@@ -305,10 +313,11 @@ namespace WorkManager.WebApi.Controllers
                         Data = null
                     });
 
+                var ev = _eDomain.DeleteUser(user, User);
+                var tokens = _iDomain.GetTokensNameStartsWith(user, "Firebase", "FCMToken");
                 var result = await _iDomain.Remove(user);
                 if (result.Succeeded)
                 {
-                    var ev = _eDomain.DeleteUser(user, User);
                     _uow.SaveChanges();
 
                     var data = new Dictionary<string, string>();
@@ -319,6 +328,7 @@ namespace WorkManager.WebApi.Controllers
                         Topic = user.Id,
                         Data = data
                     });
+                    _eDomain.UnsubscribeFromTopic(tokens, user.Id);
 
                     return NoContent();
                 }
@@ -331,19 +341,17 @@ namespace WorkManager.WebApi.Controllers
                     Message = ResultCode.FailValidation.DisplayName()
                 });
             }
-            catch (SqlException)
-            {
-                return BadRequest(new ApiResult()
-                {
-                    Code = ResultCode.FailValidation,
-                    Data = null,
-                    Message = "Can not delete because user has dependencies"
-                });
-            }
             catch (Exception e)
             {
+                if (e.InnerException != null
+                    && e.InnerException.GetType() == typeof(SqlException))
+                    return BadRequest(new ApiResult()
+                    {
+                        Code = ResultCode.FailValidation,
+                        Data = null,
+                        Message = "Can not delete because it has dependencies"
+                    });
                 _logger.Error(e);
-
                 return Error(new ApiResult()
                 {
                     Code = ResultCode.UnknownError,

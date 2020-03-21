@@ -182,11 +182,14 @@ namespace WorkManager.Data.Models
 
                 entity.Property(e => e.RoleId).HasMaxLength(100);
 
-                entity.Property(e => e.UserId).HasMaxLength(100);
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(100);
 
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.GroupUsers)
                     .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_GroupUsers_Groups");
 
                 entity.HasOne(d => d.Role)
@@ -197,6 +200,7 @@ namespace WorkManager.Data.Models
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.GroupUsers)
                     .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_GroupUsers_AspNetUsers");
             });
 

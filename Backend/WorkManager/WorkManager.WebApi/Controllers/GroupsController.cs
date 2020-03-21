@@ -267,6 +267,8 @@ namespace WorkManager.WebApi.Controllers
                         Message = ResultCode.NotFound.DisplayName()
                     });
 
+                var iDomain = _uow.GetService<IdentityDomain>();
+                var tokens = iDomain.GetTokensNameStartsWith(groupUser.User, "Firebase", "FCMToken");
                 var entity = domain.RemoveUserFromGroup(groupUser);
                 var ev = _eDomain.RemoveUserFromGroup(groupUser, User);
                 _uow.SaveChanges();
@@ -288,7 +290,7 @@ namespace WorkManager.WebApi.Controllers
                     Topic = groupUser.UserId,
                     Data = userData
                 });
-                _eDomain.UnsubscribeFromTopic(groupUser.User, $"GROUP_MEMBER_{groupUser.GroupId}");
+                _eDomain.UnsubscribeFromTopic(tokens, $"GROUP_MEMBER_{groupUser.GroupId}");
 
                 _logger.CustomProperties(new { model }).Info("Remove user from group");
 
