@@ -207,6 +207,7 @@ function ViewTask(props) {
   const ownTask = data.of_user.id == authContext.userId;
   const allowReview =
     authContext.role == "Admin" || authContext.userId == data.created_user.id;
+  const selfTask = data.of_user.id == data.created_user.id;
 
   return (
     <ViewTaskContext.Provider value={viewTaskContext}>
@@ -390,83 +391,91 @@ function ViewTask(props) {
           )}
 
           <Hr />
-          <Text style={s.formHeader}>REVIEW SECTION</Text>
-
-          {data.status.indexOf("CANCEL") > -1 ? (
-            <Text>Task was canceled</Text>
-          ) : (
+          {selfTask ? null : (
             <>
-              <View style={s.formItemContainer}>
-                <Text>
-                  Review time:
-                  <Text> {data.review_time}</Text>
-                </Text>
-              </View>
+              <Text style={s.formHeader}>REVIEW SECTION</Text>
 
-              <View style={s.formItemContainer}>
-                <Text>Manager's review</Text>
-                <View
-                  style={
-                    allowReview ? s.inputContainer : s.inactiveInputContainer
-                  }
-                >
-                  <AppInput
-                    editable={allowReview}
-                    textAlignVertical={"top"}
-                    multiline={true}
-                    placeholder="Review content"
-                    numberOfLines={5}
-                    onChangeText={t => _changeData("manager_review", t)}
-                    value={data.manager_review}
-                  />
-                </View>
-              </View>
-
-              <View style={s.formItemContainer}>
-                <Text>Rate</Text>
-                <View
-                  style={
-                    allowReview ? s.inputContainer : s.inactiveInputContainer
-                  }
-                >
-                  <AppInput
-                    editable={allowReview}
-                    keyboardType="number-pad"
-                    placeholder="Task's result"
-                    onChangeText={t => _changeData("mark", t)}
-                    value={data.mark?.toString()}
-                  />
-                </View>
-              </View>
-
-              {!allowReview ? null : (
-                <View style={s.formItemContainer}>
-                  <View style={s.btnInputContainer}>
-                    {data.status.indexOf("FINISH CONFIRMED") > -1 ? null : (
-                      <>
-                        <AppButton
-                          btnStyle={s.btnOp}
-                          type="danger"
-                          text="DECLINE"
-                          onPress={() => _onChangeStatus("DECLINED")}
-                        />
-                        <AppButton
-                          btnStyle={s.btnOp}
-                          text="ACCEPT"
-                          onPress={() => _onChangeStatus("ACCEPTED")}
-                        />
-                      </>
-                    )}
-
-                    {data.status.indexOf("DONE") < 0 ? null : (
-                      <AppButton
-                        btnStyle={s.btnOp}
-                        text="CONFIRM"
-                        onPress={() => _onChangeStatus("FINISH CONFIRMED")}
-                      />
-                    )}
+              {data.status.indexOf("CANCEL") > -1 ? (
+                <Text>Task was canceled</Text>
+              ) : (
+                <>
+                  <View style={s.formItemContainer}>
+                    <Text>
+                      Review time:
+                      <Text> {data.review_time}</Text>
+                    </Text>
                   </View>
-                </View>
+
+                  <View style={s.formItemContainer}>
+                    <Text>Manager's review</Text>
+                    <View
+                      style={
+                        allowReview
+                          ? s.inputContainer
+                          : s.inactiveInputContainer
+                      }
+                    >
+                      <AppInput
+                        editable={allowReview}
+                        textAlignVertical={"top"}
+                        multiline={true}
+                        placeholder="Review content"
+                        numberOfLines={5}
+                        onChangeText={t => _changeData("manager_review", t)}
+                        value={data.manager_review}
+                      />
+                    </View>
+                  </View>
+
+                  <View style={s.formItemContainer}>
+                    <Text>Rate</Text>
+                    <View
+                      style={
+                        allowReview
+                          ? s.inputContainer
+                          : s.inactiveInputContainer
+                      }
+                    >
+                      <AppInput
+                        editable={allowReview}
+                        keyboardType="number-pad"
+                        placeholder="Task's result"
+                        onChangeText={t => _changeData("mark", t)}
+                        value={data.mark?.toString()}
+                      />
+                    </View>
+                  </View>
+
+                  {!allowReview ? null : (
+                    <View style={s.formItemContainer}>
+                      <View style={s.btnInputContainer}>
+                        {data.status.indexOf("FINISH CONFIRMED") > -1 ? null : (
+                          <>
+                            <AppButton
+                              btnStyle={s.btnOp}
+                              type="danger"
+                              text="DECLINE"
+                              onPress={() => _onChangeStatus("DECLINED")}
+                            />
+                            <AppButton
+                              btnStyle={s.btnOp}
+                              text="ACCEPT"
+                              onPress={() => _onChangeStatus("ACCEPTED")}
+                            />
+                          </>
+                        )}
+
+                        {data.status.indexOf("DONE") < 0 ? null : (
+                          <AppButton
+                            btnStyle={s.btnOp}
+                            text="CONFIRM"
+                            onPress={() => _onChangeStatus("FINISH CONFIRMED")}
+                          />
+                        )}
+                      </View>
+                    </View>
+                  )}
+                </>
               )}
             </>
           )}

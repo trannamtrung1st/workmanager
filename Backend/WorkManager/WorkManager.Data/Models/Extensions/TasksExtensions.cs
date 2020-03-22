@@ -32,9 +32,8 @@ namespace WorkManager.Data.Models.Extensions
             if (filter.status != null)
                 query = query.InStatus(filter.status);
 
-            if (!principal.IsInRole("Admin"))
-                query = query.Where(p => p.OfUser == principal.Identity.Name ||
-                    p.CreatedUser == principal.Identity.Name);
+            query = query.Where(p => p.OfUser == principal.Identity.Name ||
+                p.CreatedUser == principal.Identity.Name);
 
             return query;
         }

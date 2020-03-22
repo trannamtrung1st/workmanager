@@ -277,6 +277,15 @@ namespace WorkManager.WebApi.Controllers
                             Code = ResultCode.NotFound,
                             Message = "Not found assigned user"
                         });
+                    var createdUser = iDomain.DataUsers.Id(User.Identity.Name);
+                    if (!User.IsInRole("Admin") && ofUser.Id != createdUser.Id &&
+                        !createdUser.GroupUsers.Where(g => g.Role.Name == "Manager")
+                            .Any(g => g.Group.GroupUsers.Any(gu => gu.UserId == ofUser.Id && gu.Role.Name != "Manager")))
+                        return NotFound(new ApiResult
+                        {
+                            Code = ResultCode.Unauthorized,
+                            Message = "You don't have the right to assign task to this user"
+                        });
                     var domain = Service<TaskDomain>();
                     Tasks entity;
                     Events ev;
