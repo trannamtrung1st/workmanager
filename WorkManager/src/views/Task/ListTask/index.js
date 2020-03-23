@@ -47,7 +47,7 @@ function ListTask(props) {
 
   function reload() {
     const params = {
-      fields: ["info", "of_user", "created_user"],
+      fields: ["info", "of_user", "created_user", "group"],
       limit: 1000,
       ...listTaskContext.filter
     };

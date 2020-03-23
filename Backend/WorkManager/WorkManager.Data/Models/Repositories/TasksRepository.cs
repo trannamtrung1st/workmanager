@@ -32,7 +32,6 @@ namespace WorkManager.Data.Models.Repositories
         public Tasks PrepareCreate(Tasks model)
         {
             model.CreatedTime = DateTime.UtcNow;
-            model.Status = JsonConvert.SerializeObject(new List<string> { "NEW" });
             model.Deadline = model.Deadline?.ToUniversalTime();
             return model;
         }
@@ -43,6 +42,11 @@ namespace WorkManager.Data.Models.Repositories
 
             entity.CreatedUser = createdUserId;
             entity.OfUser = ofUser.Id;
+            var status = new List<string> { "NEW" };
+            if (ofUser.Id != createdUserId)
+                status.Add("ACCEPTED");
+            entity.Status = JsonConvert.SerializeObject(status);
+
             entity = Create(entity).Entity;
             return entity;
         }

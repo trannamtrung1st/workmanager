@@ -20,7 +20,7 @@ namespace WorkManager.Data.Models.Extensions
                 query = query.Where(p => filter.name_contains.Any(s => p.Name.Contains(s, StringComparison.OrdinalIgnoreCase)));
             if (!principal.IsInRole("Admin"))
                 query = query.Where(p => p.GroupUsers.Any(u =>
-                    u.UserId == principal.Identity.Name && u.RoleId == roleManagerId));
+                    u.UserId == principal.Identity.Name));
             return query;
         }
 

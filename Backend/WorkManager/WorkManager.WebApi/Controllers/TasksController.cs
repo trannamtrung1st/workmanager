@@ -183,8 +183,6 @@ namespace WorkManager.WebApi.Controllers
                                 mess += "Already finish\n";
                             if (status.Contains("CANCEL"))
                                 mess += "Already cancel\n";
-                            if (string.IsNullOrWhiteSpace(model.manager_review))
-                                mess += "Must have a review\n";
                             break;
                         case "DECLINED":
                             if (status.Contains("FINISH CONFIRMED") && !status.Contains(model.status))
@@ -280,7 +278,8 @@ namespace WorkManager.WebApi.Controllers
                     var createUser = iDomain.DataUsers.Id(User.Identity.Name);
                     if (!User.IsInRole("Admin") && ofUser.Id != createUser.Id &&
                         !createUser.GroupUsers.Where(g => g.Role.Name == "Manager")
-                            .Any(g => g.Group.GroupUsers.Any(gu => gu.UserId == ofUser.Id && gu.Role.Name != "Manager")))
+                            .Any(g => g.GroupId == model.GroupId &&
+                            g.Group.GroupUsers.Any(gu => gu.UserId == ofUser.Id && gu.Role.Name != "Manager")))
                         return NotFound(new ApiResult
                         {
                             Code = ResultCode.Unauthorized,
@@ -292,6 +291,7 @@ namespace WorkManager.WebApi.Controllers
                             Code = ResultCode.Unauthorized,
                             Message = "Can not assign personal task to other user"
                         });
+
                     var domain = Service<TaskDomain>();
                     Tasks entity;
                     Events ev;
@@ -311,6 +311,17 @@ namespace WorkManager.WebApi.Controllers
                         _eDomain.Notify(new Message
                         {
                             Topic = entity.OfUser,
+                            Data = data
+                        });
+                    }
+                    if (entity.GroupId != null)
+                    {
+                        var data = new Dictionary<string, string>();
+                        data["title"] = $"{entity.CreatedUserNavigation.UserName} created a task";
+                        data["message"] = ev.Message;
+                        _eDomain.Notify(new Message
+                        {
+                            Topic = $"GROUP_MEMBER_{entity.GroupId}",
                             Data = data
                         });
                     }

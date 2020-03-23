@@ -31,7 +31,7 @@ function ActionModal(props) {
           viewTaskContext.reload();
         } else {
           const data = await resp.json();
-          alert(data.message);
+          alert(task.message);
         }
       },
       err => {
@@ -56,7 +56,7 @@ function ActionModal(props) {
           viewTaskContext.goBack();
         } else {
           const data = await resp.json();
-          alert(data.message);
+          alert(task.message);
         }
       },
       err => {
@@ -85,7 +85,24 @@ function ActionModal(props) {
   }
 
   const children = [];
-  if (task.status.indexOf("NEW") > -1 && authContext.userId == task.of_user.id)
+
+  const ownTask = task.of_user.id == authContext.userId;
+  const allowReview =
+    (authContext.role == "Admin" ||
+      authContext.userId == task.created_user.id) &&
+    (((task.status.indexOf("ACCEPTED") == -1 &&
+      task.status.indexOf("DECLINED")) == -1 &&
+      task.status.indexOf("NEW") > -1) ||
+      task.status.indexOf("DONE") > -1);
+  const selfTask =
+    task.of_user.id == task.created_user.id &&
+    (!task.group || authContext.role == "Admin");
+
+  if (
+    task.status.indexOf("NEW") > -1 &&
+    ownTask &&
+    (task.status.indexOf("ACCEPTED") > -1 || selfTask)
+  )
     children.push(
       <View style={s.formItemContainer}>
         <AppButton text="START TASK" onPress={_onStartPress} />

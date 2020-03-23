@@ -88,7 +88,7 @@ function ListGroup(props) {
               />
             ))
           ) : (
-            <Text>You don't manage any group</Text>
+            <Text>You aren't in any group</Text>
           )}
         </View>
 

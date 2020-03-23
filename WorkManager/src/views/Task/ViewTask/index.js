@@ -53,6 +53,7 @@ function ViewTask(props) {
           "detail",
           "created_user",
           "source",
+          "group",
           "of_user",
           "report",
           "review"
@@ -206,8 +207,16 @@ function ViewTask(props) {
 
   const ownTask = data.of_user.id == authContext.userId;
   const allowReview =
-    authContext.role == "Admin" || authContext.userId == data.created_user.id;
-  const selfTask = data.of_user.id == data.created_user.id;
+    (authContext.role == "Admin" ||
+      (authContext.userId == data.created_user.id && !ownTask)) &&
+    (((data.status.indexOf("ACCEPTED") == -1 &&
+      data.status.indexOf("DECLINED")) == -1 &&
+      data.status.indexOf("NEW") > -1) ||
+      data.status.indexOf("DONE") > -1);
+  const selfTask =
+    data.of_user.id == data.created_user.id &&
+    (!data.group ||
+      (authContext.role == "Admin" && data.of_user.id == authContext.userId));
 
   return (
     <ViewTaskContext.Provider value={viewTaskContext}>
@@ -283,6 +292,15 @@ function ViewTask(props) {
             <Text>
               Assigned to:
               <Text style={s.link}> {data.of_user.username}</Text>
+            </Text>
+          </View>
+          <View style={s.formItemContainer}>
+            <Text>
+              {data.group ? (
+                <Text>Group: {data.group.name}</Text>
+              ) : (
+                "Personal task"
+              )}
             </Text>
           </View>
 
@@ -449,7 +467,9 @@ function ViewTask(props) {
                   {!allowReview ? null : (
                     <View style={s.formItemContainer}>
                       <View style={s.btnInputContainer}>
-                        {data.status.indexOf("FINISH CONFIRMED") > -1 ? null : (
+                        {data.status.indexOf("FINISH CONFIRMED") > -1 ||
+                        data.status.indexOf("DECLINED") > -1 ||
+                        data.status.indexOf("ACCEPTED") > -1 ? null : (
                           <>
                             <AppButton
                               btnStyle={s.btnOp}

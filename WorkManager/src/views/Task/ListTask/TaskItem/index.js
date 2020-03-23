@@ -20,6 +20,7 @@ function TaskItem(props) {
 
       <Text>{task.task_content}</Text>
       <Text style={s.link}>{task.of_user?.username}</Text>
+      <Text>{task.group ? "Group: " + task.group.name : "Personal task"}</Text>
       <Text style={s.itemTime}>Deadline: {task.deadline}</Text>
     </TouchableOpacity>
   );

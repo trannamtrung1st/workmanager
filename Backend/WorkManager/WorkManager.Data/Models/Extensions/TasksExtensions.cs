@@ -32,8 +32,9 @@ namespace WorkManager.Data.Models.Extensions
             if (filter.status != null)
                 query = query.InStatus(filter.status);
 
+            var isAdmin = principal.IsInRole("Admin");
             query = query.Where(p => p.OfUser == principal.Identity.Name ||
-                p.CreatedUser == principal.Identity.Name);
+                p.CreatedUser == principal.Identity.Name || (isAdmin && p.GroupId != null));
 
             return query;
         }
@@ -109,6 +110,14 @@ namespace WorkManager.Data.Models.Extensions
                         case TaskGeneralFields.REVIEW:
                             obj["manager_review"] = p.ManagerReview;
                             obj["mark"] = p.Mark;
+                            break;
+                        case TaskGeneralFields.GROUP:
+                            if (p.Group != null)
+                                obj["group"] = new
+                                {
+                                    id = p.GroupId,
+                                    name = p.Group.Name
+                                };
                             break;
                     }
                 }
