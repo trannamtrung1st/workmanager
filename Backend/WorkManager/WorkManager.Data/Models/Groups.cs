@@ -8,6 +8,7 @@ namespace WorkManager.Data.Models
         public Groups()
         {
             GroupUsers = new HashSet<GroupUsers>();
+            Tasks = new HashSet<Tasks>();
         }
 
         public int Id { get; set; }
@@ -18,5 +19,6 @@ namespace WorkManager.Data.Models
 
         public virtual AspNetUsers CreatedUserNavigation { get; set; }
         public virtual ICollection<GroupUsers> GroupUsers { get; set; }
+        public virtual ICollection<Tasks> Tasks { get; set; }
     }
 }

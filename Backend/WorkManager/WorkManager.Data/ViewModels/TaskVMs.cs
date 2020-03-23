@@ -20,6 +20,8 @@ namespace WorkManager.Data.ViewModels
         public DateTime? CreatedTime { get; set; }
         [JsonProperty("created_user")]
         public string CreatedUser { get; set; }
+        [JsonProperty("group_id")]
+        public int? GroupId { get; set; }
 
         public TasksViewModel(Tasks entity) : base(entity)
         {
@@ -44,6 +46,9 @@ namespace WorkManager.Data.ViewModels
         public string EmployeeCode { get; set; }
         [JsonProperty("source_id")]
         public string SourceId { get; set; }
+        [JsonProperty("group_id")]
+        public int? GroupId { get; set; }
+
 
         public CreateTaskViewModel()
         {
@@ -113,6 +118,7 @@ namespace WorkManager.Data.ViewModels
         public const string REPORT = "report";
         public const string REVIEW = "review";
         public const string SOURCE = "source";
+        public const string GROUP = "group";
 
         public static readonly IDictionary<string, string[]> Mapping =
             new Dictionary<string, string[]>()
@@ -122,7 +128,7 @@ namespace WorkManager.Data.ViewModels
                 },
                 {
                     DETAIL, new string[]{"StartTime","EndTime", "CreatedTime","ReviewTime",
-                        "OfUser","CreatedUser", "SourceId"}
+                        "OfUser","CreatedUser", "SourceId", "GroupId"}
                 },
                 {
                     OF_USER, new string[]{ "OfUserNavigation.Id", "OfUserNavigation.UserName",
@@ -141,6 +147,10 @@ namespace WorkManager.Data.ViewModels
                 {
                     SOURCE, new string[]{ "Source?.Id", "Source?.Name", }
                 },
+                {
+                    GROUP, new string[]{ "Group?.Id", "Group?.Name", }
+                },
+
             };
     }
 

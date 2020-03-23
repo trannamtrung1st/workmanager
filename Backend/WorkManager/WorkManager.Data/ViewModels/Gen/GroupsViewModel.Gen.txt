@@ -25,6 +25,8 @@ namespace WorkManager.Data.ViewModels
 		//public AspNetUsersViewModel CreatedUserNavigationVM { get; set; }
 		//[JsonProperty("group_users")]
 		//public IEnumerable<GroupUsersViewModel> GroupUsersVM { get; set; }
+		//[JsonProperty("tasks")]
+		//public IEnumerable<TasksViewModel> TasksVM { get; set; }
 		
 		public GroupsViewModel(Groups entity) : base(entity)
 		{
@@ -52,6 +54,8 @@ namespace WorkManager.Data.ViewModels
 		//public AspNetUsersViewModel CreatedUserNavigationVM { get; set; }
 		//[JsonProperty("group_users")]
 		//public IEnumerable<GroupUsersViewModel> GroupUsersVM { get; set; }
+		//[JsonProperty("tasks")]
+		//public IEnumerable<TasksViewModel> TasksVM { get; set; }
 		
 	}
 }

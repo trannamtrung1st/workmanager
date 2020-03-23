@@ -23,6 +23,8 @@ namespace WorkManager.Data.ViewModels
 		public DateTime? Deadline { get; set; }
 		//[JsonProperty("end_time")]
 		public DateTime? EndTime { get; set; }
+		//[JsonProperty("group_id")]
+		public int? GroupId { get; set; }
 		//[JsonProperty("manager_review")]
 		public string ManagerReview { get; set; }
 		//[JsonProperty("mark")]
@@ -45,6 +47,8 @@ namespace WorkManager.Data.ViewModels
 		public string TaskReport { get; set; }
 		//[JsonProperty("created_user_navigation")]
 		//public AspNetUsersViewModel CreatedUserNavigationVM { get; set; }
+		//[JsonProperty("group")]
+		//public GroupsViewModel GroupVM { get; set; }
 		//[JsonProperty("of_user_navigation")]
 		//public AspNetUsersViewModel OfUserNavigationVM { get; set; }
 		//[JsonProperty("source")]
@@ -76,6 +80,8 @@ namespace WorkManager.Data.ViewModels
 		public Wrapper<DateTime?> Deadline { get; set; }
 		//[JsonProperty("end_time")]
 		public Wrapper<DateTime?> EndTime { get; set; }
+		//[JsonProperty("group_id")]
+		public Wrapper<int?> GroupId { get; set; }
 		//[JsonProperty("manager_review")]
 		public Wrapper<string> ManagerReview { get; set; }
 		//[JsonProperty("mark")]
@@ -98,6 +104,8 @@ namespace WorkManager.Data.ViewModels
 		public Wrapper<string> TaskReport { get; set; }
 		//[JsonProperty("created_user_navigation")]
 		//public AspNetUsersViewModel CreatedUserNavigationVM { get; set; }
+		//[JsonProperty("group")]
+		//public GroupsViewModel GroupVM { get; set; }
 		//[JsonProperty("of_user_navigation")]
 		//public AspNetUsersViewModel OfUserNavigationVM { get; set; }
 		//[JsonProperty("source")]

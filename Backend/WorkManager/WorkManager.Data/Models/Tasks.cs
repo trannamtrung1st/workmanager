@@ -26,8 +26,10 @@ namespace WorkManager.Data.Models
         public string CreatedUser { get; set; }
         public string OfUser { get; set; }
         public string ConfirmImage { get; set; }
+        public int? GroupId { get; set; }
 
         public virtual AspNetUsers CreatedUserNavigation { get; set; }
+        public virtual Groups Group { get; set; }
         public virtual AspNetUsers OfUserNavigation { get; set; }
         public virtual Tasks Source { get; set; }
         public virtual ICollection<Tasks> InverseSource { get; set; }

@@ -5,7 +5,8 @@ import {
   AppButton,
   AppInput,
   ScannerModal,
-  HistoryBox
+  HistoryBox,
+  Hr
 } from "$components";
 import { Database } from "$services";
 import { ViewGroupContext, AuthContext } from "$app-contexts";
@@ -19,6 +20,7 @@ function ViewGroup(props) {
   const { navigation, route } = props;
   const groupId = route.params.id;
   const forceUpdate = HookHelper.useForceUpdate();
+  const [empFilter, setEmpFilter] = useState(null);
   const [viewGroupContext] = useState({
     reload,
     data: null,
@@ -99,9 +101,14 @@ function ViewGroup(props) {
     );
   }
 
-  function onSuccess(user) {
+  function _onSuccess(user) {
+    setEmpFilter(user.employee_code);
+  }
+
+  function _addUserToGroup(user) {
     GroupApi.addUserToGroup(
       {
+        employee_code: user.employee_code,
         user_id: user.id,
         group_id: viewGroupContext.data.id
       },
@@ -112,7 +119,7 @@ function ViewGroup(props) {
         }
 
         if (resp.ok) {
-          alert("Add " + user.username + " successfully");
+          alert("Add successfully");
           reload();
         } else {
           const data = await resp.json();
@@ -124,6 +131,14 @@ function ViewGroup(props) {
         alert("Something's wrong");
       }
     );
+  }
+
+  function _onAddPress() {
+    if (empFilter) {
+      _addUserToGroup({
+        employee_code: empFilter
+      });
+    } else viewGroupContext.setScannerOpen(true);
   }
 
   return (
@@ -187,13 +202,16 @@ function ViewGroup(props) {
 
             {authContext.role != "Admin" ? null : (
               <View style={s.btnInputContainer}>
-                <AppButton
-                  text="ADD"
-                  onPress={() => viewGroupContext.setScannerOpen(true)}
-                />
+                <View style={s.empFilterInputContainer}>
+                  <AppInput
+                    onChangeText={t => setEmpFilter(t)}
+                    value={empFilter}
+                  />
+                </View>
+                <AppButton text="ADD" onPress={_onAddPress} />
               </View>
             )}
-            
+            <Hr />
             {viewGroupContext.data.group_users.length ? (
               viewGroupContext.data.group_users.map(item => (
                 <View style={s.formItemContainer}>
@@ -226,7 +244,7 @@ function ViewGroup(props) {
           />
         </View>
         <ActionModal />
-        <ScannerModal context={viewGroupContext} onSuccess={onSuccess} />
+        <ScannerModal context={viewGroupContext} onSuccess={_onSuccess} />
       </AppLayout>
     </ViewGroupContext.Provider>
   );

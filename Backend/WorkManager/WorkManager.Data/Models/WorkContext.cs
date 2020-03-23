@@ -267,6 +267,11 @@ namespace WorkManager.Data.Models
                     .HasForeignKey(d => d.CreatedUser)
                     .HasConstraintName("FK_Tasks_AspNetUsers");
 
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.Tasks)
+                    .HasForeignKey(d => d.GroupId)
+                    .HasConstraintName("FK_Tasks_Groups");
+
                 entity.HasOne(d => d.OfUserNavigation)
                     .WithMany(p => p.TasksOfUserNavigation)
                     .HasForeignKey(d => d.OfUser)

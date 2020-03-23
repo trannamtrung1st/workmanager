@@ -190,7 +190,9 @@ namespace WorkManager.WebApi.Controllers
             {
                 var iDomain = Service<IdentityDomain>();
                 var domain = Service<GroupDomain>();
-                var addedUser = await iDomain.GetUserById(model.user_id);
+                var addedUser = model.user_id != null ?
+                    await iDomain.GetUserById(model.user_id)
+                    : iDomain.GetUserByEmpCode(model.employee_code);
                 var group = domain.Groups.Id(model.group_id);
                 if (addedUser == null || group == null)
                     return NotFound(new ApiResult

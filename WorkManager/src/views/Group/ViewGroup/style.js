@@ -16,6 +16,9 @@ const styles = StyleSheet.create({
   tblUser: {},
   tblRow: {
     paddingVertical: 10
+  },
+  empFilterInputContainer: {
+    marginRight: 7
   }
 });
 
@@ -33,6 +36,10 @@ const tblUser = form.concat(styles.tblUser);
 const tblRow = inputContainer.concat(styles.tblRow);
 const formHeader = [commonStyles.fontWeightBold, styles.formHeader];
 const bold = [commonStyles.fontWeightBold];
+const empFilterInputContainer = inputContainer.concat([
+  commonStyles.flex1,
+  styles.empFilterInputContainer
+]);
 const s = {
   bold,
   formHeader,
@@ -40,6 +47,7 @@ const s = {
   link,
   tblUser,
   form,
+  empFilterInputContainer,
   inputContainer,
   formItemContainer,
   btnInputContainer,

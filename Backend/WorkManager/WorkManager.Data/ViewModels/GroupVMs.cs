@@ -55,6 +55,7 @@ namespace WorkManager.Data.ViewModels
 
     public class AddUserToGroupViewModel
     {
+        public string employee_code { get; set; }
         public string user_id { get; set; }
         public int group_id { get; set; }
     }
