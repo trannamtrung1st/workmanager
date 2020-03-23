@@ -66,6 +66,13 @@ namespace WorkManager.Data.Models.Extensions
                         case UserGeneralFields.ROLE:
                             obj["role"] = p.AspNetUserRoles.FirstOrDefault()?.Role.Name;
                             break;
+                        case UserGeneralFields.GROUPS:
+                            obj["groups"] = p.GroupUsers.Select(g => new
+                            {
+                                id = g.Group.Id,
+                                name = g.Group.Name
+                            }).ToList();
+                            break;
                     }
                 }
                 list.Add(obj);

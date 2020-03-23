@@ -140,6 +140,7 @@ namespace WorkManager.Data.ViewModels
     {
         public const string INFO = "info";
         public const string ROLE = "role";
+        public const string GROUPS = "groups";
 
         public static readonly IDictionary<string, string[]> Mapping =
             new Dictionary<string, string[]>()
@@ -149,6 +150,9 @@ namespace WorkManager.Data.ViewModels
                 },
                 {
                     ROLE, new string[]{ "AspNetUserRoles" }
+                },
+                {
+                    GROUPS, new string[]{ "GroupUsers" }
                 }
             };
     }

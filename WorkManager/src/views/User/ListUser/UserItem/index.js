@@ -25,7 +25,12 @@ function UserItem(props) {
           <Text>
             <Text style={s.bold}>Role:</Text> {user.role}
           </Text>
-        ) : null}
+        ) : (
+          <Text>
+            <Text style={s.bold}>Groups</Text>:{" "}
+            <Text>{user.groups.map(g => g.name).join(", ")}</Text>
+          </Text>
+        )}
       </View>
     </TouchableOpacity>
   );
