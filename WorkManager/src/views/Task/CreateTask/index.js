@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, Picker } from "react-native";
 import {
   AppLayout,
   AppDateTimePicker,
@@ -12,7 +12,7 @@ import s from "./style";
 import { HookHelper } from "@trannamtrung1st/t-components";
 import { Database } from "$services";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { TaskApi } from "$api";
+import { TaskApi, GroupApi } from "$api";
 
 function CreateTask(props) {
   const { navigation, route } = props;
@@ -25,6 +25,7 @@ function CreateTask(props) {
   let sourceUser = source
     ? (sourceUser = users.filter(u => u.username == source.of_user)[0])
     : null;
+  const [groups, setGroups] = useState(null);
   const [createTaskContext] = useState({
     data: {
       name: source?.name,
@@ -32,11 +33,13 @@ function CreateTask(props) {
       deadline: deadline,
       source,
       source_id: source?.id,
-      employee_code: sourceUser?.employee_code
+      employee_code: sourceUser?.employee_code,
+      group_id: source?.group_id
     },
     setScannerOpen: null
   });
   const data = createTaskContext.data;
+  if (!groups) _loadGroups();
 
   function _changeData(name, val) {
     data[name] = val;
@@ -45,6 +48,28 @@ function CreateTask(props) {
 
   function onSuccess(user) {
     _changeData("employee_code", user.employee_code);
+  }
+
+  function _loadGroups() {
+    GroupApi.get(
+      { fields: ["info"], limit: 1000 },
+      async resp => {
+        if (resp.status == 401 || resp.status == 403) {
+          alert("Unauthorized or access denied");
+          return;
+        }
+        const data = await resp.json();
+        if (resp.ok) {
+          setGroups(data.data.results);
+        } else {
+          alert(data.message);
+        }
+      },
+      err => {
+        console.log(err);
+        alert("Something's wrong");
+      }
+    );
   }
 
   function _onSubmit() {
@@ -123,6 +148,23 @@ function CreateTask(props) {
               initDate={data.deadline}
               onDateChanged={(ev, v) => (data.deadline = v ?? data.deadline)}
             />
+          </View>
+
+          <View style={s.formItemContainer}>
+            <Text>Group</Text>
+            <View style={s.inputContainer}>
+              <Picker
+                mode="dropdown"
+                selectedValue={data.group_id + ""}
+                style={s.inputContainer}
+                onValueChange={v => _changeData("group_id", v)}
+              >
+                <Picker.Item label="-- Personal task --" value={null} />
+                {groups?.map(g => (
+                  <Picker.Item label={g.name} value={g.id + ""} />
+                ))}
+              </Picker>
+            </View>
           </View>
 
           <View style={s.formItemContainer}>
